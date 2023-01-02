@@ -1,5 +1,10 @@
 # forensibus
 
+# TODO
+
+- utils/filesystem: add some file types to the filetype lib. (evtx, registry, text ...)
+- cli: convert relative filepath to absolute filepath
+
 # grpc
 
 https://github.com/pahanini/go-grpc-bidirectional-streaming-example

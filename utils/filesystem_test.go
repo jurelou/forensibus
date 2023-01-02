@@ -76,3 +76,15 @@ func TestFindFilesInvalidRegex(t *testing.T) {
 		t.Errorf("Invalid files count found")
 	}
 }
+
+
+func TestFindFilesFromFolderWithFiletype(t *testing.T) {
+	files, err := FindFiles(FindFilesParams{Path: "../", FileFormats: []string{"application/x-tar", "application/gzip"}})
+
+	if err != nil {
+		t.Errorf("FindFiles returned an error: %s", err)
+	}
+	if len(files) != 0 {
+		t.Errorf("Invalid files count found")
+	}
+}
