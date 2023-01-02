@@ -1,8 +1,13 @@
 package core
 
-import "fmt"
+import (
+	"fmt"
+)
 
 
-func Yo(args []string) {
-	fmt.Println("hello world")
+func Yo(pipelineconfigFile string, paths []string) {
+	fmt.Println("hello world", paths, "===", pipelineconfigFile)
+	config, err := LoadDSLFile(pipelineconfigFile); if err != nil {
+		fmt.Println(err,config)
+	}
 }

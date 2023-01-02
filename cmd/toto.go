@@ -6,15 +6,16 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 	"errors"
 	"github.com/spf13/cobra"
-	afero "github.com/spf13/afero"
 	"github.com/jurelou/forensibus/core"
+	"github.com/jurelou/forensibus/utils"
 )
 
 
 var (
+	pipelineconfig	string
+
 	runCmd = &cobra.Command{
 		Use:   "run [path]",
 		Aliases: []string{"r"},
@@ -29,19 +30,21 @@ var (
 			if len(args) < 1 {
 				return errors.New("requires a filepath  argument")
 			}
-			appfs := afero.NewOsFs()
 			for _, filepath := range args {
-				_, err := appfs.Stat(filepath)
-				if os.IsNotExist(err) {
-					return fmt.Errorf("file %s does not exist.\n", filepath)
+				if utils.FileExists(filepath) == false {
+					return fmt.Errorf("%s is not a valid file or folder.\n", filepath)
 				}
 			}
 			return nil
 		},
 
-		Run: func(cmd *cobra.Command, args []string) {
-			core.Yo(args)
-			
+		RunE: func(cmd *cobra.Command, filepaths []string) error {
+
+			if utils.FileExists(pipelineconfig) == false {
+				return fmt.Errorf("%s file does not exists.\n", pipelineconfig)
+			}
+			core.Yo(pipelineconfig, utils.UniqueListOfStrings(filepaths))
+			return nil
 		},
 	}
 )
@@ -49,6 +52,8 @@ var (
 func init() {
 	rootCmd.AddCommand(runCmd)
 
+	runCmd.PersistentFlags().StringVarP(&pipelineconfig, "pipeline", "p", "", "A pipeline configuration file.")
+	runCmd.MarkPersistentFlagRequired("pipeline")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
