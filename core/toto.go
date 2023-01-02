@@ -61,10 +61,11 @@ func Yo(pipelineconfigFile string, paths []string) {
 	config, err := LoadDSLFile(pipelineconfigFile); if err != nil {
 		fmt.Println(err,config)
 	}
-	files, err2 := utils.FindFiles(utils.FindFilesParams{Path: "/root/.profile", PathPatterns: []string{"a", "b"}, FileMagics: []string{".*a", "a", "(.*)a"}})
+	files, err2 := utils.FindFiles(utils.FindFilesParams{Path: "README.md", PathPatterns: []string{"a", "b", "^[Rr]"}, FileMagics: []string{".*a", "a", "(.*)a"}})
 	if err2 != nil {
 		fmt.Println("Error while finding files:", err2, "==", files)
 	}
+	fmt.Println("found files ->", files)
 
 	go func() {
 		for {

@@ -1,10 +1,11 @@
 package utils
 
 import (
-	"fmt"
+	_ "fmt"
 	_ "errors"
 	"os"
 	"regexp"
+	"path/filepath"
 )
 type FindFilesParams struct {
 	Path string
@@ -13,20 +14,21 @@ type FindFilesParams struct {
 }
 
 func FindFiles(params FindFilesParams) ([]string, error) {
-	fmt.Println("!!!", params)
 	var pathRegexes []*regexp.Regexp
 	var files []string
 
-	// Open the given file or folder
-	// filePtr, errOpen := os.Open(params.Path); if errOpen != nil {
-	// 	return nil, errOpen
-	// }
-	// defer filePtr.Close()
-	fileInfo, errStat := os.Stat(params.Path); if errStat != nil {
-		return nil, errStat
-	}
-	if fileInfo.IsDir() {
-		fmt.Println("its a folder")
+	addFile := func (filePath string) {
+		// No patterns provided, return
+		if len(pathRegexes) == 0 {
+			files = append(files, filePath)
+			return
+		}
+		for _, rex := range pathRegexes {
+			if rex.MatchString(filePath) {
+				files = append(files, filePath)
+				return
+			}
+		}
 	}
 
 	// Compile file paths patterns
@@ -37,7 +39,24 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 		pathRegexes = append(pathRegexes, compiledRegex)
 
 	}
-	fmt.Println(pathRegexes)
+
+	// Check if it's a folder
+	fileInfo, errStat := os.Stat(params.Path); if errStat != nil {
+		return nil, errStat
+	}
+
+	if fileInfo.IsDir() {
+		filepath.Walk(params.Path, func(path string, info os.FileInfo, err error) error {
+			if info.IsDir() {
+				return nil
+			}
+			addFile(path)
+			return nil
+		})
+	} else {
+		addFile(params.Path)
+	}
+
 	return files, nil
 }
 
