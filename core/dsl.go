@@ -1,30 +1,59 @@
 package core
 
 import (
-	"fmt"
+	_"fmt"
 	_"log"
 	"github.com/hashicorp/hcl/v2/hclsimple"
 )
 
 type Config struct {
-	IOMode  string        `hcl:"io_mode"`
-	Service ServiceConfig `hcl:"service,block"`
+	Toto		string        	`hcl:"toto"`
+	Pipeline	PipelineConfig	`hcl:"pipeline,block"`
+	Output		OutputConfig	`hcl:"output,block"`
 }
 
-type ServiceConfig struct {
-	Protocol   string          `hcl:"protocol,label"`
-	Type       string          `hcl:"type,label"`
-	ListenAddr string          `hcl:"listen_addr"`
-	Processes  []ProcessConfig `hcl:"process,block"`
+type PipelineConfig struct {
+	Name		string			`hcl:"name,label"`
+	Toto		string          `hcl:"toto"`
+
+	Extracts	[]ExtractConfig	`hcl:"extract,block"`
+	Finds		[]FindConfig	`hcl:"find,block"`
+	Processes	[]ProcessConfig	`hcl:"process,block"`
+}
+
+type ExtractConfig struct {
+	Name		string			`hcl:"name,label"`
+	Patterns	[]string		`hcl:"patterns"`
+	MimeTypes	[]string		`hcl:"mime_types,optional"`
+
+	Extracts	[]ExtractConfig	`hcl:"extract,block"`
+	Finds		[]FindConfig	`hcl:"find,block"`
+	Processes	[]ProcessConfig	`hcl:"process,block"`
+}
+
+type FindConfig struct {
+	Name		string			`hcl:"name,label"`
+	Patterns	[]string		`hcl:"patterns"`
+	MimeTypes	[]string		`hcl:"mime_types,optional"`
+
+	Extracts	[]ExtractConfig	`hcl:"extract,block"`
+	Finds		[]FindConfig	`hcl:"find,block"`
+	Processes	[]ProcessConfig	`hcl:"process,block"`
 }
 
 type ProcessConfig struct {
-	Type    string   `hcl:"type,label"`
-	Command []string `hcl:"command"`
+	Name			string   			`hcl:"name,label"`
+	Config			map[string]string   `hcl:"config,optional"`
+}
+
+type OutputConfig struct {
+	Type		string			`hcl:"type,label"`
+	Address		string          `hcl:"address"`
+	Username	string          `hcl:"username"`
+	Password	string          `hcl:"password"`
 }
 
 func LoadDSLFile(filePath string) (Config, error) {
-	fmt.Println("salut")
 	var config Config
 
 	err := hclsimple.DecodeFile(filePath, nil, &config)

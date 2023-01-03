@@ -7,3 +7,5 @@ format:
 	go vet
 	go clean
 
+test:
+	go test -cover  ./...
