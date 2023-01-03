@@ -1,4 +1,6 @@
-toto = "tutu"
+
+archives_passwords = ["virus", "avproof"]
+temporary_folder = "/tmp/forensibus"
 
 pipeline "test_simple_pipeline" {
   toto = "hello"
@@ -13,8 +15,7 @@ pipeline "test_simple_pipeline" {
 
         }
     }
-    process "secondProcess" {
-    }
+    process "secondProcess" {}
 
     find "secondFind" {
         mime_types = ["application/something"]

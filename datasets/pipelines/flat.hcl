@@ -6,17 +6,13 @@ pipeline "test_simple_pipeline" {
   find "1Find" {
     patterns = ["aa", "bb"]
   }
-  process "1Process" {
-  }
+  process "1Process" {}
   find "2Find" {
     patterns = ["aa", "bb"]
   }
-  process "2Process" {
-  }
-  process "3Process" {
-  }
-  process "4Process" {
-  }
+  process "2Process" {}
+  process "3Process" {}
+  process "4Process" {}
 
 }
 

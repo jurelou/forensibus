@@ -1,7 +1,8 @@
-toto = "tutu"
+
+archives_passwords = ["virus", "avproof"]
+temporary_folder = "/tmp/forensibus"
 
 pipeline "mypipeline4orc" {
-  toto = "hello"
 
   extract "DFIR-ORC archives" {
     patterns = ["Collect_.*.7z$", "DFIR-.*.7z$"]
@@ -13,9 +14,7 @@ pipeline "mypipeline4orc" {
         patterns = []
         mime_types = ["application/evtx"]
 
-        process "evtxdump" {
-          // Process les evtx un par un
-        }
+        process "evtxdump" {}
 
       }
 
@@ -32,9 +31,7 @@ pipeline "mypipeline4orc" {
       find "files matching lnk" {
         patterns = [".*.lnk$"]
 
-        process "lnk" {
-          // Process les fichiers lnk un par un
-        }
+        process "lnk" {}
 
       }
 

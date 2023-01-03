@@ -1,10 +1,12 @@
 package utils
 
 import (
-	"fmt"
 	"os"
+	"fmt"
+	"os/user"
 	"regexp"
 	"path/filepath"
+	"strings"
 
 	"github.com/h2non/filetype"
 )
@@ -88,6 +90,33 @@ func FileExists(path string) bool {
 	return false
 }
 
+func GetCurrentHomeDirectory() (string, error) {
+	usr, err := user.Current(); if err != nil {
+		return "", err
+	}
+	return usr.HomeDir, nil
+}
+
+func ConvertRelativePath(path string) (string, error) {
+	// if strings.HasPrefix(path, "..") {
+	// 	home, err := GetCurrentHomeDirectory();  if err != nil {
+	// 		return path, err
+	// 	}
+	// 	fmt.Println(filepath.Abs(path))
+	// 	return filepath.Join(home, path), nil
+	// } else 
+	if strings.HasPrefix(path, "~") {
+		home, err := GetCurrentHomeDirectory();  if err != nil {
+			return path, err
+		}
+		return filepath.Join(home, path[1:]), nil
+	} else {
+		abs, err := filepath.Abs(path); if err != nil {
+			return path, err
+		}
+		return abs, nil
+	}
+}
 func init() {
 	fmt.Println("hello here")
 }

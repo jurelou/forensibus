@@ -8,4 +8,9 @@ format:
 	go clean
 
 test:
-	go test -cover  ./...
+	@echo "****** Running tests ******"
+	@go test -cover  ./...  -coverprofile=coverage.out
+	@echo "\n****** Generating coverage.out ******"
+	@go tool cover -html=coverage.out
+	@echo "\n****** Tests coverage ******"
+	@go tool cover -func=coverage.out
