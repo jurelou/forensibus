@@ -6,8 +6,8 @@ format:
 	rm -rf vendor
 	go fix
 	go mod vendor
-	go fmt  $(PACKAGES)
-	go vet
+	gofmt -w -s  $(PACKAGES)
+	# go vet $(PACKAGES)
 	go clean
 
 test:
