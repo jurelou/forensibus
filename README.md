@@ -5,6 +5,14 @@
 - utils/filesystem: add some file types to the filetype lib. (evtx, registry, text ...)
 - cli: convert relative filepath to absolute filepath
 
+# Mettre à jour le protocol (protobuf)
+
+```
+go install github.com/golang/protobuf/protoc-gen-go
+apt-get install protobuf-compiler
+make proto
+```
+
 # grpc
 
 https://github.com/pahanini/go-grpc-bidirectional-streaming-example

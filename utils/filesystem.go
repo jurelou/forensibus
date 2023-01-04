@@ -2,7 +2,7 @@ package utils
 
 import (
 	"os"
-	"fmt"
+	// "fmt"
 	"os/user"
 	"regexp"
 	"path/filepath"
@@ -98,13 +98,6 @@ func GetCurrentHomeDirectory() (string, error) {
 }
 
 func ConvertRelativePath(path string) (string, error) {
-	// if strings.HasPrefix(path, "..") {
-	// 	home, err := GetCurrentHomeDirectory();  if err != nil {
-	// 		return path, err
-	// 	}
-	// 	fmt.Println(filepath.Abs(path))
-	// 	return filepath.Join(home, path), nil
-	// } else 
 	if strings.HasPrefix(path, "~") {
 		home, err := GetCurrentHomeDirectory();  if err != nil {
 			return path, err
@@ -117,6 +110,6 @@ func ConvertRelativePath(path string) (string, error) {
 		return abs, nil
 	}
 }
-func init() {
-	fmt.Println("hello here")
-}
+// func init() {
+// 	fmt.Println("hello here")
+// }

@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"fmt"
+	// "fmt"
 	"github.com/h2non/filetype"
 
 )
@@ -13,6 +13,6 @@ func fooMatcher(buf []byte) bool {
 }
 
 func init() {
-	fmt.Println("hello")
+	// fmt.Println("hello")
 	filetype.AddMatcher(fooType, fooMatcher)
 }

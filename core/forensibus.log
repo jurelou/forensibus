@@ -1,0 +1,110 @@
+2023-01-04T11:37:19.733-0800	[34mINFO[0m	utils/zap_logger.go:19	
+2023-01-04T11:37:19.735-0800	[34mINFO[0m	core/processors_test.go:14	salut
+2023-01-04T11:37:19.735-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
+2023-01-04T11:37:19.735-0800	[31mERROR[0m	core/processors_test.go:16	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:16
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T11:37:19.735-0800	[33mWARN[0m	core/processors_test.go:17	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:17
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T11:38:23.778-0800	[34mINFO[0m	utils/zap_logger.go:19	
+2023-01-04T11:38:23.781-0800	[34mINFO[0m	core/processors_test.go:14	salut
+2023-01-04T11:38:23.781-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
+2023-01-04T11:38:23.781-0800	[31mERROR[0m	core/processors_test.go:16	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:16
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T11:38:23.781-0800	[33mWARN[0m	core/processors_test.go:17	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:17
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T11:38:27.622-0800	[34mINFO[0m	utils/zap_logger.go:19	
+2023-01-04T11:38:27.624-0800	[34mINFO[0m	core/processors_test.go:14	salut
+2023-01-04T11:38:27.624-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
+2023-01-04T11:38:27.624-0800	[31mERROR[0m	core/processors_test.go:16	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:16
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T11:38:27.624-0800	[33mWARN[0m	core/processors_test.go:17	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:17
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T11:38:42.500-0800	[34mINFO[0m	utils/zap_logger.go:19	
+2023-01-04T11:38:42.503-0800	[34mINFO[0m	core/processors_test.go:14	salut
+2023-01-04T11:38:42.503-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
+2023-01-04T11:38:42.503-0800	[33mWARN[0m	core/processors_test.go:17	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:17
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T11:38:47.425-0800	[34mINFO[0m	utils/zap_logger.go:19	
+2023-01-04T11:38:47.427-0800	[34mINFO[0m	core/processors_test.go:14	salut
+2023-01-04T11:38:47.427-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
+2023-01-04T11:39:02.053-0800	[34mINFO[0m	core/processors_test.go:14	salut
+2023-01-04T11:39:02.053-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
+2023-01-04T11:39:29.590-0800	[34mINFO[0m	core/processors_test.go:14	salut
+2023-01-04T11:39:29.590-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
+2023-01-04T11:39:34.040-0800	[34mINFO[0m	core/processors_test.go:14	salut
+2023-01-04T11:39:34.041-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
+2023-01-04T11:39:34.041-0800	[31mERROR[0m	core/processors_test.go:16	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:16
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T11:39:45.491-0800	[34mINFO[0m	core/processors_test.go:14	salut
+2023-01-04T11:39:45.491-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
+2023-01-04T11:39:45.491-0800	[31mERROR[0m	core/processors_test.go:16	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:16
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T11:39:48.665-0800	[34mINFO[0m	core/processors_test.go:14	salut
+2023-01-04T11:39:48.666-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
+2023-01-04T11:39:48.666-0800	[31mERROR[0m	core/processors_test.go:16	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:16
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T11:40:48.449-0800	[34mINFO[0m	core/processors_test.go:14	salut
+2023-01-04T11:40:48.449-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
+2023-01-04T11:40:48.449-0800	[31mERROR[0m	core/processors_test.go:16	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:16
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T11:41:43.506-0800	[34mINFO[0m	core/processors_test.go:14	salut
+2023-01-04T11:41:43.506-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
+2023-01-04T11:41:43.506-0800	[31mERROR[0m	core/processors_test.go:16	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:16
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T11:41:45.466-0800	[34mINFO[0m	core/processors_test.go:14	salut
+2023-01-04T11:41:45.466-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
+2023-01-04T11:41:45.466-0800	[31mERROR[0m	core/processors_test.go:16	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:16
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T11:42:05.862-0800	[34mINFO[0m	core/processors_test.go:14	salut
+2023-01-04T11:42:05.862-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
+2023-01-04T11:42:05.862-0800	[31mERROR[0m	core/processors_test.go:16	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:16
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T11:43:33.829-0800	[34mINFO[0m	core/processors_test.go:16	salut
+2023-01-04T11:43:33.829-0800	[35mDEBUG[0m	core/processors_test.go:17	salut
+2023-01-04T11:43:33.829-0800	[31mERROR[0m	core/processors_test.go:18	salut
+command-line-arguments.TestXxssx
+	/home/ljk/forensibus/core/processors_test.go:18
+testing.tRunner
+	/usr/local/go/src/testing/testing.go:1446
