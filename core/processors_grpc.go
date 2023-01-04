@@ -4,10 +4,10 @@ import (
 	"fmt"
 	// "io/ioutil"
 	// "log"
-	"os"
-	"os/exec"
 	"github.com/hashicorp/go-plugin"
 	"github.com/jurelou/forensibus/utils"
+	"os"
+	"os/exec"
 )
 
 func TotoGo() {

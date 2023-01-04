@@ -1,6 +1,6 @@
 package processors
 
 type Processor interface {
-	Greet() string
+	Greet(string) string
 	// UnmarshalSettings([]byte) Processor
 }

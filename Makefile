@@ -1,9 +1,12 @@
+PACKAGES = cmd core processors utils worker
+
+
 format:
 	go mod tidy
 	rm -rf vendor
 	go fix
 	go mod vendor
-	go fmt
+	go fmt  $(PACKAGES)
 	go vet
 	go clean
 

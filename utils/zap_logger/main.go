@@ -1,9 +1,9 @@
 package zap_logger
 
 import (
-	"log"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"log"
 )
 
 func GetLogger() (*zap.SugaredLogger, error) {
@@ -29,7 +29,8 @@ func configureLogger() (zap.Logger, error) {
 	cfg.OutputPaths = []string{"forensibus.log", "stdout"}
 	// cfg.ErrorOutputPaths = []string{"forensibus.log", "stderr"}
 
-	zLogger, err := cfg.Build(); if err != nil {
+	zLogger, err := cfg.Build()
+	if err != nil {
 		return *zLogger, err
 	}
 	return *zLogger, nil

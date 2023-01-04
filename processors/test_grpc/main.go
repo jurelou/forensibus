@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"github.com/hashicorp/go-plugin"
 	"github.com/jurelou/forensibus/utils"
+	"io/ioutil"
 )
 
 // Here is a real implementation of KV that writes to a local file with
@@ -21,7 +21,6 @@ func (KV) Get(key string) ([]byte, error) {
 	fmt.Println("GEET")
 	return ioutil.ReadFile("kv_" + key)
 }
-
 
 func main() {
 	plugin.Serve(&plugin.ServeConfig{

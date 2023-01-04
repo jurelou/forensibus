@@ -1,6 +1,7 @@
 package processors
 
 import (
+	"fmt"
 	"github.com/jurelou/forensibus/utils"
 )
 
@@ -8,7 +9,13 @@ var (
 	Registry = make(map[string]Processor)
 )
 
-func Toto() {
+// GetProcessor returns the Component specified by name from `Registry`.
+func Get(procName string) (Processor, error) {
+	// check if exists
+	if _, ok := Registry[procName]; ok {
+		return Registry[procName], nil
+	}
+	return nil, fmt.Errorf("%s is not a registered processor", procName)
 }
 
 // Register is called by the `init` function of every `Component` to add

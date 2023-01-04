@@ -4,16 +4,17 @@ import (
 	"os"
 	// "fmt"
 	"os/user"
-	"regexp"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/h2non/filetype"
 )
+
 type FindFilesParams struct {
-	Path string
+	Path         string
 	PathPatterns []string
-	FileFormats []string
+	FileFormats  []string
 }
 
 func FindFiles(params FindFilesParams) ([]string, error) {
@@ -23,17 +24,18 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 	checkFileFormat := (len(params.FileFormats) != 0)
 	fileHead := make([]byte, 261)
 
-	addFile := func (filePath string) {
+	addFile := func(filePath string) {
 		// No conditions provided, add the current file
 
-		if len(pathRegexes) == 0  && !checkFileFormat {
+		if len(pathRegexes) == 0 && !checkFileFormat {
 			files = append(files, filePath)
 			return
 		}
 
 		// Check if file matches the given mime types
 		if checkFileFormat {
-			file, err := os.Open(filePath); if err != nil {
+			file, err := os.Open(filePath)
+			if err != nil {
 				return
 			}
 			defer file.Close()
@@ -41,7 +43,7 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 			for _, mime := range params.FileFormats {
 				if filetype.IsMIME(fileHead, mime) {
 					files = append(files, filePath)
-					return							
+					return
 				}
 			}
 		}
@@ -57,7 +59,8 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 
 	// Compile file paths patterns
 	for _, pattern := range params.PathPatterns {
-		compiledRegex, err := regexp.Compile(pattern); if err != nil {
+		compiledRegex, err := regexp.Compile(pattern)
+		if err != nil {
 			return nil, err
 		}
 		pathRegexes = append(pathRegexes, compiledRegex)
@@ -65,7 +68,8 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 	}
 
 	// Check if it's a folder
-	fileInfo, errStat := os.Stat(params.Path); if errStat != nil {
+	fileInfo, errStat := os.Stat(params.Path)
+	if errStat != nil {
 		return nil, errStat
 	}
 
@@ -91,7 +95,8 @@ func FileExists(path string) bool {
 }
 
 func GetCurrentHomeDirectory() (string, error) {
-	usr, err := user.Current(); if err != nil {
+	usr, err := user.Current()
+	if err != nil {
 		return "", err
 	}
 	return usr.HomeDir, nil
@@ -99,17 +104,20 @@ func GetCurrentHomeDirectory() (string, error) {
 
 func ConvertRelativePath(path string) (string, error) {
 	if strings.HasPrefix(path, "~") {
-		home, err := GetCurrentHomeDirectory();  if err != nil {
+		home, err := GetCurrentHomeDirectory()
+		if err != nil {
 			return path, err
 		}
 		return filepath.Join(home, path[1:]), nil
 	} else {
-		abs, err := filepath.Abs(path); if err != nil {
+		abs, err := filepath.Abs(path)
+		if err != nil {
 			return path, err
 		}
 		return abs, nil
 	}
 }
+
 // func init() {
 // 	fmt.Println("hello here")
 // }

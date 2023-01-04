@@ -1,11 +1,12 @@
 package utils
 
 import (
-	"golang.org/x/net/context"
-	"google.golang.org/grpc"
 	"github.com/hashicorp/go-plugin"
 	"github.com/jurelou/forensibus/proto"
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
 )
+
 var Handshake = plugin.HandshakeConfig{
 	// This isn't required when using VersionedPlugins
 	ProtocolVersion:  1,
@@ -48,6 +49,7 @@ type GRPCServer struct {
 	// This is the real implementation
 	Impl KV
 }
+
 func (m *GRPCServer) Put(
 	ctx context.Context,
 	req *proto.PutRequest) (*proto.Empty, error) {
@@ -60,7 +62,6 @@ func (m *GRPCServer) Get(
 	v, err := m.Impl.Get(req.Key)
 	return &proto.GetResponse{Value: v}, err
 }
-
 
 // GRPCClient is an implementation of KV that talks over RPC.
 type GRPCClient struct{ client proto.KVClient }

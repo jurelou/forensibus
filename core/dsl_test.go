@@ -2,13 +2,13 @@ package core
 
 import (
 	"fmt"
-	"testing"
-	"strings"
 	"reflect"
+	"strings"
+	"testing"
 )
 
-func TestInvalidFile(t* testing.T) {
-	_, err := LoadDSLFile("../datasets/this.does.not.exists");
+func TestInvalidFile(t *testing.T) {
+	_, err := LoadDSLFile("../datasets/this.does.not.exists")
 
 	if err == nil {
 		t.Errorf("FindFiles should fail to find 'this.does.not.exists'")
@@ -21,8 +21,8 @@ func TestInvalidFile(t* testing.T) {
 func doSomething(i int) int {
 	return i + 1
 }
-func TestSimple(t* testing.T) {
-	config, err := LoadDSLFile("../datasets/pipelines/nested.hcl");
+func TestSimple(t *testing.T) {
+	config, err := LoadDSLFile("../datasets/pipelines/nested.hcl")
 	if err != nil {
 		t.Errorf("Hcl file `simple.hcl` should not raise errors: %s", err.Error())
 	}

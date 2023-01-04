@@ -18,7 +18,8 @@ type Logger interface {
 
 func init() {
 	var err error
-	Log, err = zap_logger.GetLogger(); if err != nil {
+	Log, err = zap_logger.GetLogger()
+	if err != nil {
 		panic("Could not create a logger !")
 	}
 }

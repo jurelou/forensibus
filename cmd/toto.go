@@ -1,25 +1,23 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
-	"fmt"
 	"errors"
-	"github.com/spf13/cobra"
+	"fmt"
 	"github.com/jurelou/forensibus/core"
 	"github.com/jurelou/forensibus/utils"
+	"github.com/spf13/cobra"
 )
 
-
 var (
-	pipelineconfig	string
+	pipelineconfig string
 
 	runCmd = &cobra.Command{
-		Use:   "run [path]",
+		Use:     "run [path]",
 		Aliases: []string{"r"},
-		Short: "A brief description of your command",
+		Short:   "A brief description of your command",
 		Long: `A longer description that spans multiple lines and likely contains examples
 	and usage of using your command. For example:
 

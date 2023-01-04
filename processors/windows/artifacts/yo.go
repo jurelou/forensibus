@@ -1,4 +1,4 @@
-package windows
+package windows_artifacts
 
 import (
 	"fmt"
@@ -6,12 +6,12 @@ import (
 )
 
 type Component1 struct {
-	// Input string `yaml:"input"`
+	Input string `yaml:"input"`
 }
 
 func (c Component1) Greet(s string) string {
 	return fmt.Sprintf(
-		"Hello, the input you provided to me was: %s", s)
+		"Hello, the input you provided to me was: %s<<", s)
 }
 
 // func (c Component1) UnmarshalSettings(settings []byte) processors.Processor {
@@ -22,5 +22,5 @@ func (c Component1) Greet(s string) string {
 
 func init() {
 	fmt.Println("hello winroot")
-	processors.Register("salaaut", Component1{})
+	processors.Register("evtx", Component1{})
 }

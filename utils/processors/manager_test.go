@@ -5,7 +5,17 @@ import (
 	"testing"
 )
 
-func TestToto(t *testing.T) {
+func TestGetEvtx(t *testing.T) {
+	_, err := Get("evtx")
+	if err == nil {
+		t.Errorf("Processor `this_should_not_exists` should not exists")
+	}
+}
+
+func TestGetInvalid(t *testing.T) {
 	fmt.Println("ok")
-	Toto()
+	_, err := Get("this_should_not_exists")
+	if err == nil {
+		t.Errorf("Processor `this_should_not_exists` should not exists")
+	}
 }

@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestXxx(t* testing.T) {
+func TestXxx(t *testing.T) {
 	TotoGo()
 	fmt.Println("!!!")
 }

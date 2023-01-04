@@ -2,10 +2,10 @@ package core
 
 import (
 	"fmt"
+	_ "github.com/jurelou/forensibus/utils"
 	"log"
-	"time"
 	"runtime"
-	_"github.com/jurelou/forensibus/utils"
+	"time"
 )
 
 type T = interface{}
@@ -57,18 +57,19 @@ func (wp *workerPool) run() {
 }
 
 func worker(id int, jobs <-chan int, results chan<- int) {
-    for j := range jobs {
-        fmt.Println("worker", id, "started  job", j)
-        time.Sleep(time.Second)
-        fmt.Println("worker", id, "finished job", j)
-        results <- j * 2
-    }
+	for j := range jobs {
+		fmt.Println("worker", id, "started  job", j)
+		time.Sleep(time.Second)
+		fmt.Println("worker", id, "finished job", j)
+		results <- j * 2
+	}
 }
 
 func Yo(pipelineconfigFile string, paths []string) {
 	fmt.Println("hello world", paths, "===", pipelineconfigFile)
-	config, err := LoadDSLFile(pipelineconfigFile); if err != nil {
-		fmt.Println(err,config)
+	config, err := LoadDSLFile(pipelineconfigFile)
+	if err != nil {
+		fmt.Println(err, config)
 	}
 	// files, err2 := utils.FindFiles(utils.FindFilesParams{Path: "README.md", PathPatterns: []string{"a", "b", "^[Rr]"}, FileMagics: []string{".*a", "a", "(.*)a"}})
 	// if err2 != nil {
@@ -88,20 +89,19 @@ func Yo(pipelineconfigFile string, paths []string) {
 	jobs := make(chan int, numJobs)
 	results := make(chan int, 10)
 
+	for w := 1; w <= 3; w++ {
+		go worker(w, jobs, results)
+	}
 
-    for w := 1; w <= 3; w++ {
-        go worker(w, jobs, results)
-    }
-
-	for j := 1; j <= 10 ; j++ {
+	for j := 1; j <= 10; j++ {
 		fmt.Println("Push job", j)
-        jobs <- j
-    }
+		jobs <- j
+	}
 	// close(jobs)
 
 	for a := 1; a <= 10; a++ {
-        <-results
-    }
+		<-results
+	}
 
 	// totalWorker := 5
 	// wp := NewWorkerPool(totalWorker)

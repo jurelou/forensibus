@@ -1,7 +1,7 @@
 package utils
 
 import (
-	_"fmt"
+	_ "fmt"
 	"strings"
 	"testing"
 )
@@ -78,7 +78,6 @@ func TestFindFilesInvalidRegex(t *testing.T) {
 		t.Errorf("Invalid files count found")
 	}
 }
-
 
 func TestFindFilesFromFolderWithFiletype(t *testing.T) {
 	files, err := FindFiles(FindFilesParams{Path: "../", FileFormats: []string{"application/x-tar", "application/gzip"}})
