@@ -4,31 +4,32 @@ import (
 	"log"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"github.com/jurelou/forensibus/utils"
 )
 
-func RegisterLogger() error {
-	zLogger, err := configureLogger()
+func GetLogger() (*zap.SugaredLogger, error) {
+	var sugarLogger *zap.SugaredLogger
+
+	logger, err := configureLogger()
 	if err != nil {
 		log.Println("Could not configure logger")
-		return err
+		return sugarLogger, err
 	}
-	defer zLogger.Sync()
-	zSugarlog := zLogger.Sugar()
-	utils.SetLogger(zSugarlog)
-	return nil
+	defer logger.Sync()
+	sugarLogger = logger.Sugar()
+	return sugarLogger, nil
 }
 
 func configureLogger() (zap.Logger, error) {
-
 	//standard configuration
-	cfg := zap.NewDevelopmentConfig()
+	cfg := zap.NewProductionConfig()
+	cfg.Level = zap.NewAtomicLevelAt(zapcore.DebugLevel)
+	cfg.Encoding = "console"
 	cfg.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
+	cfg.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	cfg.OutputPaths = []string{"forensibus.log", "stdout"}
 	// cfg.ErrorOutputPaths = []string{"forensibus.log", "stderr"}
 
-	zLogger, err := cfg.Build()
-	if err != nil {
+	zLogger, err := cfg.Build(); if err != nil {
 		return *zLogger, err
 	}
 	return *zLogger, nil

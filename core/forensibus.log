@@ -1,110 +1,235 @@
-2023-01-04T11:37:19.733-0800	[34mINFO[0m	utils/zap_logger.go:19	
-2023-01-04T11:37:19.735-0800	[34mINFO[0m	core/processors_test.go:14	salut
-2023-01-04T11:37:19.735-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
-2023-01-04T11:37:19.735-0800	[31mERROR[0m	core/processors_test.go:16	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:16
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
-2023-01-04T11:37:19.735-0800	[33mWARN[0m	core/processors_test.go:17	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:17
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
-2023-01-04T11:38:23.778-0800	[34mINFO[0m	utils/zap_logger.go:19	
-2023-01-04T11:38:23.781-0800	[34mINFO[0m	core/processors_test.go:14	salut
-2023-01-04T11:38:23.781-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
-2023-01-04T11:38:23.781-0800	[31mERROR[0m	core/processors_test.go:16	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:16
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
-2023-01-04T11:38:23.781-0800	[33mWARN[0m	core/processors_test.go:17	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:17
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
-2023-01-04T11:38:27.622-0800	[34mINFO[0m	utils/zap_logger.go:19	
-2023-01-04T11:38:27.624-0800	[34mINFO[0m	core/processors_test.go:14	salut
-2023-01-04T11:38:27.624-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
-2023-01-04T11:38:27.624-0800	[31mERROR[0m	core/processors_test.go:16	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:16
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
-2023-01-04T11:38:27.624-0800	[33mWARN[0m	core/processors_test.go:17	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:17
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
-2023-01-04T11:38:42.500-0800	[34mINFO[0m	utils/zap_logger.go:19	
-2023-01-04T11:38:42.503-0800	[34mINFO[0m	core/processors_test.go:14	salut
-2023-01-04T11:38:42.503-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
-2023-01-04T11:38:42.503-0800	[33mWARN[0m	core/processors_test.go:17	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:17
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
-2023-01-04T11:38:47.425-0800	[34mINFO[0m	utils/zap_logger.go:19	
-2023-01-04T11:38:47.427-0800	[34mINFO[0m	core/processors_test.go:14	salut
-2023-01-04T11:38:47.427-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
-2023-01-04T11:39:02.053-0800	[34mINFO[0m	core/processors_test.go:14	salut
-2023-01-04T11:39:02.053-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
-2023-01-04T11:39:29.590-0800	[34mINFO[0m	core/processors_test.go:14	salut
-2023-01-04T11:39:29.590-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
-2023-01-04T11:39:34.040-0800	[34mINFO[0m	core/processors_test.go:14	salut
-2023-01-04T11:39:34.041-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
-2023-01-04T11:39:34.041-0800	[31mERROR[0m	core/processors_test.go:16	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:16
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
-2023-01-04T11:39:45.491-0800	[34mINFO[0m	core/processors_test.go:14	salut
-2023-01-04T11:39:45.491-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
-2023-01-04T11:39:45.491-0800	[31mERROR[0m	core/processors_test.go:16	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:16
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
-2023-01-04T11:39:48.665-0800	[34mINFO[0m	core/processors_test.go:14	salut
-2023-01-04T11:39:48.666-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
-2023-01-04T11:39:48.666-0800	[31mERROR[0m	core/processors_test.go:16	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:16
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
-2023-01-04T11:40:48.449-0800	[34mINFO[0m	core/processors_test.go:14	salut
-2023-01-04T11:40:48.449-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
-2023-01-04T11:40:48.449-0800	[31mERROR[0m	core/processors_test.go:16	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:16
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
-2023-01-04T11:41:43.506-0800	[34mINFO[0m	core/processors_test.go:14	salut
-2023-01-04T11:41:43.506-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
-2023-01-04T11:41:43.506-0800	[31mERROR[0m	core/processors_test.go:16	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:16
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
-2023-01-04T11:41:45.466-0800	[34mINFO[0m	core/processors_test.go:14	salut
-2023-01-04T11:41:45.466-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
-2023-01-04T11:41:45.466-0800	[31mERROR[0m	core/processors_test.go:16	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:16
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
-2023-01-04T11:42:05.862-0800	[34mINFO[0m	core/processors_test.go:14	salut
-2023-01-04T11:42:05.862-0800	[35mDEBUG[0m	core/processors_test.go:15	salut
-2023-01-04T11:42:05.862-0800	[31mERROR[0m	core/processors_test.go:16	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:16
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
-2023-01-04T11:43:33.829-0800	[34mINFO[0m	core/processors_test.go:16	salut
-2023-01-04T11:43:33.829-0800	[35mDEBUG[0m	core/processors_test.go:17	salut
-2023-01-04T11:43:33.829-0800	[31mERROR[0m	core/processors_test.go:18	salut
-command-line-arguments.TestXxssx
-	/home/ljk/forensibus/core/processors_test.go:18
-testing.tRunner
-	/usr/local/go/src/testing/testing.go:1446
+2023-01-04T12:06:12.639-0800	[31mFATAL[0m	processors/manager.go:25	Registered new processor:
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:25
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+2023-01-04T12:06:39.589-0800	[31mFATAL[0m	processors/manager.go:25	Registered new processor:
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:25
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+2023-01-04T12:08:17.066-0800	[31mFATAL[0m	processors/manager.go:25	Registered new processor:
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:25
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+2023-01-04T12:09:22.940-0800	[31mFATAL[0m	processors/manager.go:25	Registered new processor:
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:25
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+2023-01-04T12:09:39.909-0800	[31mFATAL[0m	processors/manager.go:25	Registered new processor:
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:25
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+2023-01-04T12:09:46.334-0800	[34mINFO[0m	processors/manager.go:25	Registered new processor:
+2023-01-04T12:09:46.335-0800	[31mFATAL[0m	processors/manager.go:26	Registered new processor:
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:26
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+2023-01-04T12:10:01.837-0800	[34mINFO[0m	processors/manager.go:25	Registered new processor:salut
+2023-01-04T12:10:01.837-0800	[31mFATAL[0m	processors/manager.go:26	Registered new processor:
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:26
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+2023-01-04T12:10:08.406-0800	[34mINFO[0m	processors/manager.go:25	Registered new processor:%!(EXTRA string=salut)
+2023-01-04T12:10:08.406-0800	[31mFATAL[0m	processors/manager.go:26	Registered new processor:
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:26
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+2023-01-04T12:10:35.753-0800	[34mINFO[0m	processors/manager.go:25	Registered new processor: salut
+2023-01-04T12:10:35.753-0800	[31mFATAL[0m	processors/manager.go:26	Registered new processor:
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:26
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+2023-01-04T12:15:18.986-0800	[34mINFO[0m	processors/manager.go:25	Registered new processor: salut
+2023-01-04T12:15:25.388-0800	[34mINFO[0m	processors/manager.go:25	Registered new processor: salut
+2023-01-04T12:15:25.388-0800	[34mINFO[0m	processors/manager.go:26	Registered new processor: %ssalut
+2023-01-04T12:15:32.772-0800	[34mINFO[0m	processors/manager.go:25	Registered new processor: salut
+2023-01-04T12:15:32.772-0800	[34mINFO[0m	processors/manager.go:26	Registered new processor:salut
+2023-01-04T12:15:37.422-0800	[34mINFO[0m	processors/manager.go:25	Registered new processor: salut
+2023-01-04T12:15:37.423-0800	[34mINFO[0m	processors/manager.go:26	Registered new processor: salut
+2023-01-04T12:17:32.145-0800	[33mWARN[0m	processors/manager.go:25	Registered new processor: salut
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:25
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+2023-01-04T12:17:38.741-0800	[31mERROR[0m	processors/manager.go:25	Registered new processor: salut
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:25
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+2023-01-04T12:17:49.333-0800	[33mWARN[0m	processors/manager.go:25	Registered new processor: salut
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:25
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+2023-01-04T12:18:00.203-0800	[33mWARN[0m	processors/manager.go:25	Registered new processor: salut
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:25
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+2023-01-04T12:18:00.203-0800	[34mINFO[0m	processors/manager.go:26	Registered new processor: salut
+{"level":"\u001b[33mWARN\u001b[0m","ts":1672863659.3290448,"caller":"processors/manager.go:25","msg":"Registered new processor: salut"}
+{"level":"\u001b[34mINFO\u001b[0m","ts":1672863659.329105,"caller":"processors/manager.go:26","msg":"Registered new processor: salut"}
+1.67286370158605e+09	[33mWARN[0m	processors/manager.go:25	Registered new processor: salut
+1.6728637015861266e+09	[34mINFO[0m	processors/manager.go:26	Registered new processor: salut
+1.6728637107449684e+09	[33mWARN[0m	processors/manager.go:25	Registered new processor: salut
+1.6728637107450225e+09	[34mINFO[0m	processors/manager.go:26	Registered new processor: salut
+1.672863710745042e+09	[31mERROR[0m	processors/manager.go:27	Registered new processor: salut
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:27
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+1.6728637162693083e+09	[33mWARN[0m	processors/manager.go:25	Registered new processor: salut
+1.672863716269371e+09	[31mERROR[0m	processors/manager.go:26	Registered new processor: salut
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:26
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+1.6728637162694018e+09	[34mINFO[0m	processors/manager.go:27	Registered new processor: salut
+2023-01-04T12:23:45.168-0800	[33mWARN[0m	processors/manager.go:25	Registered new processor: salut
+2023-01-04T12:23:45.168-0800	[31mERROR[0m	processors/manager.go:26	Registered new processor: salut
+github.com/jurelou/forensibus/utils/processors.Register
+	/home/ljk/forensibus/utils/processors/manager.go:26
+github.com/jurelou/forensibus/processors/windows.init.0
+	/home/ljk/forensibus/processors/windows/yo.go:26
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6329
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.doInit
+	/usr/local/go/src/runtime/proc.go:6306
+runtime.main
+	/usr/local/go/src/runtime/proc.go:233
+2023-01-04T12:23:45.168-0800	[34mINFO[0m	processors/manager.go:27	Registered new processor: salut
+2023-01-04T12:24:40.285-0800	[33mWARN[0m	processors/manager.go:25	Component: salut has already been added to the registry
+2023-01-04T12:24:40.285-0800	[33mWARN[0m	processors/manager.go:27	Registered new processor: salut
+2023-01-04T12:24:50.529-0800	[34mINFO[0m	processors/manager.go:25	Registered new processor: salut
+2023-01-04T12:27:33.663-0800	[34mINFO[0m	processors/manager.go:25	Registered new processor: salut
+2023-01-04T12:27:45.112-0800	[35mDEBUG[0m	processors/manager.go:25	Registered new processor: salut

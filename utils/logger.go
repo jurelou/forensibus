@@ -1,5 +1,7 @@
 package utils
-// Log is a package level variable, every program should access logging function through "Log"
+
+import "github.com/jurelou/forensibus/utils/zap_logger"
+
 var Log Logger
 
 // Logger represent common interface for logging function
@@ -14,7 +16,9 @@ type Logger interface {
 	Debug(args ...interface{})
 }
 
-// SetLogger is the setter for log variable, it should be the only way to assign value to log
-func SetLogger(newLogger Logger) {
-	Log = newLogger
+func init() {
+	var err error
+	Log, err = zap_logger.GetLogger(); if err != nil {
+		panic("Could not create a logger !")
+	}
 }

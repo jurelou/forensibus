@@ -1,9 +1,7 @@
 package processors
 
 import (
-	"fmt"
-	"log"
-
+	"github.com/jurelou/forensibus/utils"
 )
 
 var (
@@ -11,7 +9,6 @@ var (
 )
 
 func Toto() {
-	fmt.Println("salut")
 }
 
 // Register is called by the `init` function of every `Component` to add
@@ -22,9 +19,9 @@ func Register(procName string, proc Processor) {
 
 	// check for name collision before adding
 	if _, ok := Registry[procName]; ok {
-		log.Fatalf("Component: %s has already been added to the registry", procName)
+		utils.Log.Warnf("Component: %s has already been added to the registry", procName)
 	}
 	Registry[procName] = proc
-	fmt.Println("Registered new processor:", procName)
+	utils.Log.Debugf("Registered new processor: %s", procName)
 
 }
