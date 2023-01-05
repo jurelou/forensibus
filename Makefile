@@ -1,5 +1,10 @@
 PACKAGES = cmd core processors utils worker
 
+all:
+	@mkdir -p bin
+	GOOS=windows GOARCH=amd64 go build -o bin/forensibus_x64.exe main.go
+	CGO_ENABLED=0 go build -ldflags="-extldflags=-static" -o bin/forensibus main.go
+	sudo chroot . ./bin/forensibus
 
 format:
 	go mod tidy

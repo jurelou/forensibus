@@ -2,7 +2,7 @@ package windows
 
 import (
 	"fmt"
-	_"github.com/jurelou/forensibus/utils/processors"
+	_ "github.com/jurelou/forensibus/utils/processors"
 )
 
 type Component1 struct {

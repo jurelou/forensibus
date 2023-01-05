@@ -6,7 +6,7 @@ import (
 )
 
 func TestXxssx(t *testing.T) {
-	TotoAa()
+	// TotoAa()
 	fmt.Println("a")
 	// utils.Log.Warnf("salut")
 

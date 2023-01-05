@@ -5,7 +5,7 @@
 - grpc-plugin
 - utils/filesystem: add some file types to the filetype lib. (evtx, registry, text ...)
 - cli: convert relative filepath to absolute filepath
-
+- Add a --force flag to the run command, force exec even if some errors appear (some workers are unavailable, ....)
 # Mettre à jour le protocol (protobuf)
 
 ```

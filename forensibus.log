@@ -127,3 +127,187 @@
 2023-01-05T10:58:58.033-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
 2023-01-05T10:58:58.034-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
 2023-01-05T10:58:58.034-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T11:04:37.589-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:04:44.074-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T19:18:23.001Z	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T19:19:11.376Z	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:19:33.088-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:19:34.501-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:19:39.157-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:19:40.264-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:19:43.225-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:19:43.225-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T11:19:43.226-0800	[31mFATAL[0m	core/main.go:34	could not ping worker @localhost:50051: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp 127.0.0.1:50051: connect: connection refused"
+github.com/jurelou/forensibus/core.Run
+	/home/ljk/forensibus/core/main.go:34
+github.com/jurelou/forensibus/cmd.glob..func2
+	/home/ljk/forensibus/cmd/run.go:44
+github.com/spf13/cobra.(*Command).execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:916
+github.com/spf13/cobra.(*Command).ExecuteC
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:1044
+github.com/spf13/cobra.(*Command).Execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:968
+github.com/jurelou/forensibus/cmd.Execute
+	/home/ljk/forensibus/cmd/root.go:30
+main.main
+	/home/ljk/forensibus/main.go:11
+runtime.main
+	/usr/local/go/src/runtime/proc.go:250
+2023-01-05T11:19:54.565-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:19:54.565-0800	[34mINFO[0m	worker/main.go:28	Configured processor evtx
+2023-01-05T11:19:54.565-0800	[34mINFO[0m	worker/main.go:42	Worker listening at [::]:50051
+2023-01-05T11:19:56.003-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:19:56.003-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T11:19:56.004-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:19:56.005-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T11:19:56.005-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T11:19:56.005-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T11:21:36.341-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:21:36.341-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T11:21:36.342-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:21:36.343-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T11:21:36.343-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T11:21:36.343-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T11:21:45.640-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:21:45.640-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T11:21:45.641-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:21:45.641-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T11:21:45.642-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T11:21:45.642-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T11:21:51.226-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:21:51.226-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T11:21:51.227-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:21:51.227-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T11:21:51.228-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T11:21:51.228-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T11:21:53.696-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:21:53.697-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T11:21:53.698-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:21:53.698-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T11:21:53.699-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T11:21:53.699-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T11:21:54.312-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:21:54.312-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T11:21:54.313-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:21:54.313-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T11:21:54.314-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T11:21:54.314-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T11:21:54.934-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:21:54.934-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T11:21:54.935-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:21:54.936-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T11:21:54.936-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T11:21:54.936-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T11:22:00.550-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:22:00.550-0800	[34mINFO[0m	core/main.go:22	Starting client
+2023-01-05T11:22:00.551-0800	[34mINFO[0m	core/main.go:31	>>>%!(EXTRA *reflect.rtype=*proto.workerClient)
+2023-01-05T11:22:00.552-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:22:00.552-0800	[34mINFO[0m	core/main.go:39	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T11:22:00.552-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T11:22:00.552-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T11:22:20.756-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:22:20.756-0800	[34mINFO[0m	core/main.go:22	Starting client
+2023-01-05T11:22:20.756-0800	[34mINFO[0m	core/main.go:31	*proto.workerClient
+2023-01-05T11:22:20.757-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:22:20.757-0800	[34mINFO[0m	core/main.go:39	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T11:22:20.758-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T11:22:20.758-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T11:22:46.282-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:22:46.282-0800	[34mINFO[0m	core/main.go:23	Starting client
+2023-01-05T11:22:46.282-0800	[34mINFO[0m	core/main.go:32	*proto.workerClient
+2023-01-05T11:22:46.283-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:22:46.284-0800	[34mINFO[0m	core/main.go:40	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T11:22:46.284-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T11:22:46.284-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T11:27:50.975-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:27:50.975-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:27:50.976-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:27:50.977-0800	[34mINFO[0m	core/main.go:34	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T11:27:53.375-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:27:53.375-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:27:53.378-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:27:53.378-0800	[34mINFO[0m	core/main.go:34	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T11:27:55.797-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:27:55.797-0800	[34mINFO[0m	worker/main.go:28	Configured processor evtx
+2023-01-05T11:27:55.797-0800	[34mINFO[0m	worker/main.go:42	Worker listening at [::]:50051
+2023-01-05T11:27:57.456-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:27:57.456-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:27:57.458-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:27:57.458-0800	[34mINFO[0m	core/main.go:34	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T11:28:07.729-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:28:07.729-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:28:07.731-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:28:07.731-0800	[34mINFO[0m	core/main.go:34	Worker @localhost:50051 is up! (message:"Hello localhost") 
+2023-01-05T11:28:35.120-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:28:35.120-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:28:35.121-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:28:35.122-0800	[34mINFO[0m	core/main.go:34	Worker @localhost:50051 is up! (message:"Hello localhost") 
+2023-01-05T11:30:32.225-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:30:32.225-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:30:32.225-0800	[31mFATAL[0m	core/main.go:41	oops%!(EXTRA hcl.Diagnostics=<nil>: Failed to read configuration; Can't read proto: read proto: is a directory.)
+github.com/jurelou/forensibus/core.Run
+	/home/ljk/forensibus/core/main.go:41
+github.com/jurelou/forensibus/cmd.glob..func2
+	/home/ljk/forensibus/cmd/run.go:44
+github.com/spf13/cobra.(*Command).execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:916
+github.com/spf13/cobra.(*Command).ExecuteC
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:1044
+github.com/spf13/cobra.(*Command).Execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:968
+github.com/jurelou/forensibus/cmd.Execute
+	/home/ljk/forensibus/cmd/root.go:30
+main.main
+	/home/ljk/forensibus/main.go:11
+runtime.main
+	/usr/local/go/src/runtime/proc.go:250
+2023-01-05T11:30:50.853-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:30:50.853-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:30:50.853-0800	[33mWARN[0m	core/main.go:41	oops%!(EXTRA hcl.Diagnostics=<nil>: Failed to read configuration; Can't read proto: read proto: is a directory.)
+2023-01-05T11:31:00.336-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:31:00.336-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:31:00.336-0800	[33mWARN[0m	core/main.go:41	oops%!(EXTRA string=<nil>: Failed to read configuration; Can't read proto: read proto: is a directory.)
+2023-01-05T11:37:24.054-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:37:24.054-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:37:24.054-0800	[33mWARN[0m	core/main.go:41	oops%!(EXTRA string=<nil>: Failed to read configuration; Can't read proto: read proto: is a directory.)
+2023-01-05T11:37:41.430-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:37:41.430-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:37:41.430-0800	[33mWARN[0m	core/main.go:41	Error while opening pipeline configuration file: <nil>: Failed to read configuration; Can't read proto: read proto: is a directory.
+2023-01-05T11:38:12.777-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:38:12.778-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:38:12.778-0800	[33mWARN[0m	core/main.go:41	<nil>: Failed to read configuration; Can't read proto: read proto: is a directory.
+2023-01-05T11:38:52.365-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:38:52.365-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:38:52.365-0800	[33mWARN[0m	core/main.go:41	<nil>: Failed to read configuration; Can't read proto: read proto: is a directory.
+2023-01-05T11:39:26.842-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:39:26.842-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:39:26.843-0800	[33mWARN[0m	core/main.go:41	./pipelines/dfir-orc.hcl:5,27-27: Missing required argument; The argument "toto" is required, but no definition was found.
+2023-01-05T11:39:51.143-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:39:51.144-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:39:51.144-0800	[31mFATAL[0m	core/main.go:44	ok%!(EXTRA core.Config={[virus avproof] /tmp/forensibus {mypipeline4orc [{DFIR-ORC archives [Collect_.*.7z$ DFIR-.*.7z$] [] [{evtx archives [Evtx.7z$ Events.7z$] [] [] [{evtx files [] [application/evtx] [] [] [{evtxdump map[]}]}] [{hayabusa map[rules_folder:/tmp/myrules]}]} {artifacts archive [Artifacts.7z] [] [] [{files matching lnk [.*.lnk$] [] [] [] [{lnk map[]}]}] [{yara map[rules_path:/tmp/myrules]}]}] [] []}] [] [{something map[abc:def]}]} {splunk localhost:9997 xx yy}})
+github.com/jurelou/forensibus/core.Run
+	/home/ljk/forensibus/core/main.go:44
+github.com/jurelou/forensibus/cmd.glob..func2
+	/home/ljk/forensibus/cmd/run.go:44
+github.com/spf13/cobra.(*Command).execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:916
+github.com/spf13/cobra.(*Command).ExecuteC
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:1044
+github.com/spf13/cobra.(*Command).Execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:968
+github.com/jurelou/forensibus/cmd.Execute
+	/home/ljk/forensibus/cmd/root.go:30
+main.main
+	/home/ljk/forensibus/main.go:11
+runtime.main
+	/usr/local/go/src/runtime/proc.go:250
+2023-01-05T11:41:38.617-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:41:38.617-0800	[34mINFO[0m	core/main.go:39	Starting client
+2023-01-05T11:41:38.619-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:41:38.619-0800	[34mINFO[0m	core/main.go:34	Worker @localhost:50051 is up! (message:"Hello localhost") 
+2023-01-05T11:44:37.447-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T11:44:37.447-0800	[34mINFO[0m	core/main.go:43	Starting client
+2023-01-05T11:44:37.449-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T11:44:37.449-0800	[34mINFO[0m	core/main.go:34	Worker @localhost:50051 is up! (message:"Hello localhost") 
+2023-01-05T11:44:37.450-0800	[34mINFO[0m	core/main.go:39	%!w(core.Config={[virus avproof] /tmp/forensibus {mypipeline4orc [{DFIR-ORC archives [Collect_.*.7z$ DFIR-.*.7z$] [] [{evtx archives [Evtx.7z$ Events.7z$] [] [] [{evtx files [] [application/evtx] [] [] [{evtxdump map[]}]}] [{hayabusa map[rules_folder:/tmp/myrules]}]} {artifacts archive [Artifacts.7z] [] [] [{files matching lnk [.*.lnk$] [] [] [] [{lnk map[]}]}] [{yara map[rules_path:/tmp/myrules]}]}] [] []}] [] [{something map[abc:def]}]} {splunk localhost:9997 xx yy}})

@@ -1,9 +1,7 @@
 package core
 
 import (
-	_ "fmt"
 	"github.com/hashicorp/hcl/v2/hclsimple"
-	_ "log"
 )
 
 type Config struct {
@@ -15,7 +13,6 @@ type Config struct {
 
 type PipelineConfig struct {
 	Name string `hcl:"name,label"`
-	Toto string `hcl:"toto"`
 
 	Extracts  []ExtractConfig `hcl:"extract,block"`
 	Finds     []FindConfig    `hcl:"find,block"`

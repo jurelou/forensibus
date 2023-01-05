@@ -3,8 +3,8 @@ package worker
 import (
 	"context"
 
-	"github.com/jurelou/forensibus/utils"
 	"github.com/jurelou/forensibus/proto"
+	"github.com/jurelou/forensibus/utils"
 )
 
 func (s *Server) Ping(ctx context.Context, in *proto.PingRequest) (*proto.PingResponse, error) {

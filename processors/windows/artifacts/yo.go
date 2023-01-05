@@ -8,6 +8,7 @@ import (
 type EvtxProcessor struct {
 	Input string `yaml:"input"`
 }
+
 func (p EvtxProcessor) Configure() error {
 	return nil
 }
