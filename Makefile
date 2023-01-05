@@ -19,8 +19,6 @@ test:
 	@go tool cover -func=coverage.out
 
 proto:
-	go install github.com/golang/protobuf/protoc-gen-go
-	protoc  --proto_path proto --go_out=plugins=grpc:proto/ proto/kv.proto
-
+	protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/worker.proto
 
 .PHONY: proto

@@ -1,3 +1,2 @@
-2023-01-04T11:47:03.919-0800	[34mINFO[0m	worker/main.go:14	Salut
-2023-01-04T12:09:00.183-0800	[34mINFO[0m	worker/main.go:12	Salut
-2023-01-04T12:09:03.543-0800	[34mINFO[0m	worker/main.go:12	Salut
+2023-01-05T08:56:31.742-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T08:56:31.742-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
