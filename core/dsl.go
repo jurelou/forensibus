@@ -34,6 +34,9 @@ type FindConfig struct {
 	Patterns  []string `hcl:"patterns"`
 	MimeTypes []string `hcl:"mime_types,optional"`
 
+	// FileAllowed bool `hcl:"file_allowed,optional"`
+	// DirAllowed bool `hcl:"file_allowed,optional"`
+
 	Extracts  []ExtractConfig `hcl:"extract,block"`
 	Finds     []FindConfig    `hcl:"find,block"`
 	Processes []ProcessConfig `hcl:"process,block"`

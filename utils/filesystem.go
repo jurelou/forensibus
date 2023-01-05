@@ -12,7 +12,9 @@ import (
 )
 
 type FindFilesParams struct {
-	Path         string
+	Path string
+	// Recurse			bool
+	// Type		string
 	PathPatterns []string
 	FileFormats  []string
 }
@@ -20,30 +22,31 @@ type FindFilesParams struct {
 func FindFiles(params FindFilesParams) ([]string, error) {
 	var pathRegexes []*regexp.Regexp
 	var files []string
+	var latestError error = nil
 
 	checkFileFormat := (len(params.FileFormats) != 0)
 	fileHead := make([]byte, 261)
 
-	addFile := func(filePath string) {
+	addPath := func(filePath string) error {
 		// No conditions provided, add the current file
 
 		if len(pathRegexes) == 0 && !checkFileFormat {
 			files = append(files, filePath)
-			return
+			return nil
 		}
 
 		// Check if file matches the given mime types
 		if checkFileFormat {
 			file, err := os.Open(filePath)
 			if err != nil {
-				return
+				return err
 			}
 			defer file.Close()
 			file.Read(fileHead)
 			for _, mime := range params.FileFormats {
 				if filetype.IsMIME(fileHead, mime) {
 					files = append(files, filePath)
-					return
+					return nil
 				}
 			}
 		}
@@ -52,9 +55,10 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 		for _, rex := range pathRegexes {
 			if rex.MatchString(filePath) {
 				files = append(files, filePath)
-				return
+				return nil
 			}
 		}
+		return nil
 	}
 
 	// Compile file paths patterns
@@ -78,13 +82,13 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 			if info.IsDir() {
 				return nil
 			}
-			addFile(path)
+			latestError = addPath(path)
 			return nil
 		})
 	} else {
-		addFile(params.Path)
+		latestError = addPath(params.Path)
 	}
-	return files, nil
+	return files, latestError
 }
 
 func FileExists(path string) bool {
