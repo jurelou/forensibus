@@ -4,7 +4,7 @@ coverage.out
 **/forensibus.log
 
 # Binaries for programs and plugins
-*.exe
+# *.exe
 *.exe~
 *.dll
 *.so
