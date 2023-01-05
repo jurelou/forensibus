@@ -1,7 +1,8 @@
 # forensibus
 
 # TODO
-
+- wrap errors properly
+- grpc-plugin
 - utils/filesystem: add some file types to the filetype lib. (evtx, registry, text ...)
 - cli: convert relative filepath to absolute filepath
 

@@ -22,8 +22,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type WorkerClient interface {
-	// Sends a ping
 	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error)
+	Work(ctx context.Context, in *WorkRequest, opts ...grpc.CallOption) (*WorkResponse, error)
 }
 
 type workerClient struct {
@@ -43,12 +43,21 @@ func (c *workerClient) Ping(ctx context.Context, in *PingRequest, opts ...grpc.C
 	return out, nil
 }
 
+func (c *workerClient) Work(ctx context.Context, in *WorkRequest, opts ...grpc.CallOption) (*WorkResponse, error) {
+	out := new(WorkResponse)
+	err := c.cc.Invoke(ctx, "/proto.Worker/Work", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WorkerServer is the server API for Worker service.
 // All implementations must embed UnimplementedWorkerServer
 // for forward compatibility
 type WorkerServer interface {
-	// Sends a ping
 	Ping(context.Context, *PingRequest) (*PingResponse, error)
+	Work(context.Context, *WorkRequest) (*WorkResponse, error)
 	mustEmbedUnimplementedWorkerServer()
 }
 
@@ -58,6 +67,9 @@ type UnimplementedWorkerServer struct {
 
 func (UnimplementedWorkerServer) Ping(context.Context, *PingRequest) (*PingResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedWorkerServer) Work(context.Context, *WorkRequest) (*WorkResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Work not implemented")
 }
 func (UnimplementedWorkerServer) mustEmbedUnimplementedWorkerServer() {}
 
@@ -90,6 +102,24 @@ func _Worker_Ping_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Worker_Work_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WorkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WorkerServer).Work(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Worker/Work",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WorkerServer).Work(ctx, req.(*WorkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Worker_ServiceDesc is the grpc.ServiceDesc for Worker service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -100,6 +130,10 @@ var Worker_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _Worker_Ping_Handler,
+		},
+		{
+			MethodName: "Work",
+			Handler:    _Worker_Work_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

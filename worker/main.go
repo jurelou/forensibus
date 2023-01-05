@@ -1,13 +1,15 @@
 package worker
 
 import (
-	"context"
+	_"context"
 	"fmt"
 	"net"
 	_ "time"
 
 	"github.com/jurelou/forensibus/proto"
 	"github.com/jurelou/forensibus/utils"
+	"github.com/jurelou/forensibus/utils/processors"
+
 	"google.golang.org/grpc"
 )
 
@@ -16,27 +18,33 @@ var (
 )
 
 // server is used to implement proto.WorkerServer.
-type server struct {
+type Server struct {
 	proto.UnimplementedWorkerServer
 }
 
-// Ping implements proto.WorkerServer
-func (s *server) Ping(ctx context.Context, in *proto.PingRequest) (*proto.PingResponse, error) {
-	utils.Log.Infof("Got a ping from %s", in.GetIdentifier())
-	// time.Sleep(2 * time.Second)
-	return &proto.PingResponse{Message: "Hello " + in.GetIdentifier()}, nil
+func loadProcessors() {
+	for procName, proc := range processors.Registry {
+		proc.Configure()
+		utils.Log.Infof("Configured processor %s", procName)
+	}
 }
 
-func Run() {
+func runGRPCServer() {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		utils.Log.Fatalf("failed to listen on port %d: %v", port, err)
 	}
 
+	loadProcessors()
+
 	s := grpc.NewServer()
-	proto.RegisterWorkerServer(s, &server{})
-	utils.Log.Infof("server listening at %v", lis.Addr())
+	proto.RegisterWorkerServer(s, &Server{})
+	utils.Log.Infof("Worker listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
 		utils.Log.Fatalf("failed to serve: %v", err)
 	}
+}
+
+func Run() {
+	runGRPCServer()
 }

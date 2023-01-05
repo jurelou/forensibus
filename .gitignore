@@ -1,6 +1,7 @@
 # Forensibus specific files
 coverage.out
 *.swp
+**/forensibus.log
 
 # Binaries for programs and plugins
 *.exe

@@ -1,218 +1,129 @@
-2023-01-05T08:56:31.742-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T08:56:31.742-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T08:57:26.405-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T08:57:26.406-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T08:57:28.782-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T08:57:28.782-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T08:58:54.970-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T08:58:54.970-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T08:58:54.970-0800	[34mINFO[0m	worker/main.go:8	Starting worker
-2023-01-05T08:59:07.870-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T08:59:07.870-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T08:59:07.870-0800	[34mINFO[0m	worker/main.go:8	Starting worker
-2023-01-05T09:00:58.202-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:00:58.202-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:00:58.203-0800	[34mINFO[0m	worker/main.go:16	Starting worker
-2023-01-05T09:01:50.717-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:01:50.717-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:01:50.718-0800	[34mINFO[0m	worker/main.go:16	Starting worker
-2023-01-05T09:01:50.718-0800	[31mFATAL[0m	worker/main.go:23	Could not create GRPC client:
-github.com/jurelou/forensibus/worker.Run
-	/home/ljk/forensibus/worker/main.go:23
-github.com/jurelou/forensibus/cmd.glob..func3
-	/home/ljk/forensibus/cmd/worker.go:23
-github.com/spf13/cobra.(*Command).execute
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:920
-github.com/spf13/cobra.(*Command).ExecuteC
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:1044
-github.com/spf13/cobra.(*Command).Execute
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:968
-github.com/jurelou/forensibus/cmd.Execute
-	/home/ljk/forensibus/cmd/root.go:30
-main.main
-	/home/ljk/forensibus/main.go:11
-runtime.main
-	/usr/local/go/src/runtime/proc.go:250
-2023-01-05T09:01:58.257-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:01:58.257-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:01:58.257-0800	[34mINFO[0m	worker/main.go:16	Starting worker
-2023-01-05T09:06:20.866-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:06:20.866-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:06:20.867-0800	[34mINFO[0m	worker/main.go:43	server listening at [::]:50051
-2023-01-05T09:06:42.274-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:06:42.274-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:06:47.587-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:06:47.588-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:06:55.486-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:06:55.486-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:06:58.416-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:06:58.416-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:07:02.106-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:07:02.106-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:08:32.862-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:08:32.862-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:08:32.862-0800	[34mINFO[0m	core/main.go:9	Salut
-2023-01-05T09:08:34.332-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:08:34.332-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:08:34.333-0800	[34mINFO[0m	core/main.go:9	Salut
-2023-01-05T09:08:43.590-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:08:43.590-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:08:43.590-0800	[34mINFO[0m	core/main.go:9	Salut./pipelines/dfir-orc.hcl[/tmp/]
-2023-01-05T09:09:10.162-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:09:10.162-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:09:10.163-0800	[34mINFO[0m	core/main.go:9	Salut./pipelines/dfir-orc.hcl[/tmp/]
-2023-01-05T09:12:10.176-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:12:10.176-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:12:10.176-0800	[34mINFO[0m	core/main.go:18	Starting client
-2023-01-05T09:13:28.784-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:13:28.784-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:13:28.784-0800	[34mINFO[0m	core/main.go:20	Starting client
-2023-01-05T09:13:28.785-0800	[31mFATAL[0m	core/main.go:35	could not greet: rpc error: code = Unimplemented desc = method SayHello not implemented
-github.com/jurelou/forensibus/core.Run
-	/home/ljk/forensibus/core/main.go:35
-github.com/jurelou/forensibus/cmd.glob..func2
-	/home/ljk/forensibus/cmd/run.go:44
-github.com/spf13/cobra.(*Command).execute
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:916
-github.com/spf13/cobra.(*Command).ExecuteC
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:1044
-github.com/spf13/cobra.(*Command).Execute
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:968
-github.com/jurelou/forensibus/cmd.Execute
-	/home/ljk/forensibus/cmd/root.go:30
-main.main
-	/home/ljk/forensibus/main.go:11
-runtime.main
-	/usr/local/go/src/runtime/proc.go:250
-2023-01-05T09:27:28.715-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:27:28.715-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:27:28.715-0800	[34mINFO[0m	worker/main.go:51	server listening at [::]:50051
-2023-01-05T09:27:31.692-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:27:31.692-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:27:31.692-0800	[34mINFO[0m	core/main.go:20	Starting client
-2023-01-05T09:27:31.694-0800	[34mINFO[0m	worker/main.go:38	GOT salut
-2023-01-05T09:27:31.694-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.HelloReply=message:"Hello salut")
-2023-01-05T09:27:38.266-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:27:38.266-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:27:38.266-0800	[34mINFO[0m	core/main.go:20	Starting client
-2023-01-05T09:27:38.268-0800	[34mINFO[0m	worker/main.go:38	GOT salut
-2023-01-05T09:27:38.268-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.HelloReply=message:"Hello salut")
-2023-01-05T09:27:40.031-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:27:40.031-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:27:40.031-0800	[34mINFO[0m	core/main.go:20	Starting client
-2023-01-05T09:27:40.032-0800	[34mINFO[0m	worker/main.go:38	GOT salut
-2023-01-05T09:27:40.033-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.HelloReply=message:"Hello salut")
-2023-01-05T09:31:58.081-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:31:58.081-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:31:58.081-0800	[34mINFO[0m	worker/main.go:51	server listening at [::]:50051
-2023-01-05T09:32:00.719-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:32:00.719-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:32:00.719-0800	[34mINFO[0m	core/main.go:20	Starting client
-2023-01-05T09:32:00.720-0800	[34mINFO[0m	worker/main.go:38	GOT salut
-2023-01-05T09:32:00.721-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.PingResponse=message:"Hello salut")
-2023-01-05T09:32:10.725-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:32:10.726-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:32:10.726-0800	[34mINFO[0m	worker/main.go:51	server listening at [::]:50051
-2023-01-05T09:32:12.449-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:32:12.449-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:32:12.450-0800	[34mINFO[0m	core/main.go:20	Starting client
-2023-01-05T09:32:12.451-0800	[34mINFO[0m	worker/main.go:38	GOT localhost
-2023-01-05T09:32:12.452-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.PingResponse=message:"Hello localhost")
-2023-01-05T09:32:26.127-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:32:26.127-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:32:26.127-0800	[34mINFO[0m	core/main.go:20	Starting client
-2023-01-05T09:32:26.128-0800	[34mINFO[0m	worker/main.go:38	GOT localhost
-2023-01-05T09:32:26.129-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.PingResponse=message:"Hello localhost")
-2023-01-05T09:32:27.664-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:32:27.664-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:32:27.664-0800	[34mINFO[0m	worker/main.go:51	server listening at [::]:50051
-2023-01-05T09:32:29.177-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:32:29.177-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:32:29.177-0800	[34mINFO[0m	core/main.go:20	Starting client
-2023-01-05T09:32:29.178-0800	[34mINFO[0m	worker/main.go:38	Got a ping from localhost
-2023-01-05T09:32:29.179-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.PingResponse=message:"Hello localhost")
-2023-01-05T09:32:56.345-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:32:56.345-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:32:56.346-0800	[34mINFO[0m	worker/main.go:52	server listening at [::]:50051
-2023-01-05T09:32:58.470-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:32:58.470-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:32:58.470-0800	[34mINFO[0m	core/main.go:20	Starting client
-2023-01-05T09:32:58.472-0800	[34mINFO[0m	worker/main.go:39	Got a ping from localhost
-2023-01-05T09:32:59.471-0800	[31mFATAL[0m	core/main.go:35	could not greet: rpc error: code = DeadlineExceeded desc = context deadline exceeded
-github.com/jurelou/forensibus/core.Run
-	/home/ljk/forensibus/core/main.go:35
-github.com/jurelou/forensibus/cmd.glob..func2
-	/home/ljk/forensibus/cmd/run.go:44
-github.com/spf13/cobra.(*Command).execute
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:916
-github.com/spf13/cobra.(*Command).ExecuteC
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:1044
-github.com/spf13/cobra.(*Command).Execute
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:968
-github.com/jurelou/forensibus/cmd.Execute
-	/home/ljk/forensibus/cmd/root.go:30
-main.main
-	/home/ljk/forensibus/main.go:11
-runtime.main
-	/usr/local/go/src/runtime/proc.go:250
-2023-01-05T09:33:47.625-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:33:47.625-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:33:47.625-0800	[34mINFO[0m	core/main.go:20	Starting client
-2023-01-05T09:33:47.627-0800	[34mINFO[0m	worker/main.go:39	Got a ping from localhost
-2023-01-05T09:33:48.627-0800	[31mERROR[0m	core/main.go:35	could not ping worker @localhost:50051: rpc error: code = DeadlineExceeded desc = context deadline exceeded
-github.com/jurelou/forensibus/core.Run
-	/home/ljk/forensibus/core/main.go:35
-github.com/jurelou/forensibus/cmd.glob..func2
-	/home/ljk/forensibus/cmd/run.go:44
-github.com/spf13/cobra.(*Command).execute
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:916
-github.com/spf13/cobra.(*Command).ExecuteC
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:1044
-github.com/spf13/cobra.(*Command).Execute
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:968
-github.com/jurelou/forensibus/cmd.Execute
-	/home/ljk/forensibus/cmd/root.go:30
-main.main
-	/home/ljk/forensibus/main.go:11
-runtime.main
-	/usr/local/go/src/runtime/proc.go:250
-2023-01-05T09:33:48.627-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.PingResponse=<nil>)
-2023-01-05T09:34:12.280-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:34:12.280-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:34:12.280-0800	[34mINFO[0m	core/main.go:20	Starting client
-2023-01-05T09:34:12.281-0800	[34mINFO[0m	worker/main.go:39	Got a ping from localhost
-2023-01-05T09:34:13.281-0800	[31mFATAL[0m	core/main.go:35	could not ping worker @localhost:50051: rpc error: code = DeadlineExceeded desc = context deadline exceeded
-github.com/jurelou/forensibus/core.Run
-	/home/ljk/forensibus/core/main.go:35
-github.com/jurelou/forensibus/cmd.glob..func2
-	/home/ljk/forensibus/cmd/run.go:44
-github.com/spf13/cobra.(*Command).execute
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:916
-github.com/spf13/cobra.(*Command).ExecuteC
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:1044
-github.com/spf13/cobra.(*Command).Execute
-	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:968
-github.com/jurelou/forensibus/cmd.Execute
-	/home/ljk/forensibus/cmd/root.go:30
-main.main
-	/home/ljk/forensibus/main.go:11
-runtime.main
-	/usr/local/go/src/runtime/proc.go:250
-2023-01-05T09:34:33.810-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:34:33.810-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:34:33.811-0800	[34mINFO[0m	worker/main.go:52	server listening at [::]:50051
-2023-01-05T09:34:35.390-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:34:35.390-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:34:35.390-0800	[34mINFO[0m	core/main.go:20	Starting client
-2023-01-05T09:34:35.391-0800	[34mINFO[0m	worker/main.go:39	Got a ping from localhost
-2023-01-05T09:34:35.392-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.PingResponse=message:"Hello localhost")
-2023-01-05T09:35:03.383-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:35:03.383-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:35:03.383-0800	[34mINFO[0m	core/main.go:20	Starting client
-2023-01-05T09:35:03.384-0800	[34mINFO[0m	worker/main.go:39	Got a ping from localhost
-2023-01-05T09:35:03.385-0800	[34mINFO[0m	core/main.go:37	Worker @localhost:50051 is up!%!(EXTRA *proto.PingResponse=message:"Hello localhost")
-2023-01-05T09:35:18.820-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
-2023-01-05T09:35:18.820-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
-2023-01-05T09:35:18.821-0800	[34mINFO[0m	core/main.go:20	Starting client
-2023-01-05T09:35:18.822-0800	[34mINFO[0m	worker/main.go:39	Got a ping from localhost
-2023-01-05T09:35:18.822-0800	[34mINFO[0m	core/main.go:37	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:52:31.736-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:52:31.737-0800	[34mINFO[0m	worker/main.go:28	Configured processor evtx
+2023-01-05T10:52:31.737-0800	[34mINFO[0m	worker/main.go:42	Worker listening at [::]:50051
+2023-01-05T10:52:33.357-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:52:33.357-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:52:33.359-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:52:33.359-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:52:33.360-0800	[34mINFO[0m	worker/work.go:15	Got a task (evtx): src
+2023-01-05T10:52:33.360-0800	[34mINFO[0m	worker/work.go:21	{} <nil>
+2023-01-05T10:52:35.223-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:52:35.223-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:52:35.224-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:52:35.225-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:52:35.225-0800	[34mINFO[0m	worker/work.go:15	Got a task (evtx): src
+2023-01-05T10:52:35.225-0800	[34mINFO[0m	worker/work.go:21	{} <nil>
+2023-01-05T10:52:36.057-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:52:36.057-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:52:36.058-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:52:36.059-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:52:36.059-0800	[34mINFO[0m	worker/work.go:15	Got a task (evtx): src
+2023-01-05T10:52:36.059-0800	[34mINFO[0m	worker/work.go:21	{} <nil>
+2023-01-05T10:56:25.628-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:56:25.628-0800	[34mINFO[0m	worker/main.go:28	Configured processor evtx
+2023-01-05T10:56:25.628-0800	[34mINFO[0m	worker/main.go:42	Worker listening at [::]:50051
+2023-01-05T10:56:27.564-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:56:27.564-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:56:27.566-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:56:27.566-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:56:27.567-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T10:56:44.251-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:56:44.251-0800	[34mINFO[0m	worker/main.go:28	Configured processor evtx
+2023-01-05T10:56:44.251-0800	[34mINFO[0m	worker/main.go:42	Worker listening at [::]:50051
+2023-01-05T10:56:46.267-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:56:46.267-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:56:46.268-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:56:46.269-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:56:46.269-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T10:56:48.360-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:56:48.361-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:56:48.362-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:56:48.362-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:56:48.363-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T10:57:11.578-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:57:11.579-0800	[34mINFO[0m	worker/main.go:28	Configured processor evtx
+2023-01-05T10:57:11.579-0800	[34mINFO[0m	worker/main.go:42	Worker listening at [::]:50051
+2023-01-05T10:57:13.509-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:57:13.509-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:57:13.511-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:57:13.511-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:57:13.512-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T10:57:13.512-0800	[34mINFO[0m	artifacts/yo.go:17	salut
+2023-01-05T10:57:27.416-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:57:27.417-0800	[34mINFO[0m	worker/main.go:28	Configured processor evtx
+2023-01-05T10:57:27.417-0800	[34mINFO[0m	worker/main.go:42	Worker listening at [::]:50051
+2023-01-05T10:57:28.938-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:57:28.938-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:57:28.939-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:57:28.940-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:57:28.940-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T10:57:28.941-0800	[34mINFO[0m	artifacts/yo.go:16	salut%!(EXTRA string=src)
+2023-01-05T10:57:46.565-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:57:46.565-0800	[34mINFO[0m	worker/main.go:28	Configured processor evtx
+2023-01-05T10:57:46.565-0800	[34mINFO[0m	worker/main.go:42	Worker listening at [::]:50051
+2023-01-05T10:57:48.064-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:57:48.064-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:57:48.066-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:57:48.066-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:57:48.066-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T10:57:48.066-0800	[35mDEBUG[0m	artifacts/yo.go:16	Run evtx processor against src
+2023-01-05T10:58:06.011-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:58:06.012-0800	[34mINFO[0m	worker/main.go:28	Configured processor evtx
+2023-01-05T10:58:06.012-0800	[34mINFO[0m	worker/main.go:42	Worker listening at [::]:50051
+2023-01-05T10:58:07.674-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:58:07.674-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:58:07.676-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:58:07.676-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:58:07.676-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T10:58:07.677-0800	[35mDEBUG[0m	artifacts/yo.go:16	Run evtx processor against `src`
+2023-01-05T10:58:32.989-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:58:32.990-0800	[34mINFO[0m	worker/main.go:28	Configured processor evtx
+2023-01-05T10:58:32.990-0800	[34mINFO[0m	worker/main.go:42	Worker listening at [::]:50051
+2023-01-05T10:58:42.492-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:58:42.492-0800	[34mINFO[0m	worker/main.go:28	Configured processor evtx
+2023-01-05T10:58:42.492-0800	[34mINFO[0m	worker/main.go:42	Worker listening at [::]:50051
+2023-01-05T10:58:52.402-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:58:52.403-0800	[34mINFO[0m	worker/main.go:28	Configured processor evtx
+2023-01-05T10:58:52.403-0800	[34mINFO[0m	worker/main.go:42	Worker listening at [::]:50051
+2023-01-05T10:58:54.412-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:58:54.412-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:58:54.414-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:58:54.414-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:58:54.414-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T10:58:54.415-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T10:58:55.738-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:58:55.738-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:58:55.739-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:58:55.740-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:58:55.740-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T10:58:55.740-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T10:58:56.281-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:58:56.281-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:58:56.282-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:58:56.282-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:58:56.283-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T10:58:56.283-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T10:58:56.761-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:58:56.761-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:58:56.762-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:58:56.762-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:58:56.763-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T10:58:56.763-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T10:58:57.177-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:58:57.177-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:58:57.179-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:58:57.179-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:58:57.179-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T10:58:57.179-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T10:58:57.596-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:58:57.597-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:58:57.598-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:58:57.598-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:58:57.599-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T10:58:57.599-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`
+2023-01-05T10:58:58.031-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T10:58:58.032-0800	[34mINFO[0m	core/main.go:19	Starting client
+2023-01-05T10:58:58.033-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T10:58:58.033-0800	[34mINFO[0m	core/main.go:36	Worker @localhost:50051 is up!: message:"Hello localhost"
+2023-01-05T10:58:58.034-0800	[34mINFO[0m	worker/work.go:14	Got a task (evtx): src
+2023-01-05T10:58:58.034-0800	[35mDEBUG[0m	artifacts/yo.go:15	Run evtx processor against `src`

@@ -15,5 +15,5 @@ import (
 func TotoAa() {
 	fmt.Println("!!!")
 	e, err := processors.Get("evtx")
-	fmt.Println(e.Greet("salut"), err)
+	fmt.Println(e.Configure(), err)
 }

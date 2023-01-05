@@ -6,16 +6,27 @@ package proto;
 
 // The worker service definition.
 service Worker {
-  // Sends a ping
   rpc Ping (PingRequest) returns (PingResponse) {}
+  rpc Work (WorkRequest) returns (WorkResponse) {}
 }
 
-// The request message containing the ping's data
+// Ping
 message PingRequest {
   string identifier = 1;
 }
 
-// The ping's response message
 message PingResponse {
   string message = 1;
+}
+
+// Work
+message WorkRequest {
+    string source = 1;
+    string processor = 2;
+    map<string,string> config = 3;
+}
+
+message WorkResponse {
+    uint32 status = 1;
+    string error = 2;
 }

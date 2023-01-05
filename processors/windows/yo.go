@@ -2,7 +2,7 @@ package windows
 
 import (
 	"fmt"
-	"github.com/jurelou/forensibus/utils/processors"
+	_"github.com/jurelou/forensibus/utils/processors"
 )
 
 type Component1 struct {
@@ -21,6 +21,5 @@ func (c Component1) Greet(s string) string {
 // }
 
 func init() {
-	fmt.Println("hello winroot")
-	processors.Register("salaaut", Component1{})
+	// processors.Register("salaaut", Component1{})
 }

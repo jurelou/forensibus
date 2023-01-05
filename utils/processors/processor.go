@@ -1,6 +1,7 @@
 package processors
 
 type Processor interface {
-	Greet(string) string
+	Configure() error
+	Run(string) error
 	// UnmarshalSettings([]byte) Processor
 }
