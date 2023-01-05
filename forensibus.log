@@ -1,2 +1,218 @@
 2023-01-05T08:56:31.742-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
 2023-01-05T08:56:31.742-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T08:57:26.405-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T08:57:26.406-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T08:57:28.782-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T08:57:28.782-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T08:58:54.970-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T08:58:54.970-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T08:58:54.970-0800	[34mINFO[0m	worker/main.go:8	Starting worker
+2023-01-05T08:59:07.870-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T08:59:07.870-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T08:59:07.870-0800	[34mINFO[0m	worker/main.go:8	Starting worker
+2023-01-05T09:00:58.202-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:00:58.202-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:00:58.203-0800	[34mINFO[0m	worker/main.go:16	Starting worker
+2023-01-05T09:01:50.717-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:01:50.717-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:01:50.718-0800	[34mINFO[0m	worker/main.go:16	Starting worker
+2023-01-05T09:01:50.718-0800	[31mFATAL[0m	worker/main.go:23	Could not create GRPC client:
+github.com/jurelou/forensibus/worker.Run
+	/home/ljk/forensibus/worker/main.go:23
+github.com/jurelou/forensibus/cmd.glob..func3
+	/home/ljk/forensibus/cmd/worker.go:23
+github.com/spf13/cobra.(*Command).execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:920
+github.com/spf13/cobra.(*Command).ExecuteC
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:1044
+github.com/spf13/cobra.(*Command).Execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:968
+github.com/jurelou/forensibus/cmd.Execute
+	/home/ljk/forensibus/cmd/root.go:30
+main.main
+	/home/ljk/forensibus/main.go:11
+runtime.main
+	/usr/local/go/src/runtime/proc.go:250
+2023-01-05T09:01:58.257-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:01:58.257-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:01:58.257-0800	[34mINFO[0m	worker/main.go:16	Starting worker
+2023-01-05T09:06:20.866-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:06:20.866-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:06:20.867-0800	[34mINFO[0m	worker/main.go:43	server listening at [::]:50051
+2023-01-05T09:06:42.274-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:06:42.274-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:06:47.587-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:06:47.588-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:06:55.486-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:06:55.486-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:06:58.416-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:06:58.416-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:07:02.106-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:07:02.106-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:08:32.862-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:08:32.862-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:08:32.862-0800	[34mINFO[0m	core/main.go:9	Salut
+2023-01-05T09:08:34.332-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:08:34.332-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:08:34.333-0800	[34mINFO[0m	core/main.go:9	Salut
+2023-01-05T09:08:43.590-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:08:43.590-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:08:43.590-0800	[34mINFO[0m	core/main.go:9	Salut./pipelines/dfir-orc.hcl[/tmp/]
+2023-01-05T09:09:10.162-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:09:10.162-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:09:10.163-0800	[34mINFO[0m	core/main.go:9	Salut./pipelines/dfir-orc.hcl[/tmp/]
+2023-01-05T09:12:10.176-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:12:10.176-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:12:10.176-0800	[34mINFO[0m	core/main.go:18	Starting client
+2023-01-05T09:13:28.784-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:13:28.784-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:13:28.784-0800	[34mINFO[0m	core/main.go:20	Starting client
+2023-01-05T09:13:28.785-0800	[31mFATAL[0m	core/main.go:35	could not greet: rpc error: code = Unimplemented desc = method SayHello not implemented
+github.com/jurelou/forensibus/core.Run
+	/home/ljk/forensibus/core/main.go:35
+github.com/jurelou/forensibus/cmd.glob..func2
+	/home/ljk/forensibus/cmd/run.go:44
+github.com/spf13/cobra.(*Command).execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:916
+github.com/spf13/cobra.(*Command).ExecuteC
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:1044
+github.com/spf13/cobra.(*Command).Execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:968
+github.com/jurelou/forensibus/cmd.Execute
+	/home/ljk/forensibus/cmd/root.go:30
+main.main
+	/home/ljk/forensibus/main.go:11
+runtime.main
+	/usr/local/go/src/runtime/proc.go:250
+2023-01-05T09:27:28.715-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:27:28.715-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:27:28.715-0800	[34mINFO[0m	worker/main.go:51	server listening at [::]:50051
+2023-01-05T09:27:31.692-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:27:31.692-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:27:31.692-0800	[34mINFO[0m	core/main.go:20	Starting client
+2023-01-05T09:27:31.694-0800	[34mINFO[0m	worker/main.go:38	GOT salut
+2023-01-05T09:27:31.694-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.HelloReply=message:"Hello salut")
+2023-01-05T09:27:38.266-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:27:38.266-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:27:38.266-0800	[34mINFO[0m	core/main.go:20	Starting client
+2023-01-05T09:27:38.268-0800	[34mINFO[0m	worker/main.go:38	GOT salut
+2023-01-05T09:27:38.268-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.HelloReply=message:"Hello salut")
+2023-01-05T09:27:40.031-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:27:40.031-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:27:40.031-0800	[34mINFO[0m	core/main.go:20	Starting client
+2023-01-05T09:27:40.032-0800	[34mINFO[0m	worker/main.go:38	GOT salut
+2023-01-05T09:27:40.033-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.HelloReply=message:"Hello salut")
+2023-01-05T09:31:58.081-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:31:58.081-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:31:58.081-0800	[34mINFO[0m	worker/main.go:51	server listening at [::]:50051
+2023-01-05T09:32:00.719-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:32:00.719-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:32:00.719-0800	[34mINFO[0m	core/main.go:20	Starting client
+2023-01-05T09:32:00.720-0800	[34mINFO[0m	worker/main.go:38	GOT salut
+2023-01-05T09:32:00.721-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.PingResponse=message:"Hello salut")
+2023-01-05T09:32:10.725-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:32:10.726-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:32:10.726-0800	[34mINFO[0m	worker/main.go:51	server listening at [::]:50051
+2023-01-05T09:32:12.449-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:32:12.449-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:32:12.450-0800	[34mINFO[0m	core/main.go:20	Starting client
+2023-01-05T09:32:12.451-0800	[34mINFO[0m	worker/main.go:38	GOT localhost
+2023-01-05T09:32:12.452-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.PingResponse=message:"Hello localhost")
+2023-01-05T09:32:26.127-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:32:26.127-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:32:26.127-0800	[34mINFO[0m	core/main.go:20	Starting client
+2023-01-05T09:32:26.128-0800	[34mINFO[0m	worker/main.go:38	GOT localhost
+2023-01-05T09:32:26.129-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.PingResponse=message:"Hello localhost")
+2023-01-05T09:32:27.664-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:32:27.664-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:32:27.664-0800	[34mINFO[0m	worker/main.go:51	server listening at [::]:50051
+2023-01-05T09:32:29.177-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:32:29.177-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:32:29.177-0800	[34mINFO[0m	core/main.go:20	Starting client
+2023-01-05T09:32:29.178-0800	[34mINFO[0m	worker/main.go:38	Got a ping from localhost
+2023-01-05T09:32:29.179-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.PingResponse=message:"Hello localhost")
+2023-01-05T09:32:56.345-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:32:56.345-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:32:56.346-0800	[34mINFO[0m	worker/main.go:52	server listening at [::]:50051
+2023-01-05T09:32:58.470-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:32:58.470-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:32:58.470-0800	[34mINFO[0m	core/main.go:20	Starting client
+2023-01-05T09:32:58.472-0800	[34mINFO[0m	worker/main.go:39	Got a ping from localhost
+2023-01-05T09:32:59.471-0800	[31mFATAL[0m	core/main.go:35	could not greet: rpc error: code = DeadlineExceeded desc = context deadline exceeded
+github.com/jurelou/forensibus/core.Run
+	/home/ljk/forensibus/core/main.go:35
+github.com/jurelou/forensibus/cmd.glob..func2
+	/home/ljk/forensibus/cmd/run.go:44
+github.com/spf13/cobra.(*Command).execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:916
+github.com/spf13/cobra.(*Command).ExecuteC
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:1044
+github.com/spf13/cobra.(*Command).Execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:968
+github.com/jurelou/forensibus/cmd.Execute
+	/home/ljk/forensibus/cmd/root.go:30
+main.main
+	/home/ljk/forensibus/main.go:11
+runtime.main
+	/usr/local/go/src/runtime/proc.go:250
+2023-01-05T09:33:47.625-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:33:47.625-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:33:47.625-0800	[34mINFO[0m	core/main.go:20	Starting client
+2023-01-05T09:33:47.627-0800	[34mINFO[0m	worker/main.go:39	Got a ping from localhost
+2023-01-05T09:33:48.627-0800	[31mERROR[0m	core/main.go:35	could not ping worker @localhost:50051: rpc error: code = DeadlineExceeded desc = context deadline exceeded
+github.com/jurelou/forensibus/core.Run
+	/home/ljk/forensibus/core/main.go:35
+github.com/jurelou/forensibus/cmd.glob..func2
+	/home/ljk/forensibus/cmd/run.go:44
+github.com/spf13/cobra.(*Command).execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:916
+github.com/spf13/cobra.(*Command).ExecuteC
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:1044
+github.com/spf13/cobra.(*Command).Execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:968
+github.com/jurelou/forensibus/cmd.Execute
+	/home/ljk/forensibus/cmd/root.go:30
+main.main
+	/home/ljk/forensibus/main.go:11
+runtime.main
+	/usr/local/go/src/runtime/proc.go:250
+2023-01-05T09:33:48.627-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.PingResponse=<nil>)
+2023-01-05T09:34:12.280-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:34:12.280-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:34:12.280-0800	[34mINFO[0m	core/main.go:20	Starting client
+2023-01-05T09:34:12.281-0800	[34mINFO[0m	worker/main.go:39	Got a ping from localhost
+2023-01-05T09:34:13.281-0800	[31mFATAL[0m	core/main.go:35	could not ping worker @localhost:50051: rpc error: code = DeadlineExceeded desc = context deadline exceeded
+github.com/jurelou/forensibus/core.Run
+	/home/ljk/forensibus/core/main.go:35
+github.com/jurelou/forensibus/cmd.glob..func2
+	/home/ljk/forensibus/cmd/run.go:44
+github.com/spf13/cobra.(*Command).execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:916
+github.com/spf13/cobra.(*Command).ExecuteC
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:1044
+github.com/spf13/cobra.(*Command).Execute
+	/home/ljk/forensibus/vendor/github.com/spf13/cobra/command.go:968
+github.com/jurelou/forensibus/cmd.Execute
+	/home/ljk/forensibus/cmd/root.go:30
+main.main
+	/home/ljk/forensibus/main.go:11
+runtime.main
+	/usr/local/go/src/runtime/proc.go:250
+2023-01-05T09:34:33.810-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:34:33.810-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:34:33.811-0800	[34mINFO[0m	worker/main.go:52	server listening at [::]:50051
+2023-01-05T09:34:35.390-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:34:35.390-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:34:35.390-0800	[34mINFO[0m	core/main.go:20	Starting client
+2023-01-05T09:34:35.391-0800	[34mINFO[0m	worker/main.go:39	Got a ping from localhost
+2023-01-05T09:34:35.392-0800	[34mINFO[0m	core/main.go:37	ooooookk%!(EXTRA *proto.PingResponse=message:"Hello localhost")
+2023-01-05T09:35:03.383-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:35:03.383-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:35:03.383-0800	[34mINFO[0m	core/main.go:20	Starting client
+2023-01-05T09:35:03.384-0800	[34mINFO[0m	worker/main.go:39	Got a ping from localhost
+2023-01-05T09:35:03.385-0800	[34mINFO[0m	core/main.go:37	Worker @localhost:50051 is up!%!(EXTRA *proto.PingResponse=message:"Hello localhost")
+2023-01-05T09:35:18.820-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: salaaut
+2023-01-05T09:35:18.820-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T09:35:18.821-0800	[34mINFO[0m	core/main.go:20	Starting client
+2023-01-05T09:35:18.822-0800	[34mINFO[0m	worker/main.go:39	Got a ping from localhost
+2023-01-05T09:35:18.822-0800	[34mINFO[0m	core/main.go:37	Worker @localhost:50051 is up!: message:"Hello localhost"

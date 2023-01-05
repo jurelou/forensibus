@@ -41,7 +41,7 @@ var (
 			if utils.FileExists(pipelineconfig) == false {
 				return fmt.Errorf("%s file does not exists.\n", pipelineconfig)
 			}
-			core.Yo(pipelineconfig, utils.UniqueListOfStrings(filepaths))
+			core.Run(pipelineconfig, utils.UniqueListOfStrings(filepaths))
 			return nil
 		},
 	}
