@@ -36,9 +36,6 @@ func SetWorker(address string) {
 
 }
 
-func doSomething(in string) string {
-	return in + "1_"
-}
 
 func find(in []string, config FindConfig) ([]string, error) {
 	var out []string
