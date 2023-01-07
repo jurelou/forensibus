@@ -3,6 +3,8 @@ package core
 import (
 	"context"
 	"fmt"
+	"path/filepath"
+	"strings"
 	"time"
 
 	"google.golang.org/grpc"
@@ -10,12 +12,19 @@ import (
 
 	"github.com/jurelou/forensibus/proto"
 	"github.com/jurelou/forensibus/utils"
+	"github.com/jurelou/forensibus/utils/decompress"
 )
 
 var (
 	Client        proto.WorkerClient
 	serverAddress = "localhost:50051"
 )
+
+// Inbound type is used to track the files being processed (ArtifactPath) and the folder containing files (CurrentFolder)
+type Inbound struct {
+	ArtifactPath  string
+	CurrentFolder string
+}
 
 func SetWorker(address string) {
 	conn, err := grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -28,116 +37,138 @@ func SetWorker(address string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
-	res, err := Client.Ping(ctx, &proto.PingRequest{Identifier: "localhost"})
+	_, err = Client.Ping(ctx, &proto.PingRequest{Identifier: "localhost"})
 	if err != nil {
 		utils.Log.Fatalf("could not ping worker @%s: %v", address, err)
 	}
-	utils.Log.Infof("Worker @%s is up! (%s) ", address, res)
+	utils.Log.Infof("Worker @%s is up!", address)
 
 }
 
-
-func find(in []string, config FindConfig) ([]string, error) {
-	var out []string
+func find(ins []Inbound, config FindConfig) ([]Inbound, error) {
+	var outs []Inbound
 	var latestErr error = nil
 
-	for _, file := range in {
-		files, err := utils.FindFiles(utils.FindFilesParams{Path: file, PathPatterns: config.Patterns, FileFormats: config.MimeTypes})
+	for _, in := range ins {
+		files, err := utils.FindFiles(utils.FindFilesParams{Path: in.ArtifactPath, PathPatterns: config.Patterns, FileFormats: config.MimeTypes})
 		latestErr = err
-		out = append(out, files...)
+		for _, file := range files {
+			outs = append(outs, Inbound{ArtifactPath: file, CurrentFolder: in.CurrentFolder})
+		}
 	}
-	return out, latestErr
+	return outs, latestErr
 }
 
-func extract(in []string, config ExtractConfig) ([]string, error) {
-	return in, nil
+func extract(ins []Inbound, config ExtractConfig) ([]Inbound, error) {
+	// err :=
+	var outs []Inbound
+	for _, in := range ins {
+		fmt.Println("E>", in)
+		out, err := decompress.Decompress(in.ArtifactPath, in.CurrentFolder)
+		if err != nil {
+			utils.Log.Warnf("Error while decompressing %s: %s", in.ArtifactPath, err.Error())
+			continue
+		}
+		outs = append(outs, Inbound{ArtifactPath: out, CurrentFolder: out})
+
+	}
+	return outs, nil
 }
 
-func process(in []string, config ProcessConfig) error {
-
-	utils.Log.Infof("Process %s against %s", config.Name, in)
+func process(ins []Inbound, config ProcessConfig) error {
+	utils.Log.Infof("Process %s against %s", config.Name, ins)
 	return nil
 }
+
+func walk(item interface{}, ins []Inbound) {
+	switch t := item.(type) {
+	case PipelineConfig:
+		// Do nothing with input, simple fanout
+		pipelineConfig := item.(PipelineConfig)
+
+		for _, nestedFinds := range pipelineConfig.Finds {
+			walk(nestedFinds, ins)
+		}
+		for _, nestedProcess := range pipelineConfig.Processes {
+			walk(nestedProcess, ins)
+		}
+		for _, nestedExtracts := range pipelineConfig.Extracts {
+			walk(nestedExtracts, ins)
+		}
+
+	case FindConfig:
+		findConfig := item.(FindConfig)
+		outs, err := find(ins, findConfig)
+		if err != nil {
+			utils.Log.Warnf(err.Error())
+		}
+		outLen := len(outs)
+		if outLen == 0 {
+			utils.Log.Warnf("Found 0 `%s` files", findConfig.Name)
+			break
+		} else {
+			utils.Log.Infof("Found %d `%s` files", outLen, findConfig.Name)
+		}
+
+		for _, nestedFinds := range findConfig.Finds {
+			walk(nestedFinds, outs)
+		}
+		for _, nestedProcess := range findConfig.Processes {
+			walk(nestedProcess, outs)
+		}
+		for _, nestedExtracts := range findConfig.Extracts {
+			walk(nestedExtracts, outs)
+		}
+	case ExtractConfig:
+		extractConfig := item.(ExtractConfig)
+		out, err := extract(ins, extractConfig)
+		if err != nil {
+			utils.Log.Warnf(err.Error())
+		}
+		outLen := len(out)
+		if outLen == 0 {
+			utils.Log.Warnf("Extracted 0 `%s` files", extractConfig.Name)
+			break
+		} else {
+			utils.Log.Infof("Extracted %d `%s` files", outLen, extractConfig.Name)
+		}
+		for _, nestedFinds := range extractConfig.Finds {
+			walk(nestedFinds, out)
+		}
+		for _, nestedProcess := range extractConfig.Processes {
+			walk(nestedProcess, out)
+		}
+		for _, nestedExtracts := range extractConfig.Extracts {
+			walk(nestedExtracts, out)
+		}
+	case ProcessConfig:
+		processConfig := item.(ProcessConfig)
+		err := process(ins, processConfig)
+		if err != nil {
+			utils.Log.Warnf("Error while processing: %s", err.Error())
+		}
+	default:
+		fmt.Printf("I don't know about type %T!\n", t)
+	}
+
+}
+
 func walkPipeline(config Config, sources []string) {
 	pipeline := config.Pipeline
 	utils.Log.Infof("Running pipeline `%s`", pipeline.Name)
 
-	var walkConfig func(item interface{}, in []string)
+	ins := make([]Inbound, len(sources))
+	for _, source := range sources {
+		absPath, _ := utils.ConvertRelativePath(source)
+		filename := filepath.Base(absPath)
 
-	walkConfig = func(item interface{}, in []string) {
-		switch t := item.(type) {
-		case PipelineConfig:
-			// Do nothing with input, simple fanout
-			pipelineConfig := item.(PipelineConfig)
+		filenameWhithoutSuffix := strings.TrimSuffix(filename, filepath.Ext(filename))
+		outputFolder := filepath.Join(utils.Config.OutputFolder, filepath.Dir(absPath), filenameWhithoutSuffix)
 
-			for _, nestedFinds := range pipelineConfig.Finds {
-				walkConfig(nestedFinds, in)
-			}
-			for _, nestedProcess := range pipelineConfig.Processes {
-				walkConfig(nestedProcess, in)
-			}
-			for _, nestedExtracts := range pipelineConfig.Extracts {
-				walkConfig(nestedExtracts, in)
-			}
-
-		case FindConfig:
-			findConfig := item.(FindConfig)
-			out, err := find(in, findConfig)
-			if err != nil {
-				utils.Log.Warnf(err.Error())
-			}
-			outLen := len(out)
-			if outLen == 0 {
-				utils.Log.Warnf("Found 0 `%s` files", findConfig.Name)
-				break
-			} else {
-				utils.Log.Infof("Found %d `%s` files", outLen, findConfig.Name)
-			}
-
-			for _, nestedFinds := range findConfig.Finds {
-				walkConfig(nestedFinds, out)
-			}
-			for _, nestedProcess := range findConfig.Processes {
-				walkConfig(nestedProcess, out)
-			}
-			for _, nestedExtracts := range findConfig.Extracts {
-				walkConfig(nestedExtracts, out)
-			}
-		case ExtractConfig:
-			extractConfig := item.(ExtractConfig)
-			out, err := extract(in, extractConfig)
-			if err != nil {
-				utils.Log.Warnf(err.Error())
-			}
-			outLen := len(out)
-			if outLen == 0 {
-				utils.Log.Warnf("Extracted 0 `%s` files", extractConfig.Name)
-				break
-			} else {
-				utils.Log.Infof("Extracted %d `%s` files", outLen, extractConfig.Name)
-			}
-			for _, nestedFinds := range extractConfig.Finds {
-				walkConfig(nestedFinds, out)
-			}
-			for _, nestedProcess := range extractConfig.Processes {
-				walkConfig(nestedProcess, out)
-			}
-			for _, nestedExtracts := range extractConfig.Extracts {
-				walkConfig(nestedExtracts, out)
-			}
-		case ProcessConfig:
-			processConfig := item.(ProcessConfig)
-			err := process(in, processConfig)
-			if err != nil {
-				utils.Log.Warnf("Error while processing: %s", err.Error())
-			}
-		default:
-			fmt.Printf("I don't know about type %T!\n", t)
-		}
-
+		utils.Log.Infof("Writing output filed to %s", outputFolder)
+		ins = append(ins, Inbound{ArtifactPath: absPath, CurrentFolder: outputFolder})
 	}
-
-	walkConfig(pipeline, sources)
+	walk(pipeline, ins)
 
 }
 

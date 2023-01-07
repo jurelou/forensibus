@@ -5,32 +5,72 @@ import (
 	"fmt"
 	"os"
 	_ "path"
-	_ "path/filepath"
+	"path/filepath"
+	"strings"
 
+	"github.com/google/uuid"
 	"github.com/h2non/filetype"
 
 	"github.com/jurelou/forensibus/utils"
 )
 
-func Decompress(in string, out string) error {
-	if exists := utils.FileExists(in); !exists {
-		return errors.New(fmt.Sprintf("File %s does not exists", in))
+func createNamedFolder(filePath string) (string, error) {
+	_, err := os.Stat(filePath)
+	if err != nil {
+		// Folder does not exists, create it
+		if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
+			return "", err
+		}
+		return filePath, nil
+	} else {
+		id := uuid.New()
+		return createNamedFolder(fmt.Sprintf("%s_%s", filePath, id.String()[:4]))
 	}
-	if err := os.Mkdir(out, 0755); err != nil {
-		return err
+}
+
+func genOutputFolder(in string, out string) (string, error) {
+	fileInfo, err := os.Stat(out)
+	if err == nil {
+		//Folder already exists, creates another folder with a suffix
+		inputFilename := filepath.Base(in)
+		inputFilenameWhithoutSuffix := strings.TrimSuffix(inputFilename, filepath.Ext(inputFilename))
+		if fileInfo.IsDir() {
+			return createNamedFolder(filepath.Join(out, filepath.Base(inputFilenameWhithoutSuffix)))
+		}
+		return "", errors.New(fmt.Sprintf("Cannot extract %s to file %s", out, in))
+
+	} else {
+		// Folder does not exists, create it
+		if err := os.MkdirAll(out, os.ModePerm); err != nil {
+			return "", err
+		}
+
+	}
+	return out, nil
+}
+
+func Decompress(in string, out string) (string, error) {
+	if exists := utils.FileExists(in); !exists {
+		return "", errors.New(fmt.Sprintf("File %s does not exists.", in))
 	}
 
 	// Open a file descriptor
 	file, errOpen := os.Open(in)
 	if errOpen != nil {
-		return errOpen
+		return "", errOpen
 	}
 	defer file.Close()
+
+	outputFolder, err := genOutputFolder(in, out)
+	if err != nil {
+		return "", err
+	}
+
 	head := make([]byte, 261)
 	file.Read(head)
 
 	if filetype.IsMIME(head, "application/x-7z-compressed") {
-		return DecompressSevenZip(in, out)
+		return outputFolder, DecompressSevenZip(in, outputFolder)
 		// } else if filetype.IsMIME(head, "application/x-tar") {
 		// 	return DecompressSevenZip(in, out)
 		// } else if filetype.IsMIME(head, "application/x-xz") {
@@ -42,10 +82,10 @@ func Decompress(in string, out string) error {
 		// } else if filetype.IsMIME(head, "application/x-tar") {
 		// 	return DecompressSevenZip(in, out)
 	} else if filetype.IsMIME(head, "application/x-zip") || filetype.IsMIME(head, "custom/zip") {
-		return DecompressZip(in, out)
+		return outputFolder, DecompressSevenZip(in, outputFolder)
 	}
 
 	// handle := magic.NewMagicHandle(magic.MAGIC_NONE)
 
-	return errors.New(fmt.Sprintf("Decompressing `%s` is not implemented", in))
+	return outputFolder, errors.New(fmt.Sprintf("Invalid archive type"))
 }

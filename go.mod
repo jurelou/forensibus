@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/fsnotify/fsnotify v1.6.0
+	github.com/google/uuid v1.1.2
 	github.com/h2non/filetype v1.1.3
 	github.com/hashicorp/hcl/v2 v2.15.0
 	github.com/spf13/cobra v1.6.1

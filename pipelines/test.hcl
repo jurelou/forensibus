@@ -9,6 +9,9 @@ pipeline "testpipe" {
     // mime_types = ["application/evtx"]
 
     process "evtxdump" {}
+    extract "lol" {
+      patterns = [".*"]
+    }
 
     find "first_second" {
       patterns = ["main.go$"]

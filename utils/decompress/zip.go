@@ -5,10 +5,10 @@ import (
 	"archive/zip"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
-	// "github.com/jurelou/forensibus/utils"
 )
 
 func DecompressZip(in string, out string) error {
@@ -20,7 +20,6 @@ func DecompressZip(in string, out string) error {
 
 	for _, f := range archive.File {
 		filePath := filepath.Join(out, f.Name)
-		fmt.Println(f.Name)
 		if !strings.HasPrefix(filePath, filepath.Clean(out)+string(os.PathSeparator)) {
 			return errors.New(fmt.Sprintf("Invalid zip file %s", f.Name))
 		}
@@ -29,10 +28,26 @@ func DecompressZip(in string, out string) error {
 			os.Mkdir(filePath, os.ModePerm)
 			continue
 		}
+
 		if err := os.MkdirAll(filepath.Dir(filePath), os.ModePerm); err != nil {
 			return err
 		}
 
+		dstFile, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
+		if err != nil {
+			return err
+		}
+		fileInArchive, err := f.Open()
+		if err != nil {
+			return err
+		}
+
+		if _, err := io.Copy(dstFile, fileInArchive); err != nil {
+			return err
+		}
+
+		dstFile.Close()
+		fileInArchive.Close()
 	}
 	return nil
 }

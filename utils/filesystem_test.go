@@ -213,7 +213,7 @@ func TestCopyInvalidFile(t *testing.T) {
 }
 
 func TestCopyFileToFolder(t *testing.T) {
-	output := "/tmp/.forensibus_test_copy_3/outputfolder"
+	output := "/tmp/.forensibus_test_copy_3"
 	err := os.RemoveAll(output)
 	if err != nil {
 		t.Fatalf("Could not remove %s", output)
@@ -231,6 +231,31 @@ func TestCopyFileToFolder(t *testing.T) {
 		t.Fatalf("Copy did not succeed to create output file")
 	}
 	content, err := os.ReadFile(filepath.Join(output, "empty.txt"))
+	if err != nil {
+		t.Fatalf("Could not read %s: %s", output, err.Error())
+	}
+	if string(content) != "empty file\n" {
+		t.Fatalf("output file content differs")
+	}
+	fmt.Println()
+}
+
+func TestCopyFileSubfolders(t *testing.T) {
+	output := "/tmp/.forensibus_test_copy_4/this/is/a/nested/folder/myfile.txt"
+	err := os.RemoveAll(output)
+	if err != nil {
+		t.Fatalf("Could not remove %s", output)
+	}
+
+	err = CopyFile("../datasets/files/empty.txt", output)
+	if err != nil {
+		t.Errorf("Copy empty file should not fail: %s", err.Error())
+	}
+
+	if exists := FileExists(output); !exists {
+		t.Fatalf("Copy did not succeed to create output file")
+	}
+	content, err := os.ReadFile(output)
 	if err != nil {
 		t.Fatalf("Could not read %s: %s", output, err.Error())
 	}

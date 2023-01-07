@@ -138,6 +138,9 @@ func CopyFile(in, out string) error {
 	outputInfo, err := os.Stat(out)
 	if err != nil {
 		// Output does not exists
+		if err := os.MkdirAll(filepath.Dir(out), os.ModePerm); err != nil {
+			return err
+		}
 		destination, err = os.Create(out)
 		if err != nil {
 			return err

@@ -13,7 +13,7 @@
 
 - cli manage flags with viper  + cobra / https://github.com/desdic/playground/blob/master/go/cobraviper/cmd/root.go
 - use libmagic bindings instead of filetype 
-
+- Add more archives extraction types
 
 # Mettre à jour le protocol (protobuf)
 

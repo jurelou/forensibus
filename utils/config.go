@@ -10,6 +10,7 @@ var Config Configuration
 
 type Configuration struct {
 	Splunk           SplunkConfiguration
+	OutputFolder     string
 	ArchivePasswords []string
 }
 
@@ -35,6 +36,7 @@ func Reload() error {
 	}
 	return nil
 }
+
 func Configure() error {
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("./pipelines")
@@ -53,4 +55,8 @@ func Configure() error {
 	})
 
 	return nil
+}
+
+func init() {
+	Configure()
 }

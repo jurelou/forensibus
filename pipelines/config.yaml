@@ -1,4 +1,5 @@
 port: 123
+OutputFolder: /tmp/forensibus
 splunk:
   address: aze
   username: aze

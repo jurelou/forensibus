@@ -156,7 +156,7 @@ func IsEncrypted(in string) (bool, error) {
 }
 
 func decompress(in string, out string, password string) error {
-	params := []string{"x", fmt.Sprintf("-o%s", out), in}
+	params := []string{"x", "-aoa", fmt.Sprintf("-o%s", out), in}
 	if password != "" {
 		params = append(params, fmt.Sprintf("-p%s", password))
 	}
