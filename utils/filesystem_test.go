@@ -1,7 +1,9 @@
 package utils
 
 import (
-	_ "fmt"
+	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -170,4 +172,70 @@ func TestConvertStrangeDotPath(t *testing.T) {
 	if !FileExists(out) {
 		t.Errorf("filesystem_test.go should exists !")
 	}
+}
+
+func TestCopyFileFile(t *testing.T) {
+	output := "/tmp/.forensibus_test_copy_1"
+	err := os.RemoveAll(output)
+	if err != nil {
+		t.Fatalf("Could not remove %s", output)
+	}
+
+	err = CopyFile("../datasets/files/empty.txt", output)
+	if err != nil {
+		t.Errorf("Copy empty file should not fail: %s", err.Error())
+	}
+
+	if exists := FileExists(output); !exists {
+		t.Fatalf("Copy did not succeed to create output file")
+	}
+	content, err := os.ReadFile(output)
+	if err != nil {
+		t.Fatalf("Could not read %s: %s", output, err.Error())
+	}
+	if string(content) != "empty file\n" {
+		t.Fatalf("output file content differs")
+	}
+	fmt.Println()
+}
+
+func TestCopyInvalidFile(t *testing.T) {
+	output := "/tmp/.forensibus_test_copy_2"
+	err := os.RemoveAll(output)
+	if err != nil {
+		t.Fatalf("Could not remove %s", output)
+	}
+
+	err = CopyFile("/tmp/thi/does/not/exi", output)
+	if err == nil {
+		t.Errorf("Copy unknown file should fail")
+	}
+}
+
+func TestCopyFileToFolder(t *testing.T) {
+	output := "/tmp/.forensibus_test_copy_3/outputfolder"
+	err := os.RemoveAll(output)
+	if err != nil {
+		t.Fatalf("Could not remove %s", output)
+	}
+	err = os.Mkdir(output, 0755)
+	if err != nil {
+		t.Fatalf("Could not create %s", output)
+	}
+	err = CopyFile("../datasets/files/empty.txt", output)
+	if err != nil {
+		t.Errorf("Copy empty file should not fail: %s", err.Error())
+	}
+
+	if exists := FileExists(output); !exists {
+		t.Fatalf("Copy did not succeed to create output file")
+	}
+	content, err := os.ReadFile(filepath.Join(output, "empty.txt"))
+	if err != nil {
+		t.Fatalf("Could not read %s: %s", output, err.Error())
+	}
+	if string(content) != "empty file\n" {
+		t.Fatalf("output file content differs")
+	}
+	fmt.Println()
 }

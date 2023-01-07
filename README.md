@@ -12,6 +12,9 @@
 - cli: Add worker ping, plugin list, plugin info, ....
 
 - cli manage flags with viper  + cobra / https://github.com/desdic/playground/blob/master/go/cobraviper/cmd/root.go
+- use libmagic bindings instead of filetype 
+
+
 # Mettre à jour le protocol (protobuf)
 
 ```

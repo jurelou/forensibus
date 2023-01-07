@@ -9,13 +9,19 @@ import (
 var Config Configuration
 
 type Configuration struct {
-	Splunk SplunkConfiguration
+	Splunk           SplunkConfiguration
+	ArchivePasswords []string
 }
 
 type SplunkConfiguration struct {
 	Address  string
 	Username string
 	Password string
+}
+
+func setDefaults() {
+	viper.SetDefault("ArchivePasswords", []string{})
+
 }
 
 func Reload() error {
@@ -30,13 +36,14 @@ func Reload() error {
 	return nil
 }
 func Configure() error {
-	// viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("./pipelines")
 	viper.AddConfigPath("../pipelines")
 	viper.SetConfigName("config")
+	setDefaults()
 
-	err := Reload(); if err != nil {
+	err := Reload()
+	if err != nil {
 		return err
 	}
 

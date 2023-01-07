@@ -5,13 +5,15 @@ import (
 	"github.com/h2non/filetype"
 )
 
-var fooType = filetype.NewType("foo", "foo/foo")
+var zipType = filetype.NewType("Archive", "custom/zip")
 
-func fooMatcher(buf []byte) bool {
-	return len(buf) > 1 && buf[0] == 0x01 && buf[1] == 0x02
+func zipMatcher(buf []byte) bool {
+	// Matches PK\3\4
+	// TODO: this is not correct, zip file header is not forced to be at the begining of the file
+	return len(buf) > 3 && buf[0] == 0x50 && buf[1] == 0x4b && buf[2] == 0x03 && buf[3] == 0x04
 }
 
 func init() {
 	// fmt.Println("hello")
-	filetype.AddMatcher(fooType, fooMatcher)
+	filetype.AddMatcher(zipType, zipMatcher)
 }

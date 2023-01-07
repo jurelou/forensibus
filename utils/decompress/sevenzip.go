@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/jurelou/forensibus/utils"
 )
 
 var (
@@ -169,9 +171,14 @@ func decompress(in string, out string, password string) error {
 }
 
 func DecompressSevenZip(in string, out string) error {
-	if _, errStat := os.Stat(in); errStat != nil {
+	fileFinfo, errStat := os.Stat(in)
+	if errStat != nil {
 		return errStat
 	}
+	if fileFinfo.IsDir() {
+		return errors.New(fmt.Sprintf("Cannot decompress folder %s ..", in))
+	}
+
 	getSevenZipPath()
 	if sevenZipPath == "" {
 		return errors.New("Could not find 7z")
@@ -182,7 +189,23 @@ func DecompressSevenZip(in string, out string) error {
 		return errEncrypted
 	}
 
-	fmt.Println(IsEncrypted(in))
-	fmt.Println(decompress(in, out, "ff"))
-	return nil
+	if encrypted == false {
+		// Decompress unencrypted archive
+		if err := decompress(in, out, ""); err != nil {
+			fmt.Printf("Could not decompress %s: %s", in, err.Error())
+			return err
+		}
+		return nil
+	}
+
+	// Archive is encrypted
+	if len(utils.Config.ArchivePasswords) == 0 {
+		return errors.New(fmt.Sprintf("Archive %s is encrypted, but no passwords are provided.", in))
+	}
+	for _, passwd := range utils.Config.ArchivePasswords {
+		if err := decompress(in, out, passwd); err == nil {
+			return nil
+		}
+	}
+	return errors.New(fmt.Sprintf("Could not decrypt archive %s whith passwords %s", in, utils.Config.ArchivePasswords))
 }

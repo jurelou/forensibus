@@ -3,3 +3,6 @@ splunk:
   address: aze
   username: aze
   password: aze
+
+ArchivePasswords:
+  - sdf

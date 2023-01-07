@@ -1,14 +1,19 @@
 package utils
 
 import (
+	"errors"
+	"fmt"
+	"github.com/h2non/filetype"
+	"io"
 	"os"
-	// "fmt"
 	"os/user"
 	"path/filepath"
 	"regexp"
 	"strings"
+)
 
-	"github.com/h2non/filetype"
+var (
+	buffSize = 1024 * 10
 )
 
 type FindFilesParams struct {
@@ -122,6 +127,47 @@ func ConvertRelativePath(path string) (string, error) {
 	}
 }
 
-// func init() {
-// 	fmt.Println("hello here")
-// }
+func CopyFile(in, out string) error {
+	var destination *os.File
+	source, err := os.Open(in)
+	if err != nil {
+		return err
+	}
+	defer source.Close()
+
+	outputInfo, err := os.Stat(out)
+	if err != nil {
+		// Output does not exists
+		destination, err = os.Create(out)
+		if err != nil {
+			return err
+		}
+		defer destination.Close()
+	} else {
+		// Output already exists
+		if outputInfo.IsDir() {
+			out = filepath.Join(out, filepath.Base(in))
+			destination, err = os.Create(out)
+			if err != nil {
+				return err
+			}
+			defer destination.Close()
+		} else {
+			return errors.New(fmt.Sprintf("Refusing to copy file %s to already existing file %s", in, out))
+		}
+	}
+	buf := make([]byte, buffSize)
+	for {
+		n, err := source.Read(buf)
+		if err != nil && err != io.EOF {
+			return err
+		}
+		if n == 0 {
+			break
+		}
+		if _, err := destination.Write(buf[:n]); err != nil {
+			return err
+		}
+	}
+	return nil
+}
