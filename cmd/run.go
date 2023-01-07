@@ -29,7 +29,7 @@ var (
 				return errors.New("requires a filepath  argument")
 			}
 			for _, filepath := range args {
-				if utils.FileExists(filepath) == false {
+				if !utils.FileExists(filepath) {
 					return fmt.Errorf("%s is not a valid file or folder.\n", filepath)
 				}
 			}
@@ -38,7 +38,7 @@ var (
 
 		RunE: func(cmd *cobra.Command, filepaths []string) error {
 
-			if utils.FileExists(pipelineconfig) == false {
+			if !utils.FileExists(pipelineconfig) {
 				return fmt.Errorf("%s file does not exists.\n", pipelineconfig)
 			}
 			core.Run(pipelineconfig, utils.UniqueListOfStrings(filepaths))
@@ -51,7 +51,9 @@ func init() {
 	rootCmd.AddCommand(runCmd)
 
 	runCmd.PersistentFlags().StringVarP(&pipelineconfig, "pipeline", "p", "", "A pipeline configuration file.")
-	runCmd.MarkPersistentFlagRequired("pipeline")
+	err := runCmd.MarkPersistentFlagRequired("pipeline"); if err != nil {
+		fmt.Printf("Could nork mark pipeline as a persistent flag")
+	}
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command

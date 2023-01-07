@@ -6,13 +6,12 @@ all:
 	CGO_ENABLED=0 go build -ldflags="-extldflags=-static" -o bin/forensibus main.go
 	sudo chroot . ./bin/forensibus
 
+lint:
+	golangci-lint run
+
 format:
-	go mod tidy
-	rm -rf vendor
 	go fix
-	go mod vendor
 	gofmt -w -s  $(PACKAGES)
-	# go vet $(PACKAGES)
 	go clean
 
 vendor:
