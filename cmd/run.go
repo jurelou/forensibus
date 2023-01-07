@@ -51,7 +51,8 @@ func init() {
 	rootCmd.AddCommand(runCmd)
 
 	runCmd.PersistentFlags().StringVarP(&pipelineconfig, "pipeline", "p", "", "A pipeline configuration file.")
-	err := runCmd.MarkPersistentFlagRequired("pipeline"); if err != nil {
+	err := runCmd.MarkPersistentFlagRequired("pipeline")
+	if err != nil {
 		fmt.Printf("Could nork mark pipeline as a persistent flag")
 	}
 	// Here you will define your flags and configuration settings.
