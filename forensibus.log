@@ -834,3 +834,26 @@ runtime.main
 2023-01-05T13:27:22.076-0800	[34mINFO[0m	core/main.go:61	Process evtxdump against [core/core.go core/dsl.go core/dsl_test.go core/main.go core/processors.go core/processors_test.go core/toto.go worker/main.go worker/ping.go worker/work.go main.go]
 2023-01-05T13:27:22.077-0800	[33mWARN[0m	core/main.go:93	Found 0 `bis` files
 2023-01-05T21:27:30.833Z	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T13:37:10.735-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T13:37:10.735-0800	[34mINFO[0m	worker/main.go:28	Configured processor evtx
+2023-01-05T13:37:10.735-0800	[34mINFO[0m	worker/main.go:42	Worker listening at [::]:50051
+2023-01-05T13:37:15.849-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-05T13:37:15.849-0800	[34mINFO[0m	core/main.go:148	Starting client
+2023-01-05T13:37:15.851-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-05T13:37:15.851-0800	[34mINFO[0m	core/main.go:35	Worker @localhost:50051 is up! (message:"Hello localhost") 
+2023-01-05T13:37:15.851-0800	[34mINFO[0m	core/main.go:66	Running pipeline `testpipe`
+2023-01-05T13:37:15.852-0800	[34mINFO[0m	core/main.go:97	Found 11 `first` files
+2023-01-05T13:37:15.852-0800	[34mINFO[0m	core/main.go:97	Found 3 `first_second` files
+2023-01-05T13:37:15.852-0800	[34mINFO[0m	core/main.go:61	Process evtxdump against [core/main.go worker/main.go main.go]
+2023-01-05T13:37:15.852-0800	[34mINFO[0m	core/main.go:61	Process evtxdump against [core/core.go core/dsl.go core/dsl_test.go core/main.go core/processors.go core/processors_test.go core/toto.go worker/main.go worker/ping.go worker/work.go main.go]
+2023-01-05T13:37:15.852-0800	[33mWARN[0m	core/main.go:94	Found 0 `bis` files
+2023-01-06T08:48:50.050-0800	[35mDEBUG[0m	processors/manager.go:32	Registered new processor: evtx
+2023-01-06T08:48:50.051-0800	[34mINFO[0m	core/main.go:148	Starting client
+2023-01-06T08:48:50.056-0800	[34mINFO[0m	worker/ping.go:11	Got a ping from localhost
+2023-01-06T08:48:50.058-0800	[34mINFO[0m	core/main.go:35	Worker @localhost:50051 is up! (message:"Hello localhost") 
+2023-01-06T08:48:50.058-0800	[34mINFO[0m	core/main.go:66	Running pipeline `testpipe`
+2023-01-06T08:48:50.058-0800	[34mINFO[0m	core/main.go:97	Found 11 `first` files
+2023-01-06T08:48:50.058-0800	[34mINFO[0m	core/main.go:97	Found 3 `first_second` files
+2023-01-06T08:48:50.058-0800	[34mINFO[0m	core/main.go:61	Process evtxdump against [core/main.go worker/main.go main.go]
+2023-01-06T08:48:50.058-0800	[34mINFO[0m	core/main.go:61	Process evtxdump against [core/core.go core/dsl.go core/dsl_test.go core/main.go core/processors.go core/processors_test.go core/toto.go worker/main.go worker/ping.go worker/work.go main.go]
+2023-01-06T08:48:50.059-0800	[33mWARN[0m	core/main.go:94	Found 0 `bis` files

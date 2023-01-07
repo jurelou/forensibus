@@ -8,7 +8,10 @@
 - Add a --force flag to the run command, force exec even if some errors appear (some workers are unavailable, ....)
 - Find (hcl) Add a `recurse` boolean
 - Find (hcl) Add a `type` option file/dir (file by default)
+- set windows PE ressources : https://github.com/tc-hib/go-winres
+- cli: Add worker ping, plugin list, plugin info, ....
 
+- cli manage flags with viper  + cobra / https://github.com/desdic/playground/blob/master/go/cobraviper/cmd/root.go
 # Mettre à jour le protocol (protobuf)
 
 ```

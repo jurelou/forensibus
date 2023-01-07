@@ -1,0 +1,5 @@
+port: 123
+splunk:
+  address: aze
+  username: aze
+  password: aze

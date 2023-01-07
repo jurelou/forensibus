@@ -15,6 +15,12 @@ format:
 	# go vet $(PACKAGES)
 	go clean
 
+vendor:
+	rm -rf vendor
+	go mod tidy
+	go mod vendor
+	go clean
+
 test:
 	@echo "****** Running tests ******"
 	@go test -cover  ./...  -coverprofile=coverage.out
@@ -26,4 +32,4 @@ test:
 proto:
 	protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/worker.proto
 
-.PHONY: proto
+.PHONY: proto vendor

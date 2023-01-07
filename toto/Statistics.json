@@ -1,0 +1,155 @@
+{
+    "version": "1.0",
+    "dfir-orc": {
+        "GetThis": {
+            "statistics": {
+                "ntfs_find": [
+                    {
+                        "description": "<ntfs_find name_match=\"*.job\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find path_match=\"\\Windows\\Tasks\\*\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find path_match=\"\\Windows\\System32\\Tasks\\*\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find name_match=\"*.vbs\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find name_match=\"*.vbe\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find name_match=\"*.bat\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find name_match=\"*.cmd\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find name_match=\"*.ps1\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find path_match=\"\\Users\\*\\AppData\\Local\\Microsoft\\Windows\\PowerShell\\ScheduledJobs\\*\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find name_match=\"*.py\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find name_match=\"*.pyc\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find name_match=\"*.lua\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find name_match=\"*.kix\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find path_match=\"\\Users\\*\\AppData\\Roaming\\Microsoft\\Excel\\XLStart\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find path_match=\"\\Documents and Settings\\*\\Application Data\\Microsoft\\Excel\\XLStart\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    },
+                    {
+                        "description": "<ntfs_find path_match=\"\\Program Files\\Microsoft Office\\*\\XLSTART\" />",
+                        "match_time": 0,
+                        "match_read": 0,
+                        "match": 0,
+                        "miss": 34243,
+                        "collection_time": 0,
+                        "collection_read": 0
+                    }
+                ]
+            }
+        }
+    }
+}

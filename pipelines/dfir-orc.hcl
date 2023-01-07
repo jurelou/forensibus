@@ -5,9 +5,11 @@ temporary_folder = "/tmp/forensibus"
 pipeline "mypipeline4orc" {
 
   extract "DFIR-ORC archives" {
+    // Return a list of files
     patterns = ["Collect_.*.7z$", "DFIR-.*.7z$"]
 
     extract "evtx archives" {
+      // Return a list of files
       patterns = ["Evtx.7z$", "Events.7z$"]
 
       find "evtx files" {
