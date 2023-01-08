@@ -3,7 +3,6 @@ package utils
 import (
 	"errors"
 	"fmt"
-	"github.com/h2non/filetype"
 	"io"
 	"os"
 	"os/user"
@@ -30,7 +29,6 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 	var latestError error = nil
 
 	checkFileFormat := (len(params.FileFormats) != 0)
-	fileHead := make([]byte, 261)
 
 	addPath := func(filePath string) error {
 		// No conditions provided, add the current file
@@ -42,14 +40,10 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 
 		// Check if file matches the given mime types
 		if checkFileFormat {
-			file, err := os.Open(filePath)
-			if err != nil {
-				return err
-			}
-			defer file.Close()
-			file.Read(fileHead)
+			magic := GetMagic(filePath)
+
 			for _, mime := range params.FileFormats {
-				if filetype.IsMIME(fileHead, mime) {
+				if mime == magic {
 					files = append(files, filePath)
 					return nil
 				}

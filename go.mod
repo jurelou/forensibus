@@ -3,9 +3,9 @@ module github.com/jurelou/forensibus
 go 1.19
 
 require (
+	github.com/Velocidex/go-magic v0.0.0-20211018155418-c5dc48282f28
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/google/uuid v1.1.2
-	github.com/h2non/filetype v1.1.3
 	github.com/hashicorp/hcl/v2 v2.15.0
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.14.0
@@ -27,7 +27,6 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
-	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/spf13/afero v1.9.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect

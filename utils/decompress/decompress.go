@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/h2non/filetype"
 
 	"github.com/jurelou/forensibus/utils"
 )
@@ -54,22 +53,14 @@ func Decompress(in string, out string) (string, error) {
 		return "", errors.New(fmt.Sprintf("File %s does not exists.", in))
 	}
 
-	// Open a file descriptor
-	file, errOpen := os.Open(in)
-	if errOpen != nil {
-		return "", errOpen
-	}
-	defer file.Close()
-
 	outputFolder, err := genOutputFolder(in, out)
 	if err != nil {
 		return "", err
 	}
 
-	head := make([]byte, 261)
-	file.Read(head)
+	magic := utils.GetMagic(in)
 
-	if filetype.IsMIME(head, "application/x-7z-compressed") {
+	if magic == "application/x-7z-compressed" {
 		return outputFolder, DecompressSevenZip(in, outputFolder)
 		// } else if filetype.IsMIME(head, "application/x-tar") {
 		// 	return DecompressSevenZip(in, out)
@@ -81,7 +72,7 @@ func Decompress(in string, out string) (string, error) {
 		// 	return DecompressSevenZip(in, out)
 		// } else if filetype.IsMIME(head, "application/x-tar") {
 		// 	return DecompressSevenZip(in, out)
-	} else if filetype.IsMIME(head, "application/x-zip") || filetype.IsMIME(head, "custom/zip") {
+	} else if magic == "application/zip" {
 		return outputFolder, DecompressSevenZip(in, outputFolder)
 	}
 
