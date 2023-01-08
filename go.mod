@@ -12,6 +12,7 @@ require (
 	go.uber.org/zap v1.24.0
 	google.golang.org/grpc v1.51.0
 	google.golang.org/protobuf v1.28.1
+	www.velocidex.com/golang/go-prefetch v0.0.0-20220801101854-338dbe61982a
 )
 
 require (

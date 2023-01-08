@@ -1,0 +1,81 @@
+{
+  "MAMHeader": [8, {
+    "Signature": [0, ["String", {"length": 4}]],
+    "UncompressedSize": [4, ["unsigned long"]]
+  }],
+
+  "SCCAHeader": [84, {
+    "Version": [0, ["Enumeration", {
+      "choices": {
+        "17": "WinXP",
+        "23": "Vista",
+        "26": "Win8.1",
+        "30": "Win10"
+      },
+      "target": "unsigned long"
+    }]],
+    "Signature": [4,["String", {"length": 4}]],
+    "FileSize": [12, ["unsigned long"]],
+    "Executable": [16, ["UnicodeString"]],
+    "Hash": [76, ["unsigned long"]]
+  }],
+
+  "FileInformationWin10": [224, {
+    "FileMetricsOffset": [0, ["unsigned long"]],
+    "NumberOfFileMetrics": [4,  ["unsigned long"]],
+    "TraceChainsArrayOffset": [8, ["unsigned long"]],
+    "NumberOfTraceChains": [12, ["unsigned long"]],
+    "FilenameOffset":[16, ["unsigned long"]],
+    "FilenameSize": [20, ["unsigned long"]],
+    "VolumesInformationOffset": [24,  ["unsigned long"]],
+    "NumberOfVolumes": [28, ["unsigned long"]],
+    "VolumesInformationSize": [32,  ["unsigned long"]],
+    "LastRunTimes": [44, ["Array", {
+      "target": "WinFileTime",
+      "count": 8
+    }]],
+
+    "RunCount1": [124, ["unsigned long"]],
+    "RunCount2": [116, ["unsigned long"]]
+  }],
+
+  "FileMetricsEntryV30": [32, {
+    "FilenameOffset": [12, ["unsigned long"]],
+    "FilenameLength": [16, ["unsigned long"]],
+    "MFTFileReference": [24, ["unsigned long long"]]
+  }],
+
+  "FileMetricsEntryV17": [20, {
+    "FilenameOffset": [8, ["unsigned long"]],
+    "FilenameLength": [12, ["unsigned long"]]
+  }],
+
+  "FileInformationVista": [156, {
+    "FileMetricsOffset": [0, ["unsigned long"]],
+    "NumberOfFileMetrics": [4,  ["unsigned long"]],
+    "TraceChainsArrayOffset": [8, ["unsigned long"]],
+    "NumberOfTraceChains": [12, ["unsigned long"]],
+    "FilenameOffset":[16, ["unsigned long"]],
+    "FilenameSize": [20, ["unsigned long"]],
+    "VolumesInformationOffset": [24,  ["unsigned long"]],
+    "NumberOfVolumes": [28, ["unsigned long"]],
+    "VolumesInformationSize": [32,  ["unsigned long"]],
+    "LastRunTime": [44, ["WinFileTime"]],
+    "RunCount": [68, ["unsigned long"]]
+  }],
+
+  "FileInformationXP": [68, {
+    "FileMetricsOffset": [0, ["unsigned long"]],
+    "NumberOfFileMetrics": [4,  ["unsigned long"]],
+    "TraceChainsArrayOffset": [8, ["unsigned long"]],
+    "NumberOfTraceChains": [12, ["unsigned long"]],
+    "FilenameOffset":[16, ["unsigned long"]],
+    "FilenameSize": [20, ["unsigned long"]],
+    "VolumesInformationOffset": [24,  ["unsigned long"]],
+    "NumberOfVolumes": [28, ["unsigned long"]],
+    "VolumesInformationSize": [32,  ["unsigned long"]],
+    "LastRunTime": [36, ["WinFileTime"]],
+    "RunCount": [60, ["unsigned long"]]
+  }]
+
+}

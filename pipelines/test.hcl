@@ -14,7 +14,7 @@ pipeline "testpipe" {
       find "7Z files" {
         patterns = [".*"]
 
-        process "evtxdump" {}
+        process "prefetch" {}
 
       }
 

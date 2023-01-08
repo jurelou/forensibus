@@ -12,7 +12,7 @@ all:
 	GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="-extldflags=-static" -o ./bin/forensibus_linux_arm64 main.go
 	GOOS=linux GOARCH=386 CGO_ENABLED=0 go build -ldflags="-extldflags=-static" -o ./bin/forensibus_linux_x86 main.go
 
-	sudo chroot . ./forensibus
+	#sudo chroot . ./forensibus
 
 lint:
 	golangci-lint run

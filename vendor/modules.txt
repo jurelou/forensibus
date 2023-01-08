@@ -248,3 +248,6 @@ gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
+# www.velocidex.com/golang/go-prefetch v0.0.0-20220801101854-338dbe61982a
+## explicit; go 1.14
+www.velocidex.com/golang/go-prefetch

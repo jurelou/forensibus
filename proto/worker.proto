@@ -22,8 +22,9 @@ message PingResponse {
 // Work
 message WorkRequest {
     string source = 1;
-    string processor = 2;
-    map<string,string> config = 3;
+    string outputFolder = 2;
+    string processor = 3;
+    map<string,string> config = 4;
 }
 
 message WorkResponse {

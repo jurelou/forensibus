@@ -1,0 +1,33 @@
+package prefetch
+
+import (
+	"fmt"
+	"io"
+	"time"
+)
+
+func filetimeToUnixtime(ft uint64) uint64 {
+	return (ft - 11644473600000*10000) / 10000000
+}
+
+// A WinFileTime object is a timestamp in windows filetime format.
+type WinFileTime struct {
+	time.Time
+}
+
+func (self *WinFileTime) GoString() string {
+	return fmt.Sprintf("%v", self)
+}
+
+func (self *WinFileTime) DebugString() string {
+	return fmt.Sprintf("%v", self)
+}
+
+func (self *WinFileTime) Size() int {
+	return 8
+}
+
+func (self *PrefetchProfile) WinFileTime(reader io.ReaderAt, offset int64) *WinFileTime {
+	filetime := ParseUint64(reader, offset)
+	return &WinFileTime{time.Unix(int64(filetimeToUnixtime(filetime)), 0)}
+}

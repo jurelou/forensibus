@@ -7,6 +7,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
+
+	"github.com/jurelou/forensibus/core"
 )
 
 // processorCmd represents the processor command
@@ -29,7 +31,7 @@ to quickly create a Cobra application.`,
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			fmt.Println("List procs")
+			core.ListProcessors()
 		} else {
 			fmt.Println("Run", args[0])
 
