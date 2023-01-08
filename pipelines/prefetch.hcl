@@ -5,7 +5,7 @@ pipeline "prefetch" {
         patterns = [".*"]
         mime_types = ["application/x-7z-compressed", "application/x-zip", "custom/zip"]
 
-        find "prefetch files" {
+        find "compressed prefetch files" {
             patterns = [".*.pf$"]
 
             process "prefetch" {}

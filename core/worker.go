@@ -22,7 +22,7 @@ var (
 )
 
 type Job struct {
-	In      Inbound
+	In      Input
 	Config  ProcessConfig
 	Results chan JobResult
 }
@@ -30,7 +30,7 @@ type Job struct {
 type JobResult struct {
 	Status    uint32
 	Error     string
-	In        Inbound
+	In        Input
 	Processor string
 }
 
@@ -38,9 +38,9 @@ func work(jobsChannel <-chan Job) {
 	ctx, _ := context.WithTimeout(context.Background(), 60*time.Second)
 
 	for job := range jobsChannel {
-		fmt.Println("Got job", job.In.ArtifactPath)
+		fmt.Println("Got job", job.In.Next)
 
-		res, err := Client.Work(ctx, &proto.WorkRequest{Source: job.In.ArtifactPath, OutputFolder: job.In.CurrentFolder, Processor: job.Config.Name, Config: job.Config.Config})
+		res, err := Client.Work(ctx, &proto.WorkRequest{Source: job.In.Next, OutputFolder: job.In.Current, Processor: job.Config.Name, Config: job.Config.Config})
 		if err != nil {
 			fmt.Println(">>", err)
 		}
@@ -54,7 +54,7 @@ func StartWorkers() {
 	}
 }
 
-func RunProcessor(ins []Inbound, config ProcessConfig) {
+func RunProcessor(ins []Input, config ProcessConfig) {
 	// results := make(chan string, len(ins))
 	resultsChan := make(chan JobResult, len(ins))
 
@@ -63,7 +63,7 @@ func RunProcessor(ins []Inbound, config ProcessConfig) {
 
 	fmt.Printf("Launching %d jobs\n", len(ins))
 	for _, in := range ins {
-		fmt.Println("Launch ", in.ArtifactPath)
+		fmt.Println("Launch ", in.Next)
 		jobsChannel <- Job{In: in, Config: config, Results: resultsChan}
 	}
 
