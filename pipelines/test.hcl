@@ -1,26 +1,43 @@
 
-archives_passwords = ["virus", "avproof"]
-temporary_folder = "/tmp/forensibus"
-
 pipeline "testpipe" {
 
-  find "first" {
-    patterns = [".go$"]
-    // mime_types = ["application/evtx"]
-
-    process "evtxdump" {}
-    extract "lol" {
-      patterns = [".*"]
-    }
-
-    find "first_second" {
-      patterns = ["main.go$"]
+    extract "zip archives" {
+      patterns = [".*.zip$"]
 
       process "evtxdump" {}
 
     }
 
-  }
+  // extract "7z archives" {
+  //     patterns = [".*.7z$"]
+  
+      find "7Z files" {
+        patterns = [".*"]
+
+        process "evtxdump" {}
+
+      }
+
+    // }
+
+
+  // find "first" {
+  //   patterns = [".zip$"]
+  //   // mime_types = ["application/evtx"]
+
+  //   process "evtxdump" {}
+  //   extract "lol" {
+  //     patterns = [".*"]
+  //   }
+
+  //   find "first_second" {
+  //     patterns = ["main.go$"]
+
+  //     process "evtxdump" {}
+
+  //   }
+
+  // }
 
   find "bis" {
     patterns = []

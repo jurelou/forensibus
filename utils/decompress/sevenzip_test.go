@@ -1,4 +1,4 @@
-package decompress
+package decompress_test
 
 import (
 	"os"
@@ -7,10 +7,11 @@ import (
 	"testing"
 
 	"github.com/jurelou/forensibus/utils"
+	"github.com/jurelou/forensibus/utils/decompress"
 )
 
 func Test7zInvalidFile(t *testing.T) {
-	err := DecompressSevenZip("./this_does_not_exists.xz", "/tmp/out")
+	err := decompress.DecompressSevenZip("./this_does_not_exists.xz", "/tmp/out")
 	if err == nil {
 		t.Fatalf("Decompress should fail on invalid file: `./this_does_not_exists.xz`")
 	}
@@ -26,7 +27,7 @@ func Test7zSimple7z(t *testing.T) {
 		t.Fatalf("Could not remove %s", outputFolder)
 	}
 
-	err = DecompressSevenZip(file, outputFolder)
+	err = decompress.DecompressSevenZip(file, outputFolder)
 	if err != nil {
 		t.Fatalf("Decompressing an archive should not generate an error: %s", err.Error())
 	}
@@ -54,7 +55,7 @@ func TestEncrypted7z(t *testing.T) {
 
 	utils.Config.ArchivePasswords = []string{"good", "passwd"}
 
-	err = DecompressSevenZip(file, outputFolder)
+	err = decompress.DecompressSevenZip(file, outputFolder)
 	if err != nil {
 		t.Fatalf("Decompressing an encrypted archive should not generate an error")
 	}
@@ -82,7 +83,7 @@ func TestEncrypted7zInvalidPasswd(t *testing.T) {
 
 	utils.Config.ArchivePasswords = []string{"invalid", "passw00rd"}
 
-	err = DecompressSevenZip(file, outputFolder)
+	err = decompress.DecompressSevenZip(file, outputFolder)
 	if err == nil {
 		t.Fatalf("Decompressing an encrypted archive whith invalid passwords should fail")
 	}
@@ -95,7 +96,7 @@ func TestEncrypted7zWhithoutPasswords(t *testing.T) {
 	utils.Config.ArchivePasswords = []string{}
 
 	file := "../../datasets/archives/EmptyEncryptedPasswdIsPasswd.7z"
-	err := DecompressSevenZip(file, "/tmp/nope")
+	err := decompress.DecompressSevenZip(file, "/tmp/nope")
 	if err == nil {
 		t.Fatalf("Decompressing an encrypted archive whithout passwords should generate an error")
 	}

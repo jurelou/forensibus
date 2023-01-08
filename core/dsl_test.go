@@ -1,14 +1,16 @@
-package core
+package core_test
 
 import (
 	"fmt"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/jurelou/forensibus/core"
 )
 
 func TestInvalidFile(t *testing.T) {
-	_, err := LoadDSLFile("../datasets/this.does.not.exists")
+	_, err := core.LoadDSLFile("../datasets/this.does.not.exists")
 
 	if err == nil {
 		t.Errorf("FindFiles should fail to find 'this.does.not.exists'")
@@ -22,12 +24,12 @@ func doSomething(i int) int {
 	return i + 1
 }
 func TestSimple(t *testing.T) {
-	config, err := LoadDSLFile("../datasets/pipelines/nested.hcl")
+	config, err := core.LoadDSLFile("../datasets/pipelines/nested.hcl")
 	if err != nil {
 		t.Errorf("Hcl file `simple.hcl` should not raise errors: %s", err.Error())
 	}
 
-	if !reflect.DeepEqual(config.Output, OutputConfig{Type: "splunk", Address: "localhost", Username: "admin", Password: "admin"}) {
+	if !reflect.DeepEqual(config.Output, core.OutputConfig{Type: "splunk", Address: "localhost", Username: "admin", Password: "admin"}) {
 		t.Errorf("`Output` block does not match")
 	}
 
@@ -42,8 +44,8 @@ func TestSimple(t *testing.T) {
 
 	walkConfig = func(item interface{}, i int) {
 		switch t := item.(type) {
-		case PipelineConfig:
-			pipelineConfig := item.(PipelineConfig)
+		case core.PipelineConfig:
+			pipelineConfig := item.(core.PipelineConfig)
 
 			for _, nestedFinds := range pipelineConfig.Finds {
 				walkConfig(nestedFinds, i)
@@ -55,8 +57,8 @@ func TestSimple(t *testing.T) {
 				walkConfig(nestedExtracts, i)
 			}
 
-		case FindConfig:
-			findConfig := item.(FindConfig)
+		case core.FindConfig:
+			findConfig := item.(core.FindConfig)
 			fmt.Println(i, "find ", findConfig.Name)
 			i = doSomething(i)
 
@@ -69,8 +71,8 @@ func TestSimple(t *testing.T) {
 			for _, nestedExtracts := range findConfig.Extracts {
 				walkConfig(nestedExtracts, i)
 			}
-		case ExtractConfig:
-			extractConfig := item.(ExtractConfig)
+		case core.ExtractConfig:
+			extractConfig := item.(core.ExtractConfig)
 			fmt.Println(i, "find ", extractConfig.Name)
 			i = doSomething(i)
 
@@ -83,9 +85,9 @@ func TestSimple(t *testing.T) {
 			for _, nestedExtracts := range extractConfig.Extracts {
 				walkConfig(nestedExtracts, i)
 			}
-		case ProcessConfig:
+		case core.ProcessConfig:
 			//i = doSomething(i)
-			processConfig := item.(ProcessConfig)
+			processConfig := item.(core.ProcessConfig)
 			fmt.Println(i, "process ", processConfig.Name)
 		default:
 			fmt.Printf("I don't know about type %T!\n", t)

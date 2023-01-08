@@ -36,22 +36,45 @@ func findSevenZipFromPath() string {
 	}
 	return ""
 }
+func findExternal7zFolder() string {
+	exists := utils.FileExists("./external/7z")
+	if exists {
+		return "./external/7z"
+	}
+	exists = utils.FileExists("../external/7z")
+	if exists {
+		return "../external/7z"
+	}
 
-func findSevenZipFromCurrentFolder() string {
-	var path string
 	exePath, err := os.Executable()
 	if err != nil {
-		return path
+		return ""
 	}
 	exeDirname := filepath.Dir(exePath)
+	exists = utils.FileExists(filepath.Join(exeDirname, "external/7z"))
+	if exists {
+		return filepath.Join(exeDirname, "external/7z")
+	}
+	exists = utils.FileExists(filepath.Join(exeDirname, "../external/7z"))
+	if exists {
+		return filepath.Join(exeDirname, "../external/7z")
+	}
+	return ""
+}
+func findSevenZipFromCurrentFolder() string {
+	var path string
+	externalFolder := findExternal7zFolder()
+	if externalFolder == "" {
+		return ""
+	}
 
 	switch runtime.GOOS {
 	case "windows":
-		path = filepath.Join(exeDirname, "external/7z/windows/7z.exe")
+		path = filepath.Join(externalFolder, "windows/7z.exe")
 	case "linux":
-		path = filepath.Join(exeDirname, "external/7z/linux/7zz")
+		path = filepath.Join(externalFolder, "linux/7zz")
 	case "darwin":
-		path = filepath.Join(exeDirname, "external/7z/darwin/7zz")
+		path = filepath.Join(externalFolder, "darwin/7zz")
 	}
 	if _, err := os.Stat(path); err != nil {
 		return ""

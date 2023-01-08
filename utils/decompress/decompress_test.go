@@ -1,4 +1,4 @@
-package decompress
+package decompress_test
 
 import (
 	"fmt"
@@ -9,24 +9,25 @@ import (
 	"testing"
 
 	"github.com/jurelou/forensibus/utils"
+	"github.com/jurelou/forensibus/utils/decompress"
 )
 
 func TestDecompressToFile(t *testing.T) {
-	_, err := Decompress("../../dataset/archives/Simple.zip", "../../dataset/files/empty.txt")
+	_, err := decompress.Decompress("../../dataset/archives/Simple.zip", "../../dataset/files/empty.txt")
 	if err == nil {
 		t.Errorf("Decompress to a file should fail")
 	}
 }
 
 func TestDecompressUnknownFile(t *testing.T) {
-	_, err := Decompress("/tmp/.this_does_does_exists", "/tmp/out")
+	_, err := decompress.Decompress("/tmp/.this_does_does_exists", "/tmp/out")
 	if err == nil {
 		t.Errorf("Decompress should fail on invalid file")
 	}
 }
 
 func TestDecompressInvalidFile(t *testing.T) {
-	_, err := Decompress("../../datasets/pipelines/nested.hcl", "/tmp/out")
+	_, err := decompress.Decompress("../../datasets/pipelines/nested.hcl", "/tmp/out")
 	if err == nil {
 		t.Errorf("Decompress text file should fail")
 	}
@@ -41,7 +42,7 @@ func TestDecompressSameName(t *testing.T) {
 		t.Fatalf("Could not remove %s", outputFolder)
 	}
 	// 1st round
-	out, err = Decompress("../../datasets/archives/Simple.zip", outputFolder)
+	out, err = decompress.Decompress("../../datasets/archives/Simple.zip", outputFolder)
 	if err != nil {
 		t.Errorf("Error while decompressing Simple.zip: %s", err.Error())
 	}
@@ -55,7 +56,7 @@ func TestDecompressSameName(t *testing.T) {
 	}
 
 	// 2nd round
-	out, err = Decompress("../../datasets/archives/Simple.zip", outputFolder)
+	out, err = decompress.Decompress("../../datasets/archives/Simple.zip", outputFolder)
 	if err != nil {
 		t.Errorf("Error while decompressing Simple.zip a second time: %s", err.Error())
 	}
@@ -69,7 +70,7 @@ func TestDecompressSameName(t *testing.T) {
 	}
 
 	// 3rd round
-	out, err = Decompress("../../datasets/archives/Simple.zip", outputFolder)
+	out, err = decompress.Decompress("../../datasets/archives/Simple.zip", outputFolder)
 	if err != nil {
 		t.Errorf("Error while decompressing Simple.zip a third time: %s", err.Error())
 	}
@@ -94,7 +95,7 @@ func TestDecompress7z(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not remove %s", outputFolder)
 	}
-	_, err = Decompress("../../datasets/archives/Simple.7z", outputFolder)
+	_, err = decompress.Decompress("../../datasets/archives/Simple.7z", outputFolder)
 	if err != nil {
 		t.Errorf("Error while decompressing Simple.7z: %s", err.Error())
 	}
@@ -118,7 +119,7 @@ func TestDecompressZip(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not remove %s", outputFolder)
 	}
-	_, err = Decompress("../../datasets/archives/Simple.zip", outputFolder)
+	_, err = decompress.Decompress("../../datasets/archives/Simple.zip", outputFolder)
 	if err != nil {
 		t.Errorf("Error while decompressing Simple.7z: %s", err.Error())
 	}
@@ -145,7 +146,7 @@ func TestDecompressZipPasswd(t *testing.T) {
 	}
 	utils.Config.ArchivePasswords = []string{"aa", "passwd", "bb"}
 
-	_, err = Decompress("../../datasets/archives/SimplePasswd.zip", outputFolder)
+	_, err = decompress.Decompress("../../datasets/archives/SimplePasswd.zip", outputFolder)
 	if err != nil {
 		t.Errorf("Error while decompressing SimplePasswd.zip: %s", err.Error())
 	}

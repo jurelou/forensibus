@@ -1,7 +1,4 @@
 
-archives_passwords = ["virus", "avproof"]
-temporary_folder = "/tmp/forensibus"
-
 pipeline "test_simple_pipeline" {
 
   find "firstFind" {

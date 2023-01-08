@@ -1,19 +1,20 @@
-package utils
+package utils_test
 
 import (
 	"fmt"
+	"github.com/jurelou/forensibus/utils"
 	"testing"
 )
 
 func TestConfig(t *testing.T) {
-	err := Configure()
+	err := utils.Configure()
 	if err != nil {
 		t.Errorf("Error while Loading config %s", err.Error())
 	}
-	err = Reload()
+	err = utils.Reload()
 	if err != nil {
 		t.Errorf("Error while Reloading config %s", err.Error())
 	}
-	passwds := Config.ArchivePasswords
+	passwds := utils.Config.ArchivePasswords
 	fmt.Println(passwds)
 }

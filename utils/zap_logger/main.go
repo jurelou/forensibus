@@ -31,7 +31,7 @@ func configureLogger() (zap.Logger, error) {
 
 	zLogger, err := cfg.Build()
 	if err != nil {
-		return *zLogger, err
+		return zap.Logger{}, err
 	}
 	return *zLogger, nil
 }

@@ -6,4 +6,5 @@ splunk:
   password: aze
 
 ArchivePasswords:
-  - sdf
+  - password
+  - passwd

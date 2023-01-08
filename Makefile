@@ -2,9 +2,17 @@ PACKAGES = cmd core processors utils worker
 
 all:
 	@mkdir -p bin
-	GOOS=windows GOARCH=amd64 go build -o bin/forensibus_x64.exe main.go
-	CGO_ENABLED=0 go build -ldflags="-extldflags=-static" -o bin/forensibus main.go
-	sudo chroot . ./bin/forensibus
+	GOOS=windows GOARCH=amd64 go build -o ./bin/forensibus_windows_amd64.exe main.go
+	GOOS=windows GOARCH=386 go build -o ./bin/forensibus_windows_x86.exe main.go
+
+	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-extldflags=-static" -o ./bin/forensibus_darwin_amd64 main.go
+	GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="-extldflags=-static" -o ./bin/forensibus_darwin_arm64 main.go
+
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-extldflags=-static" -o ./bin/forensibus_linux_amd64 main.go
+	GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="-extldflags=-static" -o ./bin/forensibus_linux_arm64 main.go
+	GOOS=linux GOARCH=386 CGO_ENABLED=0 go build -ldflags="-extldflags=-static" -o ./bin/forensibus_linux_x86 main.go
+
+	sudo chroot . ./forensibus
 
 lint:
 	golangci-lint run

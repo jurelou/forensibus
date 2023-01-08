@@ -1,6 +1,9 @@
 package utils
 
-import "github.com/jurelou/forensibus/utils/zap_logger"
+import (
+	"fmt"
+	"github.com/jurelou/forensibus/utils/zap_logger"
+)
 
 var Log Logger
 
@@ -20,6 +23,6 @@ func init() {
 	var err error
 	Log, err = zap_logger.GetLogger()
 	if err != nil {
-		panic("Could not create a logger !")
+		panic(fmt.Sprintf("Could not create a logger : %s", err))
 	}
 }

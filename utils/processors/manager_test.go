@@ -1,12 +1,14 @@
-package processors
+package processors_test
 
 import (
 	"fmt"
 	"testing"
+
+	"github.com/jurelou/forensibus/utils/processors"
 )
 
 func TestGetEvtx(t *testing.T) {
-	_, err := Get("evtx")
+	_, err := processors.Get("evtx")
 	if err == nil {
 		t.Errorf("Processor `this_should_not_exists` should not exists")
 	}
@@ -14,7 +16,7 @@ func TestGetEvtx(t *testing.T) {
 
 func TestGetInvalid(t *testing.T) {
 	fmt.Println("ok")
-	_, err := Get("this_should_not_exists")
+	_, err := processors.Get("this_should_not_exists")
 	if err == nil {
 		t.Errorf("Processor `this_should_not_exists` should not exists")
 	}

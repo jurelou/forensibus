@@ -1,4 +1,4 @@
-package utils
+package utils_test
 
 import (
 	"fmt"
@@ -6,17 +6,19 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/jurelou/forensibus/utils"
 )
 
 func TestFindFilesUnknownFolder(t *testing.T) {
-	_, err := FindFiles(FindFilesParams{Path: "/this/should/not/exists"})
+	_, err := utils.FindFiles(utils.FindFilesParams{Path: "/this/should/not/exists"})
 	if err == nil {
 		t.Errorf("FindFiles should fail to find files from '/this/should/not/exists'")
 	}
 }
 
 func TestFindFilesSingle(t *testing.T) {
-	files, err := FindFiles(FindFilesParams{Path: "./filesystem.go"})
+	files, err := utils.FindFiles(utils.FindFilesParams{Path: "./filesystem.go"})
 
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
@@ -27,7 +29,7 @@ func TestFindFilesSingle(t *testing.T) {
 }
 
 func TestFindFilesSingleWithRegex(t *testing.T) {
-	files, err := FindFiles(FindFilesParams{Path: "./filesystem.go", PathPatterns: []string{".*system.go"}})
+	files, err := utils.FindFiles(utils.FindFilesParams{Path: "./filesystem.go", PathPatterns: []string{".*system.go"}})
 
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
@@ -38,7 +40,7 @@ func TestFindFilesSingleWithRegex(t *testing.T) {
 }
 
 func TestFindFilesSingleWithInvalidRegex(t *testing.T) {
-	files, err := FindFiles(FindFilesParams{Path: "./filesystem.go", PathPatterns: []string{".*nope.does.not.exists$"}})
+	files, err := utils.FindFiles(utils.FindFilesParams{Path: "./filesystem.go", PathPatterns: []string{".*nope.does.not.exists$"}})
 
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
@@ -49,7 +51,7 @@ func TestFindFilesSingleWithInvalidRegex(t *testing.T) {
 }
 
 func TestFindFilesFolder(t *testing.T) {
-	files, err := FindFiles(FindFilesParams{Path: "."})
+	files, err := utils.FindFiles(utils.FindFilesParams{Path: "."})
 
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
@@ -60,7 +62,7 @@ func TestFindFilesFolder(t *testing.T) {
 }
 
 func TestFindFilesFolderWithRegex(t *testing.T) {
-	files, err := FindFiles(FindFilesParams{Path: ".", PathPatterns: []string{".*.this.should.not.exists", ".*filesystem(_test)?.go$"}})
+	files, err := utils.FindFiles(utils.FindFilesParams{Path: ".", PathPatterns: []string{".*.this.should.not.exists", ".*filesystem(_test)?.go$"}})
 
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
@@ -71,7 +73,7 @@ func TestFindFilesFolderWithRegex(t *testing.T) {
 }
 
 func TestFindFilesInvalidRegex(t *testing.T) {
-	files, err := FindFiles(FindFilesParams{Path: ".", PathPatterns: []string{"invalid_file_name.nope"}})
+	files, err := utils.FindFiles(utils.FindFilesParams{Path: ".", PathPatterns: []string{"invalid_file_name.nope"}})
 
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
@@ -82,7 +84,7 @@ func TestFindFilesInvalidRegex(t *testing.T) {
 }
 
 func TestFindFilesFromFolderWithFiletype(t *testing.T) {
-	files, err := FindFiles(FindFilesParams{Path: "../", FileFormats: []string{"application/x-tar", "application/gzip"}})
+	files, err := utils.FindFiles(utils.FindFilesParams{Path: "../", FileFormats: []string{"application/x-tar", "application/gzip"}})
 
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
@@ -94,7 +96,7 @@ func TestFindFilesFromFolderWithFiletype(t *testing.T) {
 
 func TestConvertHomePath(t *testing.T) {
 	in := "~/myfolder"
-	out, err := ConvertRelativePath(in)
+	out, err := utils.ConvertRelativePath(in)
 	if err != nil {
 		t.Errorf("Error while converting relative path: %s", err)
 	}
@@ -105,7 +107,7 @@ func TestConvertHomePath(t *testing.T) {
 
 func TestConvertDotPath(t *testing.T) {
 	in := "../utils/filesystem_test.go"
-	out, err := ConvertRelativePath(in)
+	out, err := utils.ConvertRelativePath(in)
 	if err != nil {
 		t.Errorf("Error while converting relative path: %s", err)
 	}
@@ -113,14 +115,14 @@ func TestConvertDotPath(t *testing.T) {
 		t.Errorf("Invalid path conversion")
 	}
 
-	if !FileExists(out) {
+	if !utils.FileExists(out) {
 		t.Errorf("filesystem_test.go should exists !")
 	}
 }
 
 func TestConvertDotDotPath(t *testing.T) {
 	in := "../../../../../../../../../../../../../../../../../../../../../tmp"
-	out, err := ConvertRelativePath(in)
+	out, err := utils.ConvertRelativePath(in)
 	if err != nil {
 		t.Errorf("Error while converting relative path: %s", err)
 	}
@@ -131,7 +133,7 @@ func TestConvertDotDotPath(t *testing.T) {
 
 func TestConvertLocalPath(t *testing.T) {
 	in := "filesystem_test.go"
-	out, err := ConvertRelativePath(in)
+	out, err := utils.ConvertRelativePath(in)
 	if err != nil {
 		t.Errorf("Error while converting relative path: %s", err)
 	}
@@ -139,14 +141,14 @@ func TestConvertLocalPath(t *testing.T) {
 		t.Errorf("Invalid path conversion")
 	}
 
-	if !FileExists(out) {
+	if !utils.FileExists(out) {
 		t.Errorf("filesystem_test.go should exists !")
 	}
 }
 
 func TestConvertLocalDotPath(t *testing.T) {
 	in := "./filesystem_test.go"
-	out, err := ConvertRelativePath(in)
+	out, err := utils.ConvertRelativePath(in)
 	if err != nil {
 		t.Errorf("Error while converting relative path: %s", err)
 	}
@@ -154,14 +156,14 @@ func TestConvertLocalDotPath(t *testing.T) {
 		t.Errorf("Invalid path conversion")
 	}
 
-	if !FileExists(out) {
+	if !utils.FileExists(out) {
 		t.Errorf("filesystem_test.go should exists !")
 	}
 }
 
 func TestConvertStrangeDotPath(t *testing.T) {
 	in := "./../utils/filesystem_test.go"
-	out, err := ConvertRelativePath(in)
+	out, err := utils.ConvertRelativePath(in)
 	if err != nil {
 		t.Errorf("Error while converting relative path: %s", err)
 	}
@@ -169,7 +171,7 @@ func TestConvertStrangeDotPath(t *testing.T) {
 		t.Errorf("Invalid path conversion")
 	}
 
-	if !FileExists(out) {
+	if !utils.FileExists(out) {
 		t.Errorf("filesystem_test.go should exists !")
 	}
 }
@@ -181,12 +183,12 @@ func TestCopyFileFile(t *testing.T) {
 		t.Fatalf("Could not remove %s", output)
 	}
 
-	err = CopyFile("../datasets/files/empty.txt", output)
+	err = utils.CopyFile("../datasets/files/empty.txt", output)
 	if err != nil {
 		t.Errorf("Copy empty file should not fail: %s", err.Error())
 	}
 
-	if exists := FileExists(output); !exists {
+	if exists := utils.FileExists(output); !exists {
 		t.Fatalf("Copy did not succeed to create output file")
 	}
 	content, err := os.ReadFile(output)
@@ -206,7 +208,7 @@ func TestCopyInvalidFile(t *testing.T) {
 		t.Fatalf("Could not remove %s", output)
 	}
 
-	err = CopyFile("/tmp/thi/does/not/exi", output)
+	err = utils.CopyFile("/tmp/thi/does/not/exi", output)
 	if err == nil {
 		t.Errorf("Copy unknown file should fail")
 	}
@@ -222,12 +224,12 @@ func TestCopyFileToFolder(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not create %s", output)
 	}
-	err = CopyFile("../datasets/files/empty.txt", output)
+	err = utils.CopyFile("../datasets/files/empty.txt", output)
 	if err != nil {
 		t.Errorf("Copy empty file should not fail: %s", err.Error())
 	}
 
-	if exists := FileExists(output); !exists {
+	if exists := utils.FileExists(output); !exists {
 		t.Fatalf("Copy did not succeed to create output file")
 	}
 	content, err := os.ReadFile(filepath.Join(output, "empty.txt"))
@@ -247,12 +249,12 @@ func TestCopyFileSubfolders(t *testing.T) {
 		t.Fatalf("Could not remove %s", output)
 	}
 
-	err = CopyFile("../datasets/files/empty.txt", output)
+	err = utils.CopyFile("../datasets/files/empty.txt", output)
 	if err != nil {
 		t.Errorf("Copy empty file should not fail: %s", err.Error())
 	}
 
-	if exists := FileExists(output); !exists {
+	if exists := utils.FileExists(output); !exists {
 		t.Fatalf("Copy did not succeed to create output file")
 	}
 	content, err := os.ReadFile(output)
