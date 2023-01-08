@@ -3,7 +3,7 @@ pipeline "prefetch" {
 
     extract "all archives" {
         patterns = [".*"]
-        mime_types = ["application/x-7z-compressed", "application/x-zip", "custom/zip"]
+        mime_types = ["application/x-7z-compressed", "application/x-zip"]
 
         find "compressed prefetch files" {
             patterns = [".*.pf$"]

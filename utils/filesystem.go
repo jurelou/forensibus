@@ -37,15 +37,15 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 			files = append(files, filePath)
 			return nil
 		}
-
+		magicMatches := false
 		// Check if file matches the given mime types
 		if checkFileFormat {
 			magic := GetMagic(filePath)
-
 			for _, mime := range params.FileFormats {
 				if mime == magic {
-					files = append(files, filePath)
-					return nil
+					magicMatches = true
+					// files = append(files, filePath)
+					break
 				}
 			}
 		}
@@ -53,7 +53,10 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 		// Check if file has a valid path
 		for _, rex := range pathRegexes {
 			if rex.MatchString(filePath) {
-				files = append(files, filePath)
+				if !checkFileFormat || (checkFileFormat && magicMatches) {
+					files = append(files, filePath)
+					return nil
+				}
 				return nil
 			}
 		}

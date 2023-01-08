@@ -17,6 +17,18 @@ func TestFindFilesUnknownFolder(t *testing.T) {
 	}
 }
 
+func TestFindFiles7Zip(t *testing.T) {
+	files, err := utils.FindFiles(utils.FindFilesParams{Path: "../datasets", PathPatterns: []string{".*"}, FileFormats: []string{"application/x-7z-compressed"}})
+	if err != nil {
+		t.Errorf("FindFiles returned an error: %s", err)
+	}
+	for _, file := range files {
+		if !strings.HasSuffix(file, ".7z") {
+			t.Errorf(fmt.Sprintf("[PROBABLE FALSE NEGATIVE] Find with 7z mime type returned a file whithout .7z suffix: %s", file))
+		}
+	}
+}
+
 func TestFindFilesSingle(t *testing.T) {
 	files, err := utils.FindFiles(utils.FindFilesParams{Path: "./filesystem.go"})
 

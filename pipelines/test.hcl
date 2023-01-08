@@ -11,7 +11,7 @@ pipeline "testpipe" {
   // extract "7z archives" {
   //     patterns = [".*.7z$"]
   
-      find co files" {
+      find "co files" {
         patterns = [".*"]
 
         process "prefetch" {}
