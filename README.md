@@ -16,6 +16,10 @@
 - Add more archives extraction types
 - Ability to lint the config file. (check if processors exists, ....)
 
+# Compiler pour les différents OS
+
+sudo apt-get install mingw-w64-x86-64-dev gcc-mingw-w64-x86-64 gcc-mingw-w64 gcc-multilib
+
 # Mettre à jour le protocol (protobuf)
 
 ```
