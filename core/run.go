@@ -131,9 +131,13 @@ func makeInputs(sources []string) ([]Input, error) {
 		if err != nil {
 			return ins, err
 		}
-		filename := filepath.Base(absPath)
 
+		filename := filepath.Base(absPath)
 		filenameWhithoutSuffix := strings.TrimSuffix(filename, filepath.Ext(filename))
+
+		volumeName := filepath.VolumeName(absPath)
+		absPath = strings.TrimPrefix(absPath, volumeName)
+
 		outputFolder := filepath.Join(utils.Config.OutputFolder, filepath.Dir(absPath), filenameWhithoutSuffix)
 
 		utils.Log.Infof("Writing output filed FROM `%s` TO `%s`", outputFolder, absPath)
