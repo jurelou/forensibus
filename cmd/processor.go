@@ -5,7 +5,7 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
+
 	"github.com/spf13/cobra"
 
 	"github.com/jurelou/forensibus/core"
@@ -33,7 +33,7 @@ to quickly create a Cobra application.`,
 		if len(args) == 0 {
 			core.ListProcessors()
 		} else {
-			fmt.Println("Run", args[0])
+			core.RunSingleProcessor(args[0])
 
 		}
 	},
