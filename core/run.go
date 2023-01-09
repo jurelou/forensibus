@@ -133,12 +133,6 @@ func Run(pipelineconfigFile string, paths []string) {
 		return
 	}
 
-	// conn, err := ConnectWorker(serverAddress)
-	// if err != nil {
-	// 	utils.Log.Warnf(err.Error())
-	// 	return
-	// }
-	// defer conn.Close()
 
 	workers := new(WorkerPool)
 	worker, err := workers.Connect(serverAddress)
@@ -149,10 +143,11 @@ func Run(pipelineconfigFile string, paths []string) {
 	utils.Log.Infof("Worker %s (%s) is up! (cap: %d)", worker.Address, worker.Name, worker.Capacity)
 
 	queueSize := 4
-	jobs := make(chan Job, queueSize)
+	// Queue size should be > than workers capacity so that workers are never starving
+	jobs := make(chan Job, queueSize)  
 	results := make(chan JobResult, queueSize)
 
-	utils.Log.Infof("Launch a pool of %d workers", workers.Size())
+	utils.Log.Infof("Launch a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
 	workers.Work(jobs, results)
 
 	// inputs, err := makeInputs(paths)

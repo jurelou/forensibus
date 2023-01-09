@@ -35,3 +35,11 @@ func (p *WorkerPool) Work(jobs <-chan Job, results chan<- JobResult) {
 func (p *WorkerPool) Size() int {
 	return len(p.Workers)
 }
+
+func (p *WorkerPool) Capacity() int {
+	cap := 0
+	for _, worker := range p.Workers {
+		cap += int(worker.Capacity)
+	}
+	return cap
+}
