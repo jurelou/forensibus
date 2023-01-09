@@ -30,10 +30,18 @@ func (p PrefetchProcessor) Configure() error {
 	return nil
 }
 func (p PrefetchProcessor) Run(in string) error {
-	utils.Log.Debugf("Run pf processor against `%s`", in)
+	// utils.Log.Debugf("Run pf processor against `%s`", in)
 
-	fd, _ := os.Open(in)
-	pf, _ := prefetch.LoadPrefetch(fd)
+	fd, err := os.Open(in)
+	if err != nil {
+		utils.Log.Warnf("Could not open prefetch file `%s`", in)
+		return err
+	}
+	pf, err := prefetch.LoadPrefetch(fd)
+	if err != nil {
+		utils.Log.Warnf("Prefetch file `%s` is invalid: `%s`", in, err.Error())
+		return err
+	}
 	entry := PrefetchEntry(*pf)
 
 	json, _ := json.Marshal(entry)

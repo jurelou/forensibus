@@ -1,42 +1,16 @@
 package core
 
 import (
-	"context"
-	"fmt"
 	"path/filepath"
 	"strings"
-	"time"
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-
-	"github.com/jurelou/forensibus/proto"
 	"github.com/jurelou/forensibus/utils"
 	"github.com/jurelou/forensibus/utils/decompress"
 )
 
 var (
-	Client        proto.WorkerClient
 	serverAddress = "localhost:50051"
 )
-
-func ConnectWorker(address string) (*grpc.ClientConn, error) {
-	conn, err := grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		utils.Log.Fatalf("Could not resolve %s: %v", address, err)
-	}
-
-	Client = proto.NewWorkerClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-
-	_, err = Client.Ping(ctx, &proto.PingRequest{Identifier: "localhost"})
-	if err != nil {
-		return nil, fmt.Errorf("Could not ping worker @%s: %w", address, err)
-	}
-	utils.Log.Infof("Worker @%s is up!", address)
-	return conn, nil
-}
 
 func find(ins []Input, patterns []string, mimes []string) ([]Input, error) {
 	var outs []Input
@@ -154,21 +128,38 @@ func Run(pipelineconfigFile string, paths []string) {
 		utils.Log.Warnf(err.Error())
 		return
 	}
+	if err := LintPipeline(config.Pipeline); err != nil {
+		utils.Log.Warnf(err.Error())
+		return
+	}
 
-	conn, err := ConnectWorker(serverAddress)
+	// conn, err := ConnectWorker(serverAddress)
+	// if err != nil {
+	// 	utils.Log.Warnf(err.Error())
+	// 	return
+	// }
+	// defer conn.Close()
+
+	workers := new(WorkerPool)
+	worker, err := workers.Connect(serverAddress)
 	if err != nil {
 		utils.Log.Warnf(err.Error())
 		return
 	}
-	defer conn.Close()
+	utils.Log.Infof("Worker %s (%s) is up!", worker.Address, worker.Name)
 
+	queueSize := 4
+	jobs := make(chan Job, queueSize)
+	results := make(chan JobResult, queueSize)
+
+	workers.Work(jobs, results)
 	StartWorkers()
 
-	inputs, err := makeInputs(paths)
-	if err != nil {
-		utils.Log.Warnf(err.Error())
-		return
-	}
-	execPipeline(config, inputs)
+	// inputs, err := makeInputs(paths)
+	// if err != nil {
+	// 	utils.Log.Warnf(err.Error())
+	// 	return
+	// }
+	// execPipeline(config, inputs)
 
 }

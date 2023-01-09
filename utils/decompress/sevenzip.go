@@ -70,7 +70,7 @@ func findSevenZipFromCurrentFolder() string {
 
 	switch runtime.GOOS {
 	case "windows":
-		path = filepath.Join(externalFolder, "windows/7z.exe")
+		path = filepath.Join(externalFolder, "windows/7zr.exe")
 	case "linux":
 		path = filepath.Join(externalFolder, "linux/7zz")
 	case "darwin":

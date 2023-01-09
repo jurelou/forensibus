@@ -3,6 +3,8 @@ package core
 import (
 	"fmt"
 	"github.com/hashicorp/hcl/v2/hclsimple"
+
+	"github.com/jurelou/forensibus/utils/processors"
 )
 
 type Config struct {
@@ -79,6 +81,9 @@ func walk(item interface{}, in []Input, cb WalkCallback) {
 	switch t := item.(type) {
 	case PipelineConfig:
 		out, _ := cb(item, in)
+		if len(out) == 0 {
+			return
+		}
 		pipelineConfig := item.(PipelineConfig)
 
 		for _, nestedFinds := range pipelineConfig.Finds {
@@ -93,6 +98,9 @@ func walk(item interface{}, in []Input, cb WalkCallback) {
 
 	case FindConfig:
 		out, _ := cb(item, in)
+		if len(out) == 0 {
+			return
+		}
 		findConfig := item.(FindConfig)
 		for _, nestedFinds := range findConfig.Finds {
 			walk(nestedFinds, out, cb)
@@ -105,6 +113,9 @@ func walk(item interface{}, in []Input, cb WalkCallback) {
 		}
 	case ExtractConfig:
 		out, _ := cb(item, in)
+		if len(out) == 0 {
+			return
+		}
 		extractConfig := item.(ExtractConfig)
 
 		for _, nestedFinds := range extractConfig.Finds {
@@ -125,4 +136,24 @@ func walk(item interface{}, in []Input, cb WalkCallback) {
 
 func WalkPipeline(item PipelineConfig, in []Input, cb WalkCallback) {
 	walk(item, in, cb)
+}
+
+func LintPipeline(item PipelineConfig) error {
+	// Pass a dummy item to each steps to make sure the pipeline is fully traversed
+	dummy := make([]Input, 1)
+	dummy = append(dummy, Input{Current: "DummyCurrent", Next: "DummyNext"})
+	var lastErr error
+
+	WalkPipeline(item, dummy, func(item interface{}, in []Input) ([]Input, error) {
+		switch item.(type) {
+		case ProcessConfig:
+			processConfig := item.(ProcessConfig)
+			if _, err := processors.Get(processConfig.Name); err != nil {
+				lastErr = fmt.Errorf("Invalid pipeline definition, processor %s is not found", processConfig.Name)
+				return dummy, nil
+			}
+		}
+		return dummy, nil
+	})
+	return lastErr
 }

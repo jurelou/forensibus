@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option go_package = "github.com/jurelou/forensibus/proto/worker";
+
+package worker;
+
+// The worker service definition.
+service Worker {
+  rpc Ping (PingRequest) returns (PingResponse) {}
+  rpc Work (WorkRequest) returns (WorkResponse) {}
+}
+
+// Ping
+message PingRequest {
+  string identifier = 1;
+}
+
+message PingResponse {
+  string message = 1;
+}
+
+// Work
+message WorkRequest {
+    string source = 1;
+    string outputFolder = 2;
+    string processor = 3;
+    map<string,string> config = 4;
+}
+
+message WorkResponse {
+    uint32 status = 1;
+    string error = 2;
+}

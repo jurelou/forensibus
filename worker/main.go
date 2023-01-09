@@ -6,7 +6,7 @@ import (
 	"net"
 	_ "time"
 
-	"github.com/jurelou/forensibus/proto"
+	"github.com/jurelou/forensibus/proto/worker"
 	"github.com/jurelou/forensibus/utils"
 	"github.com/jurelou/forensibus/utils/processors"
 
@@ -19,7 +19,7 @@ var (
 
 // server is used to implement proto.WorkerServer.
 type Server struct {
-	proto.UnimplementedWorkerServer
+	worker.UnimplementedWorkerServer
 }
 
 func loadProcessors() {
@@ -38,7 +38,7 @@ func runGRPCServer() {
 	loadProcessors()
 
 	s := grpc.NewServer()
-	proto.RegisterWorkerServer(s, &Server{})
+	worker.RegisterWorkerServer(s, &Server{})
 	utils.Log.Infof("Worker listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
 		utils.Log.Fatalf("failed to serve: %v", err)

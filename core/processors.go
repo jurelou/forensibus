@@ -2,9 +2,9 @@ package core
 
 import (
 	"fmt"
+	"github.com/pterm/pterm"
 	"strings"
 	"time"
-	"github.com/pterm/pterm"
 
 	"github.com/jurelou/forensibus/utils/processors"
 )
@@ -32,7 +32,6 @@ func RunSingleProcessor(procName string) {
 	pterm.Info.WithShowLineNumber().Println("Other PrefixPrinters can do that too!")    // Print Error.
 	// Temporarily set Fatal to false, so that the CI won't crash.
 	pterm.Fatal.WithFatal(false).Println("Hello, World!") // Print Fatal.
-
 
 	p, _ := pterm.DefaultProgressbar.WithTotal(len(fakeInstallList)).WithTitle("Downloading stuff").Start()
 
