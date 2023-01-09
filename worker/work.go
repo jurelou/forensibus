@@ -2,6 +2,7 @@ package worker
 
 import (
 	"context"
+
 	"github.com/jurelou/forensibus/proto/worker"
 	"github.com/jurelou/forensibus/utils"
 	"github.com/jurelou/forensibus/utils/processors"

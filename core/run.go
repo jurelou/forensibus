@@ -146,14 +146,14 @@ func Run(pipelineconfigFile string, paths []string) {
 		utils.Log.Warnf(err.Error())
 		return
 	}
-	utils.Log.Infof("Worker %s (%s) is up!", worker.Address, worker.Name)
+	utils.Log.Infof("Worker %s (%s) is up! (cap: %d)", worker.Address, worker.Name, worker.Capacity)
 
 	queueSize := 4
 	jobs := make(chan Job, queueSize)
 	results := make(chan JobResult, queueSize)
 
+	utils.Log.Infof("Launch a pool of %d workers", workers.Size())
 	workers.Work(jobs, results)
-	StartWorkers()
 
 	// inputs, err := makeInputs(paths)
 	// if err != nil {

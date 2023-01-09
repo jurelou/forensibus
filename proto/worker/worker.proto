@@ -6,7 +6,7 @@ package worker;
 
 // The worker service definition.
 service Worker {
-  rpc Ping (PingRequest) returns (PingResponse) {}
+  rpc Ping (PingRequest) returns (Pong) {}
   rpc Work (WorkRequest) returns (WorkResponse) {}
 }
 
@@ -15,8 +15,9 @@ message PingRequest {
   string identifier = 1;
 }
 
-message PingResponse {
-  string message = 1;
+message Pong {
+  string name = 1;
+  uint32 capacity = 2;
 }
 
 // Work

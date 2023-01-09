@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type WorkerClient interface {
-	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error)
+	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*Pong, error)
 	Work(ctx context.Context, in *WorkRequest, opts ...grpc.CallOption) (*WorkResponse, error)
 }
 
@@ -34,8 +34,8 @@ func NewWorkerClient(cc grpc.ClientConnInterface) WorkerClient {
 	return &workerClient{cc}
 }
 
-func (c *workerClient) Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error) {
-	out := new(PingResponse)
+func (c *workerClient) Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*Pong, error) {
+	out := new(Pong)
 	err := c.cc.Invoke(ctx, "/worker.Worker/Ping", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -56,7 +56,7 @@ func (c *workerClient) Work(ctx context.Context, in *WorkRequest, opts ...grpc.C
 // All implementations must embed UnimplementedWorkerServer
 // for forward compatibility
 type WorkerServer interface {
-	Ping(context.Context, *PingRequest) (*PingResponse, error)
+	Ping(context.Context, *PingRequest) (*Pong, error)
 	Work(context.Context, *WorkRequest) (*WorkResponse, error)
 	mustEmbedUnimplementedWorkerServer()
 }
@@ -65,7 +65,7 @@ type WorkerServer interface {
 type UnimplementedWorkerServer struct {
 }
 
-func (UnimplementedWorkerServer) Ping(context.Context, *PingRequest) (*PingResponse, error) {
+func (UnimplementedWorkerServer) Ping(context.Context, *PingRequest) (*Pong, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
 func (UnimplementedWorkerServer) Work(context.Context, *WorkRequest) (*WorkResponse, error) {

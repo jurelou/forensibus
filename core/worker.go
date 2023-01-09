@@ -26,10 +26,10 @@ var (
 )
 
 type Worker struct {
-	// PoolSize int
-	Client  worker.WorkerClient
-	Name    string
-	Address string
+	Client  	worker.WorkerClient
+	Name    	string
+	Address		string
+	Capacity 	uint32
 }
 
 func (w *Worker) Connect(address string) error {
@@ -39,24 +39,25 @@ func (w *Worker) Connect(address string) error {
 		return fmt.Errorf("Could not connect to %s: %w", address, err)
 	}
 	w.Client = worker.NewWorkerClient(conn)
-	pingResponse, err := w.Ping(3)
+	pong, err := w.Ping(3)
 	if err != nil {
 		return err
 	}
-	w.Name = pingResponse.GetMessage()
+	w.Name = pong.GetName()
+	w.Capacity = pong.GetCapacity()
 	return nil
 }
 
-func (w *Worker) Ping(timeout int) (worker.PingResponse, error) {
+func (w *Worker) Ping(timeout int) (worker.Pong, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	defer cancel()
-	var response *worker.PingResponse
+	var pong *worker.Pong
 
-	response, err := w.Client.Ping(ctx, &worker.PingRequest{Identifier: "forensibusCore"}) // TODO: get hostname here
+	pong, err := w.Client.Ping(ctx, &worker.PingRequest{Identifier: "forensibusCore"}) // TODO: get hostname here
 	if err != nil {
-		return *response, fmt.Errorf("Could not ping worker %s: %w", w.Address, err)
+		return *pong, fmt.Errorf("Could not ping worker %s: %w", w.Address, err)
 	}
-	return *response, nil
+	return *pong, nil
 }
 
 func (w *Worker) Work(jobs <-chan Job, results chan<- JobResult) {
@@ -71,7 +72,6 @@ func (w *Worker) Work(jobs <-chan Job, results chan<- JobResult) {
 		}
 		results <- JobResult{Processor: job.Config.Name, In: job.In, Status: res.GetStatus(), Error: res.GetError()}
 	}
-
 }
 
 type Job struct {
@@ -100,12 +100,6 @@ type JobResult struct {
 // 		job.Results <- JobResult{Processor: job.Config.Name, In: job.In, Status: res.GetStatus(), Error: res.GetError()}
 // 	}
 // }
-
-func StartWorkers() {
-	// for w := 0; w < queueSize; w++ {
-	// 	go work(jobsChannel)
-	// }
-}
 
 func RunProcessor(ins []Input, config ProcessConfig) {
 	// results := make(chan string, len(ins))

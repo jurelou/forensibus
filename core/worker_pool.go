@@ -26,6 +26,12 @@ func (p *WorkerPool) Connect(address string) (Worker, error) {
 
 func (p *WorkerPool) Work(jobs <-chan Job, results chan<- JobResult) {
 	for _, worker := range p.Workers {
-		go worker.Work(jobs, results)
+		for i := uint32(0) ; i < worker.Capacity ; i++ {
+			go worker.Work(jobs, results)
+		}
 	}
+}
+
+func (p *WorkerPool) Size() int {
+	return len(p.Workers)
 }
