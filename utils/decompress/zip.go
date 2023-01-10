@@ -21,11 +21,13 @@ func DecompressZip(in string, out string) error {
 	for _, f := range archive.File {
 		filePath := filepath.Join(out, f.Name)
 		if !strings.HasPrefix(filePath, filepath.Clean(out)+string(os.PathSeparator)) {
-			return errors.New(fmt.Sprintf("Invalid zip file %s", f.Name))
+			return errors.Errorf("Refuse to decompress %s (probably because of ..)", f.Name)
 		}
 
 		if f.FileInfo().IsDir() {
-			os.Mkdir(filePath, os.ModePerm)
+			if err := os.Mkdir(filePath, os.ModePerm); err != nil {
+				return fmt.Errorf("Could not create folder %s: %w", filePath, err)
+			}
 			continue
 		}
 

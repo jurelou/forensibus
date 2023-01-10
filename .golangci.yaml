@@ -43,7 +43,7 @@ linters:
     - nosprintfhostport
     - nonamedreturns
     - nolintlint
-    - nlreturn
+    #- nlreturn
     - nilnil
     - nilerr
     - nestif
@@ -58,3 +58,9 @@ linters:
     - goimports
     - gofumpt
     - goerr113
+
+linters-settings:
+  errcheck:
+    exclude-functions:
+      - (*go.uber.org/zap.Logger).Sync
+

@@ -15,6 +15,7 @@ func GetLogger() (*zap.SugaredLogger, error) {
 		return sugarLogger, err
 	}
 	defer logger.Sync()
+
 	sugarLogger = logger.Sugar()
 	return sugarLogger, nil
 }
