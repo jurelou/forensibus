@@ -1,9 +1,7 @@
 package decompress
 
 import (
-	// "errors"
 	"archive/zip"
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -21,7 +19,7 @@ func DecompressZip(in string, out string) error {
 	for _, f := range archive.File {
 		filePath := filepath.Join(out, f.Name)
 		if !strings.HasPrefix(filePath, filepath.Clean(out)+string(os.PathSeparator)) {
-			return errors.Errorf("Refuse to decompress %s (probably because of ..)", f.Name)
+			return fmt.Errorf("Refuse to decompress %s (probably because of ..)", f.Name)
 		}
 
 		if f.FileInfo().IsDir() {

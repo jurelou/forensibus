@@ -11,9 +11,7 @@ import (
 	"strings"
 )
 
-var (
-	buffSize = 1024 * 10
-)
+var buffSize = 1024 * 10
 
 type FindFilesParams struct {
 	Path string

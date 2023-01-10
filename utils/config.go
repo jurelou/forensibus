@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
@@ -22,17 +23,16 @@ type SplunkConfiguration struct {
 
 func setDefaults() {
 	viper.SetDefault("ArchivePasswords", []string{})
-
 }
 
 func Reload() error {
-	//viper.SetDefault("ContentDir", "content")
+	// viper.SetDefault("ContentDir", "content")
 	if err := viper.ReadInConfig(); err != nil {
 		return err
 	}
 	err := viper.Unmarshal(&Config)
 	if err != nil {
-		return err //log.Fatalf("unable to decode into struct, %v", err)
+		return err // log.Fatalf("unable to decode into struct, %v", err)
 	}
 	return nil
 }

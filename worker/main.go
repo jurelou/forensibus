@@ -13,9 +13,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-var (
-	port = 50051
-)
+var port = 50051
 
 // server is used to implement proto.WorkerServer.
 type Server struct {

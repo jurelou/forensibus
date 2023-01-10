@@ -6,6 +6,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+
 	run "github.com/jurelou/forensibus/core/run"
 	"github.com/jurelou/forensibus/utils"
 	"github.com/spf13/cobra"
@@ -37,7 +38,6 @@ var (
 		},
 
 		RunE: func(cmd *cobra.Command, filepaths []string) error {
-
 			if !utils.FileExists(pipelineconfig) {
 				return fmt.Errorf("%s file does not exists.\n", pipelineconfig)
 			}

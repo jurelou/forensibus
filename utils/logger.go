@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+
 	"github.com/jurelou/forensibus/utils/zap_logger"
 )
 

@@ -1,9 +1,11 @@
 package zap_logger
 
 import (
+	"fmt"
+	"log"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"log"
 )
 
 func GetLogger() (*zap.SugaredLogger, error) {
@@ -21,7 +23,7 @@ func GetLogger() (*zap.SugaredLogger, error) {
 }
 
 func configureLogger() (zap.Logger, error) {
-	//standard configuration
+	// standard configuration
 	cfg := zap.NewProductionConfig()
 	cfg.Level = zap.NewAtomicLevelAt(zapcore.DebugLevel)
 	cfg.Encoding = "console"
@@ -32,7 +34,7 @@ func configureLogger() (zap.Logger, error) {
 
 	zLogger, err := cfg.Build()
 	if err != nil {
-		return zap.Logger{}, err
+		return zap.Logger{}, fmt.Errorf("Could not configure zap logger: %w", err)
 	}
 	return *zLogger, nil
 }

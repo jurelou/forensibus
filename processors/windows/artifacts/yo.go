@@ -12,6 +12,7 @@ type EvtxProcessor struct {
 func (p EvtxProcessor) Configure() error {
 	return nil
 }
+
 func (p EvtxProcessor) Run(in string) error {
 	utils.Log.Debugf("Run evtx processor against `%s`", in)
 	return nil

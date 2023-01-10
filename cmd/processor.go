@@ -34,7 +34,6 @@ to quickly create a Cobra application.`,
 			processors.ListProcessors()
 		} else {
 			processors.RunSingleProcessor(args[0])
-
 		}
 	},
 }

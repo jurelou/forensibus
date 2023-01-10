@@ -31,7 +31,6 @@ func TestFindFiles7Zip(t *testing.T) {
 
 func TestFindFilesSingle(t *testing.T) {
 	files, err := utils.FindFiles(utils.FindFilesParams{Path: "./filesystem.go"})
-
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
 	}
@@ -42,7 +41,6 @@ func TestFindFilesSingle(t *testing.T) {
 
 func TestFindFilesSingleWithRegex(t *testing.T) {
 	files, err := utils.FindFiles(utils.FindFilesParams{Path: "./filesystem.go", PathPatterns: []string{".*system.go"}})
-
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
 	}
@@ -53,7 +51,6 @@ func TestFindFilesSingleWithRegex(t *testing.T) {
 
 func TestFindFilesSingleWithInvalidRegex(t *testing.T) {
 	files, err := utils.FindFiles(utils.FindFilesParams{Path: "./filesystem.go", PathPatterns: []string{".*nope.does.not.exists$"}})
-
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
 	}
@@ -64,7 +61,6 @@ func TestFindFilesSingleWithInvalidRegex(t *testing.T) {
 
 func TestFindFilesFolder(t *testing.T) {
 	files, err := utils.FindFiles(utils.FindFilesParams{Path: "."})
-
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
 	}
@@ -75,7 +71,6 @@ func TestFindFilesFolder(t *testing.T) {
 
 func TestFindFilesFolderWithRegex(t *testing.T) {
 	files, err := utils.FindFiles(utils.FindFilesParams{Path: ".", PathPatterns: []string{".*.this.should.not.exists", ".*filesystem(_test)?.go$"}})
-
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
 	}
@@ -86,7 +81,6 @@ func TestFindFilesFolderWithRegex(t *testing.T) {
 
 func TestFindFilesInvalidRegex(t *testing.T) {
 	files, err := utils.FindFiles(utils.FindFilesParams{Path: ".", PathPatterns: []string{"invalid_file_name.nope"}})
-
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
 	}
@@ -97,7 +91,6 @@ func TestFindFilesInvalidRegex(t *testing.T) {
 
 func TestFindFilesFromFolderWithFiletype(t *testing.T) {
 	files, err := utils.FindFiles(utils.FindFilesParams{Path: "../", FileFormats: []string{"application/x-tar", "application/gzip"}})
-
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
 	}
@@ -232,7 +225,7 @@ func TestCopyFileToFolder(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not remove %s", output)
 	}
-	err = os.Mkdir(output, 0755)
+	err = os.Mkdir(output, 0o755)
 	if err != nil {
 		t.Fatalf("Could not create %s", output)
 	}

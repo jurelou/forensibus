@@ -14,9 +14,7 @@ import (
 	"github.com/jurelou/forensibus/utils"
 )
 
-var (
-	sevenZipPath = ""
-)
+var sevenZipPath = ""
 
 type Entry struct {
 	Path string
@@ -36,6 +34,7 @@ func findSevenZipFromPath() string {
 	}
 	return ""
 }
+
 func findExternal7zFolder() string {
 	exists := utils.FileExists("./external/7z")
 	if exists {
@@ -61,6 +60,7 @@ func findExternal7zFolder() string {
 	}
 	return ""
 }
+
 func findSevenZipFromCurrentFolder() string {
 	var path string
 	externalFolder := findExternal7zFolder()
@@ -122,7 +122,6 @@ func getEntryLines(scanner *bufio.Scanner) ([]string, error) {
 }
 
 func checkLines(lines []string) (bool, error) {
-
 	for _, s := range lines {
 		parts := strings.SplitN(s, " =", 2)
 		if len(parts) != 2 {

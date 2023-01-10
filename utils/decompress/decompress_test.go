@@ -84,7 +84,6 @@ func TestDecompressSameName(t *testing.T) {
 	if len(files) != 4 {
 		t.Fatalf("3rd decompression did not succeed")
 	}
-
 }
 
 func TestDecompress7z(t *testing.T) {

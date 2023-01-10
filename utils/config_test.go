@@ -2,8 +2,9 @@ package utils_test
 
 import (
 	"fmt"
-	"github.com/jurelou/forensibus/utils"
 	"testing"
+
+	"github.com/jurelou/forensibus/utils"
 )
 
 func TestConfig(t *testing.T) {

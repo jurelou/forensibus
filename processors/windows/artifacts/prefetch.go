@@ -29,6 +29,7 @@ type PrefetchProcessor struct {
 func (p PrefetchProcessor) Configure() error {
 	return nil
 }
+
 func (p PrefetchProcessor) Run(in string) error {
 	// utils.Log.Debugf("Run pf processor against `%s`", in)
 

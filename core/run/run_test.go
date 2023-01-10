@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	dsl "github.com/jurelou/forensibus/core"
-	// "github.com/jurelou/forensibus/core/run"
 )
 
 func TestLintValid(t *testing.T) {

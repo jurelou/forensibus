@@ -2,9 +2,10 @@ package processors
 
 import (
 	"fmt"
-	"github.com/pterm/pterm"
 	"strings"
 	"time"
+
+	"github.com/pterm/pterm"
 
 	"github.com/jurelou/forensibus/utils/processors"
 )
@@ -41,5 +42,4 @@ func RunSingleProcessor(procName string) {
 		p.Increment()                                              // Increment the progressbar by one. Use Add(x int) to increment by a custom amount.
 		time.Sleep(time.Millisecond * 350)                         // Sleep 350 milliseconds.
 	}
-
 }

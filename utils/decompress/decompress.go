@@ -30,7 +30,7 @@ func createNamedFolder(filePath string) (string, error) {
 func genOutputFolder(in string, out string) (string, error) {
 	fileInfo, err := os.Stat(out)
 	if err == nil {
-		//Folder already exists, creates another folder with a suffix
+		// Folder already exists, creates another folder with a suffix
 		inputFilename := filepath.Base(in)
 		inputFilenameWhithoutSuffix := strings.TrimSuffix(inputFilename, filepath.Ext(inputFilename))
 		if fileInfo.IsDir() {
@@ -43,7 +43,6 @@ func genOutputFolder(in string, out string) (string, error) {
 		if err := os.MkdirAll(out, os.ModePerm); err != nil {
 			return "", err
 		}
-
 	}
 	return out, nil
 }

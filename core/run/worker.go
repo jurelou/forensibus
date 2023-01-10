@@ -47,7 +47,6 @@ func (w *Worker) Connect(address string) error {
 
 	w.Client = worker.NewWorkerClient(conn)
 	pong, err := w.Ping(3)
-
 	if err != nil {
 		return err
 	}

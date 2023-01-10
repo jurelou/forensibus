@@ -15,12 +15,17 @@ all:
 
 	#sudo chroot . ./forensibus
 
+install:
+	go install mvdan.cc/gofumpt@latest
+	go install github.com/daixiang0/gci@latest
+
+
 lint:
 	golangci-lint run
 
 format:
 	go fix
-	gofmt -w -s  $(PACKAGES)
+	gofumpt -l -w .
 	go clean
 
 vendor:

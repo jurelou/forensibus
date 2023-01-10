@@ -12,9 +12,7 @@ import (
 	"github.com/jurelou/forensibus/utils/decompress"
 )
 
-var (
-	serverAddress = "localhost:50051"
-)
+var serverAddress = "localhost:50051"
 
 type JobChannels struct {
 	// List of input / output channels
@@ -42,7 +40,6 @@ func find(steps []dsl.Step, config dsl.FindConfig) []dsl.Step {
 
 		for _, file := range files {
 			out = append(out, dsl.Step{NextArtifact: file, CurrentFolder: step.CurrentFolder})
-
 		}
 	}
 	return out
@@ -65,7 +62,6 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 		outLen := len(out)
 		if outLen == 0 {
 			utils.Log.Warnf("Extracted 0 `%s` files from %s", config.Name, in.NextArtifact)
-
 		} else {
 			utils.Log.Infof("Extracted %d `%s` files", outLen, config.Name, in.NextArtifact)
 		}
@@ -109,9 +105,7 @@ func MakeInputs(sources []string) ([]dsl.Step, error) {
 }
 
 func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, chans JobChannels) {
-
 	dsl.WalkPipeline(pipeline, steps, func(item interface{}, in []dsl.Step) []dsl.Step {
-
 		switch item.(type) {
 		case dsl.FindConfig:
 			findConfig := item.(dsl.FindConfig)
@@ -130,7 +124,6 @@ func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, chans JobChannel
 
 		}
 		return in
-
 	})
 }
 
@@ -164,6 +157,7 @@ func onSigint(sigint <-chan os.Signal) {
 		exit = true
 	}
 }
+
 func Run(pipelineconfigFile string, paths []string) {
 	utils.Log.Info("Starting client")
 

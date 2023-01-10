@@ -76,11 +76,9 @@ func LoadDSLFile(filePath string) (Config, error) {
 		return config, err
 	}
 	return config, nil
-
 }
 
 func walk(item interface{}, in []Step, cb WalkCallback) {
-
 	switch t := item.(type) {
 	case PipelineConfig:
 		out := cb(item, in)
