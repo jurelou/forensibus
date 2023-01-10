@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"path/filepath"
 	"strings"
 
@@ -12,94 +13,76 @@ var (
 	serverAddress = "localhost:50051"
 )
 
-func find(ins []Input, patterns []string, mimes []string) ([]Input, error) {
-	var outs []Input
-	var latestErr error = nil
+type JobChannels struct {
+	// List of input / output channels
+	Jobs		chan Job
+	JobResults	chan JobResult
+}
 
-	for _, in := range ins {
-		files, err := utils.FindFiles(utils.FindFilesParams{Path: in.Next, PathPatterns: patterns, FileFormats: mimes})
-		latestErr = err
+func find(steps []Step, config FindConfig) []Step {
+	var out []Step
+	// var latestErr error = nil
+
+	for _, step := range steps {
+		files, err := utils.FindFiles(utils.FindFilesParams{Path: step.NextArtifact, PathPatterns: config.Patterns, FileFormats: config.MimeTypes})
+		// latestErr = err
+		if err != nil {
+			utils.Log.Warnf("Error while searching for `%s` files from %s: %w", config.Name, step.NextArtifact, err)
+			continue
+		}
+		filesLen := len(files)
+		if filesLen == 0 {
+			utils.Log.Warnf("Found 0 `%s` files from %s", config.Name, step.NextArtifact)
+		} else {
+			utils.Log.Infof("Found %d `%s` files from %s", filesLen, config.Name, step.NextArtifact)
+		}
+
 		for _, file := range files {
-			outs = append(outs, Input{Next: file, Current: in.Current})
+			out = append(out, Step{NextArtifact: file, CurrentFolder: step.CurrentFolder})
+
 		}
 	}
-	return outs, latestErr
+	return out
 }
 
 // Finds and extract files matching patterns
-func extract(ins []Input, config ExtractConfig) ([]Input, error) {
+func extract(steps []Step, config ExtractConfig) []Step {
 	// err :=
-	var outs []Input
-	files, _ := find(ins, config.Patterns, config.MimeTypes)
+	var outs []Step
+	files := find(steps, FindConfig{Name: config.Name, Patterns: config.Patterns, MimeTypes: config.MimeTypes})
 
 	for _, in := range files {
-		out, err := decompress.Decompress(in.Next, in.Current)
+		out, err := decompress.Decompress(in.NextArtifact, in.CurrentFolder)
 		if err != nil {
-			utils.Log.Warnf("Error while decompressing %s: %s", in.Next, err.Error())
+			utils.Log.Warnf("Error while decompressing %s: %w", in.NextArtifact, err)
 			continue
 		}
-		outs = append(outs, Input{Next: out, Current: out})
-	}
-	return outs, nil
-}
+		outs = append(outs, Step{NextArtifact: out, CurrentFolder: out})
 
-func process(ins []Input, config ProcessConfig) error {
-	RunProcessor(ins, config)
-	return nil
-}
+		outLen := len(out)
+		if outLen == 0 {
+			utils.Log.Warnf("Extracted 0 `%s` files from %s", config.Name, in.NextArtifact)
 
-func execPipeline(config Config, in []Input) {
-
-	WalkPipeline(config.Pipeline, in, func(item interface{}, in []Input) ([]Input, error) {
-		var err error
-		out := []Input{}
-
-		switch item.(type) {
-		case FindConfig:
-			findConfig := item.(FindConfig)
-			out, err = find(in, findConfig.Patterns, findConfig.MimeTypes)
-			if err != nil {
-				utils.Log.Warnf(err.Error())
-				return []Input{}, err
-			}
-			outLen := len(out)
-			if outLen == 0 {
-				utils.Log.Warnf("Found 0 `%s` files", findConfig.Name)
-			} else {
-				utils.Log.Infof("Found %d `%s` files", outLen, findConfig.Name)
-			}
-			return out, nil
-
-		case ExtractConfig:
-			extractConfig := item.(ExtractConfig)
-			out, err = extract(in, extractConfig)
-			if err != nil {
-				utils.Log.Warnf(err.Error())
-				return []Input{}, err
-			}
-			outLen := len(out)
-			if outLen == 0 {
-				utils.Log.Warnf("Extracted 0 `%s` files", extractConfig.Name)
-			} else {
-				utils.Log.Infof("Extracted %d `%s` files", outLen, extractConfig.Name)
-			}
-			return out, nil
-
-		case ProcessConfig:
-			processConfig := item.(ProcessConfig)
-			err := process(in, processConfig)
-			if err != nil {
-				utils.Log.Warnf("Error while processing %s: %s", processConfig.Name, err.Error())
-			}
-			return []Input{}, err
-
+		} else {
+			utils.Log.Infof("Extracted %d `%s` files", outLen, config.Name, in.NextArtifact)
 		}
-		return in, nil
-	})
+
+	}
+	return outs
 }
 
-func makeInputs(sources []string) ([]Input, error) {
-	ins := make([]Input, 0, len(sources))
+func process(steps []Step, config ProcessConfig, jobs chan Job) {
+	// RunProcessor(steps, config)
+	for _, in := range steps {
+		fmt.Println("Launch ", in.NextArtifact)
+		jobs <- Job{Step: in, Config: config.Config, Name: config.Name}
+		fmt.Println("..")
+	}
+}
+
+
+func makeInputs(sources []string) ([]Step, error) {
+	ins := make([]Step, 0, len(sources))
 	for _, source := range sources {
 		absPath, err := utils.ConvertRelativePath(source)
 		if err != nil {
@@ -114,10 +97,37 @@ func makeInputs(sources []string) ([]Input, error) {
 
 		outputFolder := filepath.Join(utils.Config.OutputFolder, filepath.Dir(absPath), filenameWhithoutSuffix)
 
-		utils.Log.Infof("Writing output filed FROM `%s` TO `%s`", outputFolder, absPath)
-		ins = append(ins, Input{Current: outputFolder, Next: absPath})
+		utils.Log.Infof("Writing output file `%s` FROM `%s`", outputFolder, absPath)
+		ins = append(ins, Step{CurrentFolder: outputFolder, NextArtifact: absPath})
+
 	}
 	return ins, nil
+}
+
+func RunPipeline(pipeline PipelineConfig, steps []Step, chans JobChannels) {
+
+	WalkPipeline(pipeline, steps, func(item interface{}, in []Step) ([]Step, error) {
+
+		switch item.(type) {
+		case FindConfig:
+			findConfig := item.(FindConfig)
+			out := find(in, findConfig)
+			return out, nil
+
+		case ExtractConfig:
+			extractConfig := item.(ExtractConfig)
+			out := extract(in, extractConfig)
+			return out, nil
+
+		case ProcessConfig:
+			processConfig := item.(ProcessConfig)
+			process(in, processConfig, chans.Jobs)
+			return []Step{}, nil
+
+		}
+		return in, nil
+
+	})
 }
 
 func Run(pipelineconfigFile string, paths []string) {
@@ -140,21 +150,36 @@ func Run(pipelineconfigFile string, paths []string) {
 		utils.Log.Warnf(err.Error())
 		return
 	}
+
 	utils.Log.Infof("Worker %s (%s) is up! (cap: %d)", worker.Address, worker.Name, worker.Capacity)
 
-	queueSize := 4
+	inputs, err := makeInputs(paths)
+	if err != nil {
+		utils.Log.Warnf(err.Error())
+		return
+	}
+
 	// Queue size should be > than workers capacity so that workers are never starving
-	jobs := make(chan Job, queueSize)  
-	results := make(chan JobResult, queueSize)
+	queueSize := workers.Capacity()
+	chans := JobChannels{Jobs: make(chan Job, queueSize * 2), JobResults: make(chan JobResult, queueSize * 4)}
 
-	utils.Log.Infof("Launch a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
-	workers.Work(jobs, results)
+	workers.Work(chans)
+	utils.Log.Infof("Launched a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
 
-	// inputs, err := makeInputs(paths)
-	// if err != nil {
-	// 	utils.Log.Warnf(err.Error())
-	// 	return
+	RunPipeline(config.Pipeline, inputs, chans)
+
+	// Pipeline is done, close job channel
+	close(chans.Jobs)
+	// Wait for last jobs to finish
+	workers.Wait()
+	// Finally, close results channel
+	close(chans.JobResults)
+	utils.Log.Infof("Terminated")
+
+	// for r := range chans.JobResults {
+	// 	fmt.Println("Got result>>", r)
 	// }
+	// fmt.Println("--", inputs)
 	// execPipeline(config, inputs)
 
 }

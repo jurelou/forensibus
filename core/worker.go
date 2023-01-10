@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"time"
+	"sync"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -12,18 +13,22 @@ import (
 
 	// _ "github.com/jurelou/forensibus/processors/linux"
 	// _ "github.com/jurelou/forensibus/processors/linux/commands"
-	_ "github.com/jurelou/forensibus/utils/processors"
-
 	_ "github.com/jurelou/forensibus/processors/windows"
 	_ "github.com/jurelou/forensibus/processors/windows/artifacts"
 	_ "github.com/jurelou/forensibus/processors/windows/commands"
 )
 
-var (
-	queueSize     = 4
-	jobsChannel   = make(chan Job, queueSize)
-	resultChannel = make(chan JobResult, queueSize)
-)
+type Job struct {
+	Name		string
+	Step     	Step
+	Config 		map[string]string
+}
+
+type JobResult struct {
+	Status    	uint32
+	Error     	string
+	Job        Job
+}
 
 type Worker struct {
 	Client  	worker.WorkerClient
@@ -38,8 +43,10 @@ func (w *Worker) Connect(address string) error {
 	if err != nil {
 		return fmt.Errorf("Could not connect to %s: %w", address, err)
 	}
+
 	w.Client = worker.NewWorkerClient(conn)
 	pong, err := w.Ping(3)
+
 	if err != nil {
 		return err
 	}
@@ -55,68 +62,23 @@ func (w *Worker) Ping(timeout int) (worker.Pong, error) {
 
 	pong, err := w.Client.Ping(ctx, &worker.PingRequest{Identifier: "forensibusCore"}) // TODO: get hostname here
 	if err != nil {
-		return *pong, fmt.Errorf("Could not ping worker %s: %w", w.Address, err)
+		return worker.Pong{}, fmt.Errorf("Could not ping worker %s: %w", w.Address, err)
 	}
 	return *pong, nil
 }
 
-func (w *Worker) Work(jobs <-chan Job, results chan<- JobResult) {
-	ctx, _ := context.WithTimeout(context.Background(), 60*time.Second)
+func (w *Worker) Work(wg *sync.WaitGroup, chans JobChannels) {
+	defer wg.Done()
+	ctx, _ := context.WithTimeout(context.Background(), 60 * time.Second)
 
-	for job := range jobs {
-		fmt.Println("Got job", job.In.Next)
+	for job := range chans.Jobs {
+		fmt.Println("Got job", job.Step.NextArtifact, " FROM ", job.Step.CurrentFolder)
 
-		res, err := w.Client.Work(ctx, &worker.WorkRequest{Source: job.In.Next, OutputFolder: job.In.Current, Processor: job.Config.Name, Config: job.Config.Config})
+		res, err := w.Client.Work(ctx, &worker.WorkRequest{Source: job.Step.NextArtifact, OutputFolder: job.Step.CurrentFolder, Processor: job.Name, Config: job.Config})
 		if err != nil {
 			fmt.Println(">>", err)
 		}
-		results <- JobResult{Processor: job.Config.Name, In: job.In, Status: res.GetStatus(), Error: res.GetError()}
+		chans.JobResults <- JobResult{Job: job, Status: res.GetStatus(), Error: res.GetError()}
 	}
-}
-
-type Job struct {
-	In     Input
-	Config ProcessConfig
-	// Results chan JobResult
-}
-
-type JobResult struct {
-	Status    uint32
-	Error     string
-	In        Input
-	Processor string
-}
-
-// func work(jobsChannel <-chan Job) {
-// 	ctx, _ := context.WithTimeout(context.Background(), 60*time.Second)
-
-// 	for job := range jobsChannel {
-// 		fmt.Println("Got job", job.In.Next)
-
-// 		res, err := Client.Work(ctx, &worker.WorkRequest{Source: job.In.Next, OutputFolder: job.In.Current, Processor: job.Config.Name, Config: job.Config.Config})
-// 		if err != nil {
-// 			fmt.Println(">>", err)
-// 		}
-// 		job.Results <- JobResult{Processor: job.Config.Name, In: job.In, Status: res.GetStatus(), Error: res.GetError()}
-// 	}
-// }
-
-func RunProcessor(ins []Input, config ProcessConfig) {
-	// results := make(chan string, len(ins))
-	// resultsChan := make(chan JobResult, len(ins))
-
-	// job := Job{ins: ins, config: config, results: resultsChan}
-	// jobsChannel <- job
-
-	fmt.Printf("Launching %d jobs\n", len(ins))
-	for _, in := range ins {
-		fmt.Println("Launch ", in.Next)
-		jobsChannel <- Job{In: in, Config: config}
-	}
-
-	for i := 0; i < len(ins); i++ {
-		res := <-resultChannel
-		fmt.Println("Response:", res.Processor, res.Status, res.Error)
-	}
-
+	fmt.Println("Worker exited")
 }

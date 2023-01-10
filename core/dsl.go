@@ -2,6 +2,8 @@ package core
 
 import (
 	"fmt"
+	"regexp"
+
 	"github.com/hashicorp/hcl/v2/hclsimple"
 
 	"github.com/jurelou/forensibus/utils/processors"
@@ -57,12 +59,13 @@ type OutputConfig struct {
 	Password string `hcl:"password"`
 }
 
-type Input struct {
-	Current string
-	Next    string
+type Step struct {
+	CurrentFolder	string
+	NextArtifact    string
+	Name			string
 }
 
-type WalkCallback func(interface{}, []Input) ([]Input, error)
+type WalkCallback func(interface{}, []Step) ([]Step, error)
 
 func LoadDSLFile(filePath string) (Config, error) {
 	var config Config
@@ -76,7 +79,7 @@ func LoadDSLFile(filePath string) (Config, error) {
 
 }
 
-func walk(item interface{}, in []Input, cb WalkCallback) {
+func walk(item interface{}, in []Step, cb WalkCallback) {
 
 	switch t := item.(type) {
 	case PipelineConfig:
@@ -134,23 +137,38 @@ func walk(item interface{}, in []Input, cb WalkCallback) {
 	}
 }
 
-func WalkPipeline(item PipelineConfig, in []Input, cb WalkCallback) {
+func WalkPipeline(item PipelineConfig, in []Step, cb WalkCallback) {
 	walk(item, in, cb)
 }
 
 func LintPipeline(item PipelineConfig) error {
 	// Pass a dummy item to each steps to make sure the pipeline is fully traversed
-	dummy := make([]Input, 1)
-	dummy = append(dummy, Input{Current: "DummyCurrent", Next: "DummyNext"})
+	dummy := make([]Step, 1)
+	dummy = append(dummy, Step{CurrentFolder: "DummyCurrent", NextArtifact: "DummyNext"})
 	var lastErr error
 
-	WalkPipeline(item, dummy, func(item interface{}, in []Input) ([]Input, error) {
+	WalkPipeline(item, dummy, func(item interface{}, in []Step) ([]Step, error) {
 		switch item.(type) {
 		case ProcessConfig:
 			processConfig := item.(ProcessConfig)
 			if _, err := processors.Get(processConfig.Name); err != nil {
 				lastErr = fmt.Errorf("Invalid pipeline definition, processor %s is not found", processConfig.Name)
-				return dummy, nil
+			}
+		case FindConfig:
+			findConfig := item.(FindConfig)
+
+			for _, pattern := range findConfig.Patterns {
+				_, err := regexp.Compile(pattern); if err != nil {
+					lastErr = fmt.Errorf("Invalid find file pattern for %s (%s)", findConfig.Name, pattern)
+				}
+			}
+		case ExtractConfig:
+			extractConfig := item.(ExtractConfig)
+
+			for _, pattern := range extractConfig.Patterns {
+				_, err := regexp.Compile(pattern); if err != nil {
+					lastErr = fmt.Errorf("Invalid extract pattern for %s (%s)", extractConfig.Name, pattern)
+				}
 			}
 		}
 		return dummy, nil

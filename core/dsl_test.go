@@ -19,3 +19,37 @@ func TestInvalidFile(t *testing.T) {
 		t.Errorf("Invalid error message: %s", err.Error())
 	}
 }
+
+func TestInvalidFindPattern(t *testing.T) {
+	config, err := core.LoadDSLFile("../datasets/pipelines/invalid_find_pattern.hcl")
+	if err != nil {
+		t.Errorf("Could not load invalid_find_pattern.hcl")
+		return
+	}
+
+	err = core.LintPipeline(config.Pipeline)
+	if err == nil {
+		t.Errorf("invalid_find_pattern.hcl should be invalid: %s", err.Error())
+	}
+
+	if !strings.Contains(err.Error(), "Invalid find file pattern for invalid pattern") {
+		t.Errorf("Invalid error message: %s", err.Error())
+	}
+}
+
+func TestInvalidExtractPattern(t *testing.T) {
+	config, err := core.LoadDSLFile("../datasets/pipelines/invalid_extract_pattern.hcl")
+	if err != nil {
+		t.Errorf("Could not load invalid_extract_pattern.hcl")
+		return
+	}
+
+	err = core.LintPipeline(config.Pipeline)
+	if err == nil {
+		t.Errorf("invalid_extract_pattern.hcl should be invalid: %s", err.Error())
+	}
+
+	if !strings.Contains(err.Error(), "Invalid extract pattern for invalid ep") {
+		t.Errorf("Invalid error message: %s", err.Error())
+	}
+}
