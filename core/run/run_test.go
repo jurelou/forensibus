@@ -1,19 +1,20 @@
-package core_test
+package run_test
 
 import (
 	"testing"
 
-	"github.com/jurelou/forensibus/core"
+	dsl "github.com/jurelou/forensibus/core"
+	// "github.com/jurelou/forensibus/core/run"
 )
 
 func TestLintValid(t *testing.T) {
 	// TotoAa()
-	config, err := core.LoadDSLFile("../datasets/pipelines/simple.hcl")
+	config, err := dsl.LoadDSLFile("../../datasets/pipelines/simple.hcl")
 	if err != nil {
 		t.Errorf("Error while Loading pipeline %s", err.Error())
 		return
 	}
-	err = core.LintPipeline(config.Pipeline)
+	err = dsl.LintPipeline(config.Pipeline)
 	if err != nil {
 		t.Errorf("Simple pipeline should be valid")
 		return
@@ -22,12 +23,12 @@ func TestLintValid(t *testing.T) {
 
 func TestLintInvalidProcessor(t *testing.T) {
 	// TotoAa()
-	config, err := core.LoadDSLFile("../datasets/pipelines/invalid_processor.hcl")
+	config, err := dsl.LoadDSLFile("../../datasets/pipelines/invalid_processor.hcl")
 	if err != nil {
 		t.Errorf("Error while Loading pipeline %s", err.Error())
 		return
 	}
-	err = core.LintPipeline(config.Pipeline)
+	err = dsl.LintPipeline(config.Pipeline)
 	if err == nil {
 		t.Errorf("Pipeline should be invalid")
 		return

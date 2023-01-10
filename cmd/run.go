@@ -6,7 +6,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"github.com/jurelou/forensibus/core"
+	run "github.com/jurelou/forensibus/core/run"
 	"github.com/jurelou/forensibus/utils"
 	"github.com/spf13/cobra"
 )
@@ -41,7 +41,7 @@ var (
 			if !utils.FileExists(pipelineconfig) {
 				return fmt.Errorf("%s file does not exists.\n", pipelineconfig)
 			}
-			core.Run(pipelineconfig, utils.UniqueListOfStrings(filepaths))
+			run.Run(pipelineconfig, utils.UniqueListOfStrings(filepaths))
 			return nil
 		},
 	}

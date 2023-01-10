@@ -1,26 +1,25 @@
-package core
+package run
 
 import (
 	"sync"
 	// "fmt"
-// "context"
-// "time"
-
-// "google.golang.org/grpc"
-// "google.golang.org/grpc/credentials/insecure"
-
-// "github.com/jurelou/forensibus/proto/worker"
+	// "context"
+	// "time"
+	// "google.golang.org/grpc"
+	// "google.golang.org/grpc/credentials/insecure"
+	// "github.com/jurelou/forensibus/proto/worker"
 )
 
 type WorkerPool struct {
 	// PoolSize int
 	Workers []Worker
-	Wg 		sync.WaitGroup
+	Wg      sync.WaitGroup
 }
 
 func (p *WorkerPool) Connect(address string) (Worker, error) {
 	worker := new(Worker)
-	err := worker.Connect(address); if err != nil {
+	err := worker.Connect(address)
+	if err != nil {
 		return Worker{}, err
 	}
 
@@ -30,7 +29,7 @@ func (p *WorkerPool) Connect(address string) (Worker, error) {
 
 func (p *WorkerPool) Work(chans JobChannels) {
 	for _, worker := range p.Workers {
-		for i := uint32(0) ; i < worker.Capacity ; i++ {
+		for i := uint32(0); i < worker.Capacity; i++ {
 			p.Wg.Add(1)
 			go worker.Work(&p.Wg, chans)
 		}

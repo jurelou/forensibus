@@ -8,7 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jurelou/forensibus/core"
+	"github.com/jurelou/forensibus/core/processors"
 )
 
 // processorCmd represents the processor command
@@ -31,9 +31,9 @@ to quickly create a Cobra application.`,
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			core.ListProcessors()
+			processors.ListProcessors()
 		} else {
-			core.RunSingleProcessor(args[0])
+			processors.RunSingleProcessor(args[0])
 
 		}
 	},

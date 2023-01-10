@@ -1,14 +1,15 @@
-package core
+package run
 
 import (
 	"context"
 	"fmt"
-	"time"
 	"sync"
+	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
+	dsl "github.com/jurelou/forensibus/core"
 	"github.com/jurelou/forensibus/proto/worker"
 
 	// _ "github.com/jurelou/forensibus/processors/linux"
@@ -19,22 +20,22 @@ import (
 )
 
 type Job struct {
-	Name		string
-	Step     	Step
-	Config 		map[string]string
+	Name   string
+	Step   dsl.Step
+	Config map[string]string
 }
 
 type JobResult struct {
-	Status    	uint32
-	Error     	string
-	Job        Job
+	Status uint32
+	Error  string
+	Job    Job
 }
 
 type Worker struct {
-	Client  	worker.WorkerClient
-	Name    	string
-	Address		string
-	Capacity 	uint32
+	Client   worker.WorkerClient
+	Name     string
+	Address  string
+	Capacity uint32
 }
 
 func (w *Worker) Connect(address string) error {
@@ -69,7 +70,7 @@ func (w *Worker) Ping(timeout int) (worker.Pong, error) {
 
 func (w *Worker) Work(wg *sync.WaitGroup, chans JobChannels) {
 	defer wg.Done()
-	ctx, _ := context.WithTimeout(context.Background(), 60 * time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), 60*time.Second)
 
 	for job := range chans.Jobs {
 		fmt.Println("Got job", job.Step.NextArtifact, " FROM ", job.Step.CurrentFolder)

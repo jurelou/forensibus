@@ -1,4 +1,4 @@
-package core
+package dsl
 
 import (
 	"fmt"
@@ -60,12 +60,12 @@ type OutputConfig struct {
 }
 
 type Step struct {
-	CurrentFolder	string
-	NextArtifact    string
-	Name			string
+	CurrentFolder string
+	NextArtifact  string
+	Name          string
 }
 
-type WalkCallback func(interface{}, []Step) ([]Step, error)
+type WalkCallback func(interface{}, []Step) []Step
 
 func LoadDSLFile(filePath string) (Config, error) {
 	var config Config
@@ -83,7 +83,7 @@ func walk(item interface{}, in []Step, cb WalkCallback) {
 
 	switch t := item.(type) {
 	case PipelineConfig:
-		out, _ := cb(item, in)
+		out := cb(item, in)
 		if len(out) == 0 {
 			return
 		}
@@ -100,7 +100,7 @@ func walk(item interface{}, in []Step, cb WalkCallback) {
 		}
 
 	case FindConfig:
-		out, _ := cb(item, in)
+		out := cb(item, in)
 		if len(out) == 0 {
 			return
 		}
@@ -115,7 +115,7 @@ func walk(item interface{}, in []Step, cb WalkCallback) {
 			walk(nestedExtracts, out, cb)
 		}
 	case ExtractConfig:
-		out, _ := cb(item, in)
+		out := cb(item, in)
 		if len(out) == 0 {
 			return
 		}
@@ -147,7 +147,7 @@ func LintPipeline(item PipelineConfig) error {
 	dummy = append(dummy, Step{CurrentFolder: "DummyCurrent", NextArtifact: "DummyNext"})
 	var lastErr error
 
-	WalkPipeline(item, dummy, func(item interface{}, in []Step) ([]Step, error) {
+	WalkPipeline(item, dummy, func(item interface{}, in []Step) []Step {
 		switch item.(type) {
 		case ProcessConfig:
 			processConfig := item.(ProcessConfig)
@@ -158,7 +158,8 @@ func LintPipeline(item PipelineConfig) error {
 			findConfig := item.(FindConfig)
 
 			for _, pattern := range findConfig.Patterns {
-				_, err := regexp.Compile(pattern); if err != nil {
+				_, err := regexp.Compile(pattern)
+				if err != nil {
 					lastErr = fmt.Errorf("Invalid find file pattern for %s (%s)", findConfig.Name, pattern)
 				}
 			}
@@ -166,12 +167,13 @@ func LintPipeline(item PipelineConfig) error {
 			extractConfig := item.(ExtractConfig)
 
 			for _, pattern := range extractConfig.Patterns {
-				_, err := regexp.Compile(pattern); if err != nil {
+				_, err := regexp.Compile(pattern)
+				if err != nil {
 					lastErr = fmt.Errorf("Invalid extract pattern for %s (%s)", extractConfig.Name, pattern)
 				}
 			}
 		}
-		return dummy, nil
+		return dummy
 	})
 	return lastErr
 }

@@ -1,4 +1,4 @@
-package core_test
+package dsl_test
 
 import (
 	// "fmt"
@@ -6,11 +6,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jurelou/forensibus/core"
+	dsl "github.com/jurelou/forensibus/core"
 )
 
 func TestInvalidFile(t *testing.T) {
-	_, err := core.LoadDSLFile("../datasets/this.does.not.exists")
+	_, err := dsl.LoadDSLFile("../datasets/this.does.not.exists")
 
 	if err == nil {
 		t.Errorf("FindFiles should fail to find 'this.does.not.exists'")
@@ -21,13 +21,13 @@ func TestInvalidFile(t *testing.T) {
 }
 
 func TestInvalidFindPattern(t *testing.T) {
-	config, err := core.LoadDSLFile("../datasets/pipelines/invalid_find_pattern.hcl")
+	config, err := dsl.LoadDSLFile("../datasets/pipelines/invalid_find_pattern.hcl")
 	if err != nil {
 		t.Errorf("Could not load invalid_find_pattern.hcl")
 		return
 	}
 
-	err = core.LintPipeline(config.Pipeline)
+	err = dsl.LintPipeline(config.Pipeline)
 	if err == nil {
 		t.Errorf("invalid_find_pattern.hcl should be invalid: %s", err.Error())
 	}
@@ -38,13 +38,13 @@ func TestInvalidFindPattern(t *testing.T) {
 }
 
 func TestInvalidExtractPattern(t *testing.T) {
-	config, err := core.LoadDSLFile("../datasets/pipelines/invalid_extract_pattern.hcl")
+	config, err := dsl.LoadDSLFile("../datasets/pipelines/invalid_extract_pattern.hcl")
 	if err != nil {
 		t.Errorf("Could not load invalid_extract_pattern.hcl")
 		return
 	}
 
-	err = core.LintPipeline(config.Pipeline)
+	err = dsl.LintPipeline(config.Pipeline)
 	if err == nil {
 		t.Errorf("invalid_extract_pattern.hcl should be invalid: %s", err.Error())
 	}
