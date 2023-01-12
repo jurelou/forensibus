@@ -1,16 +1,17 @@
 package worker
 
 import (
-	_ "context"
 	"fmt"
 	"net"
-	_ "time"
+
+	"google.golang.org/grpc"
 
 	"github.com/jurelou/forensibus/proto/worker"
 	"github.com/jurelou/forensibus/utils"
 	"github.com/jurelou/forensibus/utils/processors"
 
-	"google.golang.org/grpc"
+	_ "context"
+	_ "time"
 )
 
 var port = 50051

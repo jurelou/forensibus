@@ -4,8 +4,9 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"github.com/jurelou/forensibus/worker"
 	"github.com/spf13/cobra"
+
+	"github.com/jurelou/forensibus/worker"
 )
 
 // workerCmd represents the worker command

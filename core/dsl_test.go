@@ -1,7 +1,6 @@
 package dsl_test
 
-import ( // "fmt"
-	// "reflect"
+import (
 	"strings"
 	"testing"
 

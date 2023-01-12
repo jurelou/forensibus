@@ -85,7 +85,7 @@ func MakeInputs(sources []string) ([]dsl.Step, error) {
 		// Get absolute path
 		absPath, err := utils.ConvertRelativePath(source)
 		if err != nil {
-			return ins, err
+			return ins, fmt.Errorf("Could not convert %s to relative path: %w", source, err)
 		}
 		// Get file or folder name
 		filename := filepath.Base(absPath)
@@ -139,10 +139,10 @@ func loadDSL(filePath string) (dsl.Config, error) {
 	// Load and lint the given pipeline
 	config, err := dsl.LoadDSLFile(filePath)
 	if err != nil {
-		return dsl.Config{}, err
+		return dsl.Config{}, fmt.Errorf("Could not load DSL file %s: %w", filePath, err)
 	}
 	if err := dsl.LintPipeline(config.Pipeline); err != nil {
-		return dsl.Config{}, err
+		return dsl.Config{}, fmt.Errorf("Error while checking pipeline: %w", err)
 	}
 	return config, nil
 }

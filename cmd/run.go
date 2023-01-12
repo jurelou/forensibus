@@ -7,9 +7,10 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/spf13/cobra"
+
 	run "github.com/jurelou/forensibus/core/run"
 	"github.com/jurelou/forensibus/utils"
-	"github.com/spf13/cobra"
 )
 
 var (

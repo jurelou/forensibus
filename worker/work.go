@@ -20,7 +20,9 @@ func (s *Server) Work(ctx context.Context, in *worker.WorkRequest) (*worker.Work
 	}
 
 	// Run the processor
-	processor.Run(source)
+	if err := processor.Run(source); err != nil {
+		return &worker.WorkResponse{Status: utils.Failure, Error: err.Error()}, nil
+	}
 
 	return &worker.WorkResponse{Status: utils.Success, Error: ""}, nil
 }

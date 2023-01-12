@@ -41,11 +41,11 @@ func (p *WorkerPool) Size() int {
 }
 
 func (p *WorkerPool) Capacity() int {
-	cap := 0
+	totalCap := 0
 	for _, worker := range p.Workers {
-		cap += int(worker.Capacity)
+		totalCap += int(worker.Capacity)
 	}
-	return cap
+	return totalCap
 }
 
 func (p *WorkerPool) Wait() {

@@ -73,13 +73,13 @@ func LoadDSLFile(filePath string) (Config, error) {
 	err := hclsimple.DecodeFile(filePath, nil, &config)
 	if err != nil {
 		// log.Fatalf("Failed to load configuration: %s", err)
-		return config, err
+		return config, fmt.Errorf("Could not decode file %s: %w", filePath, err)
 	}
 	return config, nil
 }
 
 func walk(item interface{}, in []Step, cb WalkCallback) {
-	switch t := item.(type) {
+	switch itemType := item.(type) {
 	case PipelineConfig:
 		out := cb(item, in)
 		if len(out) == 0 {
@@ -131,7 +131,7 @@ func walk(item interface{}, in []Step, cb WalkCallback) {
 	case ProcessConfig:
 		cb(item, in)
 	default:
-		fmt.Printf("I don't know about type %T!\n", t)
+		fmt.Printf("I don't know about type %T!\n", itemType)
 	}
 }
 
@@ -142,7 +142,7 @@ func WalkPipeline(item PipelineConfig, in []Step, cb WalkCallback) {
 func LintPipeline(item PipelineConfig) error {
 	// Pass a dummy item to each steps to make sure the pipeline is fully traversed
 	dummy := make([]Step, 1)
-	dummy = append(dummy, Step{CurrentFolder: "DummyCurrent", NextArtifact: "DummyNext"})
+	dummy = append(dummy, Step{Name: "dummy", CurrentFolder: "DummyCurrent", NextArtifact: "DummyNext"})
 	var lastErr error
 
 	WalkPipeline(item, dummy, func(item interface{}, in []Step) []Step {

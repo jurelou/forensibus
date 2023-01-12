@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -24,16 +23,15 @@ type FindFilesParams struct {
 func FindFiles(params FindFilesParams) ([]string, error) {
 	var pathRegexes []*regexp.Regexp
 	var files []string
-	var latestError error = nil
 
 	checkFileFormat := (len(params.FileFormats) != 0)
 
-	addPath := func(filePath string) error {
+	addPath := func(filePath string) {
 		// No conditions provided, add the current file
 
 		if len(pathRegexes) == 0 && !checkFileFormat {
 			files = append(files, filePath)
-			return nil
+			return
 		}
 		magicMatches := false
 		// Check if file matches the given mime types
@@ -53,19 +51,19 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 			if rex.MatchString(filePath) {
 				if !checkFileFormat || (checkFileFormat && magicMatches) {
 					files = append(files, filePath)
-					return nil
+					return
 				}
-				return nil
+				return
 			}
 		}
-		return nil
+		return
 	}
 
 	// Compile file paths patterns
 	for _, pattern := range params.PathPatterns {
 		compiledRegex, err := regexp.Compile(pattern)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("Could not compile pattern %s: %w", pattern, err)
 		}
 		pathRegexes = append(pathRegexes, compiledRegex)
 
@@ -74,21 +72,24 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 	// Check if it's a folder
 	fileInfo, errStat := os.Stat(params.Path)
 	if errStat != nil {
-		return nil, errStat
+		return nil, fmt.Errorf("Could not stat %s: %w", params.Path, errStat)
 	}
 
 	if fileInfo.IsDir() {
-		filepath.Walk(params.Path, func(path string, info os.FileInfo, err error) error {
+		err := filepath.Walk(params.Path, func(path string, info os.FileInfo, err error) error {
 			if info.IsDir() {
 				return nil
 			}
-			latestError = addPath(path)
+			addPath(path)
 			return nil
 		})
+		if err != nil {
+			return nil, fmt.Errorf("Could not walk path %s: %w", params.Path, err)
+		}
 	} else {
-		latestError = addPath(params.Path)
+		addPath(params.Path)
 	}
-	return files, latestError
+	return files, nil
 }
 
 func FileExists(path string) bool {
@@ -101,7 +102,7 @@ func FileExists(path string) bool {
 func GetCurrentHomeDirectory() (string, error) {
 	usr, err := user.Current()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("could not get current user: %w", err)
 	}
 	return usr.HomeDir, nil
 }
@@ -116,7 +117,7 @@ func ConvertRelativePath(path string) (string, error) {
 	} else {
 		abs, err := filepath.Abs(path)
 		if err != nil {
-			return path, err
+			return path, fmt.Errorf("Could not get absolute path for %s: %w", path, err)
 		}
 		return abs, nil
 	}
@@ -126,7 +127,7 @@ func CopyFile(in, out string) error {
 	var destination *os.File
 	source, err := os.Open(in)
 	if err != nil {
-		return err
+		return fmt.Errorf("Could not open %s: %w", in, err)
 	}
 	defer source.Close()
 
@@ -134,11 +135,11 @@ func CopyFile(in, out string) error {
 	if err != nil {
 		// Output does not exists
 		if err := os.MkdirAll(filepath.Dir(out), os.ModePerm); err != nil {
-			return err
+			return fmt.Errorf("Could not create folder %s: %w", out, err)
 		}
 		destination, err = os.Create(out)
 		if err != nil {
-			return err
+			return fmt.Errorf("Could not create %s: %w", out, err)
 		}
 		defer destination.Close()
 	} else {
@@ -147,24 +148,24 @@ func CopyFile(in, out string) error {
 			out = filepath.Join(out, filepath.Base(in))
 			destination, err = os.Create(out)
 			if err != nil {
-				return err
+				return fmt.Errorf("Could not create %s: %w", out, err)
 			}
 			defer destination.Close()
 		} else {
-			return errors.New(fmt.Sprintf("Refusing to copy file %s to already existing file %s", in, out))
+			return fmt.Errorf("Refusing to copy file %s to already existing file %s", in, out)
 		}
 	}
 	buf := make([]byte, buffSize)
 	for {
-		n, err := source.Read(buf)
+		numRead, err := source.Read(buf)
 		if err != nil && err != io.EOF {
-			return err
+			return fmt.Errorf("Could not read from buffer: %w", err)
 		}
-		if n == 0 {
+		if numRead == 0 {
 			break
 		}
-		if _, err := destination.Write(buf[:n]); err != nil {
-			return err
+		if _, err := destination.Write(buf[:numRead]); err != nil {
+			return fmt.Errorf("Could not write to %s: %w", destination.Name(), err)
 		}
 	}
 	return nil

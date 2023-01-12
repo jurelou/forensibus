@@ -101,7 +101,7 @@ func advanceToFirstEntry(scanner *bufio.Scanner) error {
 	if err == nil {
 		return errors.New("Could not find any entries")
 	}
-	return err
+	return fmt.Errorf("Could not find any entries: %w", err)
 }
 
 func getEntryLines(scanner *bufio.Scanner) ([]string, error) {
@@ -116,7 +116,7 @@ func getEntryLines(scanner *bufio.Scanner) ([]string, error) {
 	}
 	err := scanner.Err()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Could not getlines: %w", err)
 	}
 	return res, nil
 }
@@ -172,7 +172,7 @@ func IsEncrypted(in string) (bool, error) {
 	cmd := exec.Command(sevenZipPath, params...)
 	out, err := cmd.Output()
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf("Could not execute 7z for %s: %w", in, err)
 	}
 	return findEncryptedFlag(out)
 }
@@ -195,7 +195,7 @@ func decompress(in string, out string, password string) error {
 func DecompressSevenZip(in string, out string) error {
 	fileFinfo, errStat := os.Stat(in)
 	if errStat != nil {
-		return errStat
+		return fmt.Errorf("Could not stat %s: %w", in, errStat)
 	}
 	if fileFinfo.IsDir() {
 		return errors.New(fmt.Sprintf("Cannot decompress folder %s ..", in))

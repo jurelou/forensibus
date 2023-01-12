@@ -1,6 +1,7 @@
 package processors
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/jurelou/forensibus/utils"
@@ -14,7 +15,7 @@ func Get(procName string) (Processor, error) {
 	if _, ok := Registry[procName]; ok {
 		return Registry[procName], nil
 	}
-	return nil, fmt.Errorf("%s is not a registered processor", procName)
+	return nil, errors.New(fmt.Sprintf("%s is not a registered processor", procName))
 }
 
 // Register is called by the `init` function of every `Component` to add

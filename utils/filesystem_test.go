@@ -132,7 +132,7 @@ func TestConvertDotDotPath(t *testing.T) {
 		t.Errorf("Error while converting relative path: %s", err)
 	}
 	if out != "/tmp" {
-		t.Errorf("Invalid result for dot dot dot conversion")
+		t.Errorf("Invalid result for ../../../ conversion")
 	}
 }
 

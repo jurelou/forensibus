@@ -28,11 +28,11 @@ func setDefaults() {
 func Reload() error {
 	// viper.SetDefault("ContentDir", "content")
 	if err := viper.ReadInConfig(); err != nil {
-		return err
+		return fmt.Errorf("Could not read config: %w", err)
 	}
 	err := viper.Unmarshal(&Config)
 	if err != nil {
-		return err // log.Fatalf("unable to decode into struct, %v", err)
+		return fmt.Errorf("Could not load config: %w", err)
 	}
 	return nil
 }
@@ -58,5 +58,7 @@ func Configure() error {
 }
 
 func init() {
-	Configure()
+	if err := Configure(); err != nil {
+		fmt.Println("Could not load config:", err)
+	}
 }

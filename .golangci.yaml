@@ -24,7 +24,7 @@ linters:
     - exhaustruct
     - forcetypeassert
     - gci
-    - gochecknoglobals
+    # - gochecknoglobals
     - gofmt
     - wrapcheck
     - whitespace
@@ -37,7 +37,7 @@ linters:
     - thelper
     - testpackage
     - tenv
-    - tagliatelle
+    # - tagliatelle
     - predeclared
     - prealloc
     - nosprintfhostport

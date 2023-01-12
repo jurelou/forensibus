@@ -4,13 +4,14 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	_ "path"
 	"path/filepath"
 	"strings"
 
 	"github.com/google/uuid"
 
 	"github.com/jurelou/forensibus/utils"
+
+	_ "path"
 )
 
 func createNamedFolder(filePath string) (string, error) {
@@ -18,7 +19,7 @@ func createNamedFolder(filePath string) (string, error) {
 	if err != nil {
 		// Folder does not exists, create it
 		if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
-			return "", err
+			return "", fmt.Errorf("Could not create folder %s: %w", filePath, err)
 		}
 		return filePath, nil
 	} else {
@@ -36,12 +37,12 @@ func genOutputFolder(in string, out string) (string, error) {
 		if fileInfo.IsDir() {
 			return createNamedFolder(filepath.Join(out, filepath.Base(inputFilenameWhithoutSuffix)))
 		}
-		return "", errors.New(fmt.Sprintf("Cannot extract %s to file %s", out, in))
+		return "", fmt.Errorf("Cannot extract %s to file %s", out, in)
 
 	} else {
 		// Folder does not exists, create it
 		if err := os.MkdirAll(out, os.ModePerm); err != nil {
-			return "", err
+			return "", fmt.Errorf("Could not create folder %s: %w", out, err)
 		}
 	}
 	return out, nil
