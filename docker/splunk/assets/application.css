@@ -3,12 +3,16 @@
     width: 155px;
     padding-right: 5px;
     float: left;
-    background: url(forensibus.jpg) no-repeat 0 0;
+    /* background: url(forensibus.jpg) no-repeat 0 0; */
 }
 
 .appHeaderWrapper h1 {
     display: none;
 } 
+
+.login-content {
+    color: #20C20E;
+}
 
 .appHeaderWrapper .accountBarItems li {
     text-shadow: -1px -1px 1px #111;   

@@ -1,0 +1,23 @@
+---
+
+volumes:
+  forensibus-splunk:
+    driver: local
+
+services:
+  splunk:
+    image: forensibus-splunk:latest
+    container_name: forensibus-splunk
+    restart: unless-stopped
+    build:
+      context: ./splunk
+    environment:
+      SPLUNK_PASSWORD: password
+      SPLUNK_START_ARGS: --accept-license
+    volumes:
+      - forensibus-splunk:/opt/splunk/var
+    ports:
+      - 8000:8000
+      - 8088:8088
+      - 8089:8089
+      - 9515:9515

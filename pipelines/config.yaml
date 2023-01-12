@@ -1,9 +1,9 @@
 port: 123
 OutputFolder: /tmp/forensibus
 splunk:
-  address: aze
-  username: aze
-  password: aze
+  address: localhost # Do not add http or https here !
+  port: 9515
+  index: toto
 
 ArchivePasswords:
   - password

@@ -37,6 +37,13 @@ vendor:
 	go mod vendor
 	go clean
 
+splunk:
+	docker-compose -f docker/docker-compose.yml up -d
+
+resplunk:
+	docker-compose -f docker/docker-compose.yml down --volumes --rmi local
+	docker-compose -f docker/docker-compose.yml up -d --build --force-recreate
+	
 test:
 	@echo "****** Running tests ******"
 	@go test -cover  ./...  -coverprofile=coverage.out
@@ -50,4 +57,4 @@ proto:
 
 release: vendor format all
 
-.PHONY: proto vendor
+.PHONY: proto vendor splunk resplunk

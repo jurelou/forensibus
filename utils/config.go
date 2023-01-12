@@ -17,8 +17,8 @@ type Configuration struct {
 
 type SplunkConfiguration struct {
 	Address  string
-	Username string
-	Password string
+	Port int
+	Index string
 }
 
 func setDefaults() {
