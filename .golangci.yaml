@@ -1,10 +1,11 @@
 run:
   #tests: false
   skip-dirs:
-    - vendor/
-    - external/
-    - bin/
+    - vendor
+    - external
+    - bin
     - datasets
+    - docker
 
 linters:
   enable:
