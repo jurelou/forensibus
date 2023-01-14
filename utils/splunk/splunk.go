@@ -103,7 +103,7 @@ func (hec *HEC) makeRequest(data bytes.Buffer) error {
 	_, err := gzipWriter.Write(data.Bytes())
 	gzipWriter.Close()
 	if err != nil {
-		return err
+		return fmt.Errorf("Could not compress splunk data: %w", err)
 	}
 
 LOOP:
@@ -113,7 +113,7 @@ LOOP:
 
 	req, err := http.NewRequest(http.MethodPost, hec.endpoint, &compressedBuffer)
 	if err != nil {
-		return err
+		return fmt.Errorf("could not create http request: %w", err)
 	}
 	// req = req.WithContext(ctx)
 	req.Header.Set("Connection", "keep-alive")
@@ -122,13 +122,13 @@ LOOP:
 
 	res, err := hec.client.Do(req)
 	if err != nil {
-		return err
+		return fmt.Errorf("Error while sending splunk request: %w", err)
 	}
 
 	body, err := ioutil.ReadAll(res.Body)
 	res.Body.Close()
 	if err != nil {
-		return err
+		return fmt.Errorf("Error while reading splunk response: %w", err)
 	}
 
 	if res.StatusCode != http.StatusOK {

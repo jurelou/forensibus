@@ -39,7 +39,7 @@ func find(steps []dsl.Step, config dsl.FindConfig) []dsl.Step {
 		}
 
 		for _, file := range files {
-			out = append(out, dsl.Step{NextArtifact: file, CurrentFolder: step.CurrentFolder})
+			out = append(out, dsl.Step{Name: "from_find", NextArtifact: file, CurrentFolder: step.CurrentFolder})
 		}
 	}
 	return out
@@ -57,7 +57,7 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 			utils.Log.Warnf("Error while decompressing %s: %w", in.NextArtifact, err)
 			continue
 		}
-		outs = append(outs, dsl.Step{NextArtifact: out, CurrentFolder: out})
+		outs = append(outs, dsl.Step{Name: "from_extract", NextArtifact: out, CurrentFolder: out})
 
 		outLen := len(out)
 		if outLen == 0 {
@@ -98,7 +98,7 @@ func MakeInputs(sources []string) ([]dsl.Step, error) {
 		outputFolder := filepath.Join(utils.Config.OutputFolder, filepath.Dir(absPath), filenameWhithoutSuffix)
 
 		utils.Log.Infof("Writing output file `%s` FROM `%s`", outputFolder, absPath)
-		ins = append(ins, dsl.Step{CurrentFolder: outputFolder, NextArtifact: absPath})
+		ins = append(ins, dsl.Step{Name: "init", CurrentFolder: outputFolder, NextArtifact: absPath})
 
 	}
 	return ins, nil

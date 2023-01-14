@@ -1,5 +1,5 @@
 run:
-  #tests: false
+  tests: false
   skip-dirs:
     - vendor
     - external

@@ -55,21 +55,22 @@ func (w *Worker) Connect(address string) error {
 	return nil
 }
 
-func (w *Worker) Ping(timeout int) (worker.Pong, error) {
+func (w *Worker) Ping(timeout int) (*worker.Pong, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	defer cancel()
 	var pong *worker.Pong
 
 	pong, err := w.Client.Ping(ctx, &worker.PingRequest{Identifier: "forensibusCore"}) // TODO: get hostname here
 	if err != nil {
-		return worker.Pong{}, fmt.Errorf("Could not ping worker %s: %w", w.Address, err)
+		return nil, fmt.Errorf("Could not ping worker %s: %w", w.Address, err)
 	}
-	return *pong, nil
+	return pong, nil
 }
 
 func (w *Worker) Work(wg *sync.WaitGroup, chans JobChannels) {
 	defer wg.Done()
-	ctx, _ := context.WithTimeout(context.Background(), 60*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
 
 	for job := range chans.Jobs {
 		fmt.Println("Got job", job.Step.NextArtifact, " FROM ", job.Step.CurrentFolder)
