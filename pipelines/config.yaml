@@ -1,9 +1,11 @@
 port: 123
 OutputFolder: /tmp/forensibus
 splunk:
-  address: localhost # Do not add http or https here !
-  port: 9515
   index: toto
+  # managementAddress: https://localhost:8089
+  hec:
+    address: http://localhost:8088
+    token: 42424242-4242-4242-4242-424242424242
 
 ArchivePasswords:
   - password

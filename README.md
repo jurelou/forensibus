@@ -15,6 +15,8 @@
 - use libmagic bindings instead of filetype 
 - Add more archives extraction types
 - Ability to lint the config file. (check if processors exists, ....)
+- splunk: configure event_renderers.conf to set event colors
+- splunk HEC configure indexer acknowledgement
 
 # Compiler pour les différents OS
 

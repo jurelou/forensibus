@@ -15,10 +15,14 @@ type Configuration struct {
 	ArchivePasswords []string
 }
 
+type SplunkHECConfiguration struct {
+	Address string
+	Token string
+}
 type SplunkConfiguration struct {
-	Address  string
-	Port int
+	ManagementAddress  string
 	Index string
+	Hec SplunkHECConfiguration
 }
 
 func setDefaults() {
@@ -41,6 +45,7 @@ func Configure() error {
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("./pipelines")
 	viper.AddConfigPath("../pipelines")
+	viper.AddConfigPath("../../pipelines")
 	viper.SetConfigName("config")
 	setDefaults()
 
