@@ -17,12 +17,12 @@ type Configuration struct {
 
 type SplunkHECConfiguration struct {
 	Address string
-	Token string
+	Token   string
 }
 type SplunkConfiguration struct {
-	ManagementAddress  string
+	// ManagementAddress  string
 	Index string
-	Hec SplunkHECConfiguration
+	Hec   SplunkHECConfiguration
 }
 
 func setDefaults() {
