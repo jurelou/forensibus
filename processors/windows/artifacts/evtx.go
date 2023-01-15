@@ -1,19 +1,16 @@
 package windows_artifacts
 
 import (
-	// "encoding/json"
 	"fmt"
 	"os"
-	// "time"
 
-	"www.velocidex.com/golang/evtx"
 	"github.com/Velocidex/ordereddict"
+	"www.velocidex.com/golang/evtx"
 
 	"github.com/jurelou/forensibus/utils"
 	"github.com/jurelou/forensibus/utils/processors"
 	"github.com/jurelou/forensibus/utils/writer"
 )
-
 
 type EvtxProcessor struct {
 	// Input string
@@ -38,24 +35,26 @@ func (proc EvtxProcessor) Configure() error {
 // }
 
 func (proc EvtxProcessor) Run(in string, out writer.OutputWriter) error {
-	fd, err := os.Open(in); if err != nil {
+	fd, err := os.Open(in)
+	if err != nil {
 		return err
 	}
 	defer fd.Close()
 
-	chunks, err := evtx.GetChunks(fd); if err != nil {
+	chunks, err := evtx.GetChunks(fd)
+	if err != nil {
 		return err
 	}
 	for _, chunk := range chunks {
-		records, err := chunk.Parse(0); if err != nil {
+		records, err := chunk.Parse(0)
+		if err != nil {
 			utils.Log.Warnf("Error while parsing chunk")
 			continue
 		}
 		for _, record := range records {
-			var eventId int64
-			var timeCreated int64
 
-			event_map, ok := record.Event.(*ordereddict.Dict); if !ok {
+			event_map, ok := record.Event.(*ordereddict.Dict)
+			if !ok {
 				utils.Log.Warnf("Could not read event")
 				continue
 			}
@@ -65,32 +64,44 @@ func (proc EvtxProcessor) Run(in string, out writer.OutputWriter) error {
 			// 	continue
 			// }
 			// event_map, ok := record.Event.(*Dict)
-			event, ok := ordereddict.GetMap(event_map, "Event"); if !ok{
+			event, ok := ordereddict.GetMap(event_map, "Event")
+			if !ok {
 				continue
 			}
-			user_data, ok := ordereddict.GetMap(event, "UserData"); if !ok {
-			}
-			event_data, ok := ordereddict.GetMap(event, "EventData"); if !ok {
+			system, ok := ordereddict.GetMap(event, "System")
+			if !ok {
 				continue
 			}
-			system, ok := ordereddict.GetMap(event, "System"); if !ok {
-				continue
+
+			userData, ok := ordereddict.GetMap(event, "UserData")
+			if ok {
+				system.MergeFrom(userData)
 			}
-			systemEventId, ok := ordereddict.GetMap(system, "EventID"); if ok {
-				eventId, _ = systemEventId.GetInt64("Value")
+			eventData, ok := ordereddict.GetMap(event, "EventData")
+			if ok {
+				system.MergeFrom(eventData)
 			}
-			systemTimeCreated, ok := ordereddict.GetMap(system, "TimeCreated"); if ok {
-				timeCreated, _ = systemTimeCreated.GetInt64("SystemTime")
+
+			systemEventId, ok := ordereddict.GetMap(system, "EventID")
+			if ok {
+				eventId, ok := systemEventId.GetInt64("Value")
+				if ok {
+					system.Set("EventID", eventId)
+				}
 			}
-			// event_dict := *event.ToDict()
-			// delete(event_dict["System"].(map[string]interface{}), "EventID")
-			fmt.Println("==============")
-			// version := *system.ToDict()
-			fmt.Printf("%T", system)
-			fmt.Println("eid:", eventId)
-			fmt.Println("time:", timeCreated)
-			fmt.Println(user_data)
-			fmt.Println(event_data)
+
+			systemTimeCreated, ok := ordereddict.GetMap(system, "TimeCreated")
+			if ok {
+				systemTime, ok := systemTimeCreated.GetInt64("SystemTime")
+				if ok {
+					system.Set("SystemTime", systemTime)
+				}
+			}
+			json, err := system.MarshalJSON()
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(json))
 
 		}
 	}

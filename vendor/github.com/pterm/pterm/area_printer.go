@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"atomicgo.dev/cursor"
-
 	"github.com/pterm/pterm/internal"
 )
 

@@ -21,8 +21,6 @@ require (
 require (
 	atomicgo.dev/cursor v0.1.1 // indirect
 	atomicgo.dev/keyboard v0.2.8 // indirect
-	github.com/0xrawsec/golang-evtx v1.2.9 // indirect
-	github.com/0xrawsec/golang-utils v1.3.0 // indirect
 	github.com/Velocidex/pkcs7 v0.0.0-20210524015001-8d1eee94a157 // indirect
 	github.com/agext/levenshtein v1.2.1 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect

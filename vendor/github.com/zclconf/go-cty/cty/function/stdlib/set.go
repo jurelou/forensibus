@@ -3,9 +3,8 @@ package stdlib
 import (
 	"fmt"
 
-	"github.com/zclconf/go-cty/cty/convert"
-
 	"github.com/zclconf/go-cty/cty"
+	"github.com/zclconf/go-cty/cty/convert"
 	"github.com/zclconf/go-cty/cty/function"
 )
 

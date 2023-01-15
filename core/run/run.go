@@ -135,7 +135,6 @@ func MonitorResults(stepsCount int, results <-chan JobResult, finish chan<- bool
 		if utils.IsErrored(result.Status) {
 			// utils.Log.Warnf("Error !!!!", result)
 			pterm.Error.Printfln("Error while running `%s` against `%s`: %s", result.Job.Name, result.Job.Step.NextArtifact, result.Error)
-
 		} else {
 			pterm.Success.Printfln("Successfully ran `%s` against `%s`", result.Job.Name, result.Job.Step.NextArtifact)
 		}
