@@ -15,6 +15,7 @@ func (s *Server) Ping(ctx context.Context, in *worker.PingRequest) (*worker.Pong
 	if err != nil {
 		hostname = "unknown"
 		utils.Log.Infof("Could not get local hostname %w", err)
+		return nil, err
 	}
 	// time.Sleep(10 * time.Second)
 	return &worker.Pong{Name: hostname, Capacity: 16}, nil

@@ -11,6 +11,7 @@ import (
 
 	dsl "github.com/jurelou/forensibus/core"
 	"github.com/jurelou/forensibus/proto/worker"
+	"github.com/jurelou/forensibus/utils"
 
 	// _ "github.com/jurelou/forensibus/processors/linux"
 	// _ "github.com/jurelou/forensibus/processors/linux/commands"
@@ -73,13 +74,10 @@ func (w *Worker) Work(wg *sync.WaitGroup, chans JobChannels) {
 	defer cancel()
 
 	for job := range chans.Jobs {
-		fmt.Println("Got job", job.Step.NextArtifact, " FROM ", job.Step.CurrentFolder)
-
 		res, err := w.Client.Work(ctx, &worker.WorkRequest{Source: job.Step.NextArtifact, OutputFolder: job.Step.CurrentFolder, Processor: job.Name, Config: job.Config})
 		if err != nil {
-			fmt.Println(">>", err)
+			utils.Log.Warnf("Error while sending work request: %s", err.Error())
 		}
 		chans.JobResults <- JobResult{Job: job, Status: res.GetStatus(), Error: res.GetError()}
 	}
-	fmt.Println("Worker exited")
 }

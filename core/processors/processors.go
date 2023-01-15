@@ -34,11 +34,11 @@ func RunSingleProcessor(procName string) {
 	// Temporarily set Fatal to false, so that the CI won't crash.
 	pterm.Fatal.WithFatal(false).Println("Hello, World!") // Print Fatal.
 
-	p, _ := pterm.DefaultProgressbar.WithTotal(len(fakeInstallList)).WithTitle("Downloading stuff").Start()
+	p, _ := pterm.DefaultProgressbar.WithTotal(len(fakeInstallList)).WithTitle("Total").Start()
 
 	for i := 0; i < p.Total; i++ {
-		p.UpdateTitle("Downloading " + fakeInstallList[i])         // Update the title of the progressbar.
-		pterm.Success.Println("Downloading " + fakeInstallList[i]) // If a progressbar is running, each print will be printed above the progressbar.
+		// p.UpdateTitle(fakeInstallList[i])         // Update the title of the progressbar.
+		pterm.Success.Println(fakeInstallList[i]) // If a progressbar is running, each print will be printed above the progressbar.
 		p.Increment()                                              // Increment the progressbar by one. Use Add(x int) to increment by a custom amount.
 		time.Sleep(time.Millisecond * 350)                         // Sleep 350 milliseconds.
 	}

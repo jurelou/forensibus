@@ -1,4 +1,4 @@
-package splunk
+package writer
 
 import (
 	"bytes"
@@ -24,18 +24,6 @@ var (
 	statusInternalServerError = 8
 )
 
-type Event struct {
-	Host       string      `json:"host,omitempty"`
-	Index      string      `json:"index,omitempty"`
-	Source     string      `json:"source,omitempty"`
-	SourceType string      `json:"sourcetype,omitempty"`
-	Time       string      `json:"time,omitempty"`
-	Event      interface{} `json:"event"`
-}
-
-func NewEvent(event interface{}) *Event {
-	return &Event{Event: event}
-}
 
 type Response struct {
 	Text  string          `json:"text"`
@@ -51,6 +39,7 @@ type HEC struct {
 	token    string
 
 	buffer bytes.Buffer
+	errors []string
 
 	defaultHost       string
 	defaultIndex      string
@@ -58,7 +47,7 @@ type HEC struct {
 	defaultSourceType string
 }
 
-func NewHEC(address string, token string) HEC {
+func NewHEC(address string, token string) *HEC {
 	transport := &http.Transport{
 		TLSClientConfig:     &tls.Config{InsecureSkipVerify: true}, // allow insecure TLS
 		MaxIdleConns:        10,                                    // global number of idle conns
@@ -71,7 +60,8 @@ func NewHEC(address string, token string) HEC {
 		Timeout:   timeout,
 	}
 	endpoint := strings.TrimSuffix(address, "/") + hecEndpoint
-	return HEC{endpoint: endpoint, token: token, client: &client}
+	utils.Log.Debugf("Created new splunk output (%s) with token %s", endpoint, token)
+	return &HEC{endpoint: endpoint, token: token, client: &client}
 }
 
 func (hec *HEC) Close() {
@@ -145,7 +135,6 @@ LOOP:
 		}
 	}
 	utils.Log.Debugf("Sent %d bytes to splunk", hec.buffer.Len())
-
 	return nil
 }
 
@@ -155,6 +144,7 @@ func (hec *HEC) flushBuffer() {
 	}
 	if err := hec.makeRequest(hec.buffer); err != nil {
 		utils.Log.Warnf("Error while sending %d bytes to splunk: %s", hec.buffer.Len(), err.Error())
+		hec.errors = append(hec.errors, err.Error())
 	}
 	hec.buffer.Reset()
 }

@@ -1,7 +1,8 @@
 port: 123
-OutputFolder: /tmp/forensibus
+outputFolder: /tmp/forensibus
+outputType: splunk
 splunk:
-  index: toto
+  index: main
   # managementAddress: https://localhost:8089
   hec:
     address: http://localhost:8088

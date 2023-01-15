@@ -9,6 +9,7 @@ import (
 	"www.velocidex.com/golang/go-prefetch"
 
 	"github.com/jurelou/forensibus/utils"
+	"github.com/jurelou/forensibus/utils/writer"
 	"github.com/jurelou/forensibus/utils/processors"
 )
 
@@ -26,27 +27,38 @@ type PrefetchProcessor struct {
 	Input string `yaml:"input"`
 }
 
-func (p PrefetchProcessor) Configure() error {
+func (proc PrefetchProcessor) Configure() error {
 	return nil
 }
 
-func (p PrefetchProcessor) Run(in string) error {
-	// utils.Log.Debugf("Run pf processor against `%s`", in)
-
+func (proc PrefetchProcessor) parsePrefetch(in string) (PrefetchEntry, error)  {
 	fd, err := os.Open(in)
 	if err != nil {
 		utils.Log.Warnf("Could not open prefetch file `%s`", in)
-		return err
+		return PrefetchEntry{}, err
 	}
 	pf, err := prefetch.LoadPrefetch(fd)
 	if err != nil {
 		utils.Log.Warnf("Prefetch file `%s` is invalid: `%s`", in, err.Error())
+		return PrefetchEntry{}, err
+	}
+	return PrefetchEntry(*pf), nil
+}
+
+func (proc PrefetchProcessor) Run(in string, out writer.OutputWriter) error {
+	// utils.Log.Debugf("Run pf processor against `%s`", in)
+	entry, err := proc.parsePrefetch(in) ; if err != nil {
 		return err
 	}
-	entry := PrefetchEntry(*pf)
 
-	json, _ := json.Marshal(entry)
-	fmt.Println(string(json))
+	json, err := json.Marshal(entry) ; if err != nil {
+		return err
+	}
+
+	out.SetDefaultSourceType("prefetch")
+	e := writer.NewEvent(string(json))
+	out.WriteEvent(e)
+	fmt.Println("ok")
 	return nil
 }
 

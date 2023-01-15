@@ -6,6 +6,7 @@ import (
 	"os/signal"
 	"path/filepath"
 	"strings"
+	"github.com/pterm/pterm"
 
 	dsl "github.com/jurelou/forensibus/core"
 	"github.com/jurelou/forensibus/utils"
@@ -28,14 +29,14 @@ func find(steps []dsl.Step, config dsl.FindConfig) []dsl.Step {
 		files, err := utils.FindFiles(utils.FindFilesParams{Path: step.NextArtifact, PathPatterns: config.Patterns, FileFormats: config.MimeTypes})
 		// latestErr = err
 		if err != nil {
-			utils.Log.Warnf("Error while searching for `%s` files from %s: %w", config.Name, step.NextArtifact, err)
+			pterm.Error.Printfln("Error while searching for `%s` files from %s: %w", config.Name, step.NextArtifact, err)
 			continue
 		}
 		filesLen := len(files)
 		if filesLen == 0 {
-			utils.Log.Warnf("Found 0 `%s` files from %s", config.Name, step.NextArtifact)
+			pterm.Warning.Printfln("Found 0 `%s` files from %s", config.Name, step.NextArtifact)
 		} else {
-			utils.Log.Infof("Found %d `%s` files from %s", filesLen, config.Name, step.NextArtifact)
+			pterm.Success.Printfln("Found %d `%s` files from %s", filesLen, config.Name, step.NextArtifact)
 		}
 
 		for _, file := range files {
@@ -54,16 +55,16 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 	for _, in := range files {
 		out, err := decompress.Decompress(in.NextArtifact, in.CurrentFolder)
 		if err != nil {
-			utils.Log.Warnf("Error while decompressing %s: %w", in.NextArtifact, err)
+			pterm.Error.Printfln("Error while decompressing %s: %w", in.NextArtifact, err)
 			continue
 		}
 		outs = append(outs, dsl.Step{Name: "from_extract", NextArtifact: out, CurrentFolder: out})
 
 		outLen := len(out)
 		if outLen == 0 {
-			utils.Log.Warnf("Extracted 0 `%s` files from %s", config.Name, in.NextArtifact)
+			pterm.Warning.Printfln("Extracted 0 `%s` files from %s", config.Name, in.NextArtifact)
 		} else {
-			utils.Log.Infof("Extracted %d `%s` files", outLen, config.Name, in.NextArtifact)
+			pterm.Success.Printfln("Extracted %d `%s` files", outLen, config.Name, in.NextArtifact)
 		}
 
 	}
@@ -73,9 +74,8 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 func process(steps []dsl.Step, config dsl.ProcessConfig, jobs chan Job) {
 	// RunProcessor(steps, config)
 	for _, in := range steps {
-		fmt.Println("Launch ", in.NextArtifact)
+		pterm.Info.Printfln("Running %s processor against %s", config.Name, in.NextArtifact)
 		jobs <- Job{Step: in, Config: config.Config, Name: config.Name}
-		fmt.Println("..")
 	}
 }
 
@@ -97,7 +97,7 @@ func MakeInputs(sources []string) ([]dsl.Step, error) {
 		// Output folder is a concatenation of the configured temp folder + the given path
 		outputFolder := filepath.Join(utils.Config.OutputFolder, filepath.Dir(absPath), filenameWhithoutSuffix)
 
-		utils.Log.Infof("Writing output file `%s` FROM `%s`", outputFolder, absPath)
+		// utils.Log.Infof("Writing output file `%s` FROM `%s`", outputFolder, absPath)
 		ins = append(ins, dsl.Step{Name: "init", CurrentFolder: outputFolder, NextArtifact: absPath})
 
 	}
@@ -127,11 +127,19 @@ func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, chans JobChannel
 	})
 }
 
-func MonitorResults(results <-chan JobResult, finish chan<- bool) {
+func MonitorResults(stepsCount int, results <-chan JobResult, finish chan<- bool) {
+	globalBar, _ := pterm.DefaultProgressbar.WithTotal(stepsCount).WithTitle("Total").WithRemoveWhenDone(false).Start()
+
 	for result := range results {
-		utils.Log.Infof(">>>>>>>>> %s - %d", result.Job.Name, result.Status)
+		globalBar.Increment()
+		if utils.IsErrored(result.Status) {
+			utils.Log.Warnf("Error !!!!", result)
+			pterm.Error.Printfln("Error while running `%s` against `%s`: %s", result.Job.Name, result.Job.Step.NextArtifact, result.Error)
+
+		} else {
+			pterm.Success.Printfln("Successfully ran `%s` against `%s`", result.Job.Name, result.Job.Step.NextArtifact)
+		}
 	}
-	utils.Log.Infof("Stop monitoring")
 	finish <- true
 }
 
@@ -159,13 +167,12 @@ func onSigint(sigint <-chan os.Signal) {
 }
 
 func Run(pipelineconfigFile string, paths []string) {
-	utils.Log.Info("Starting client")
-
 	config, err := dsl.LoadDSLFile(pipelineconfigFile)
 	if err != nil {
 		utils.Log.Warnf(err.Error())
 		return
 	}
+	stepsCount := dsl.CountPipelineSteps(config.Pipeline)
 	inputs, err := MakeInputs(paths)
 	if err != nil {
 		utils.Log.Warnf(err.Error())
@@ -189,7 +196,7 @@ func Run(pipelineconfigFile string, paths []string) {
 	utils.Log.Infof("Launched a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
 
 	finishMonitoring := make(chan bool)
-	go MonitorResults(chans.JobResults, finishMonitoring)
+	go MonitorResults(stepsCount, chans.JobResults, finishMonitoring)
 
 	// Catch SIGINT
 	c := make(chan os.Signal, 1)
@@ -207,5 +214,5 @@ func Run(pipelineconfigFile string, paths []string) {
 	// Wait for monitoring to finish
 	<-finishMonitoring
 
-	utils.Log.Infof("Terminated")
+	fmt.Println("\nDone!")
 }

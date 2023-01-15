@@ -175,3 +175,18 @@ func LintPipeline(item PipelineConfig) error {
 	})
 	return lastErr
 }
+
+func CountPipelineSteps(item PipelineConfig) int {
+	// Pass a dummy item to each steps to make sure the pipeline is fully traversed
+	dummy := make([]Step, 1)
+	dummy = append(dummy, Step{Name: "dummy", CurrentFolder: "DummyCurrent", NextArtifact: "DummyNext"})
+	count := 0
+	WalkPipeline(item, dummy, func(item interface{}, in []Step) []Step {
+		switch item.(type) {
+		case ProcessConfig:
+			count++
+		}
+		return dummy
+	})
+	return count
+}

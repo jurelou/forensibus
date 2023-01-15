@@ -1,4 +1,4 @@
-package splunk_test
+package writer_test
 
 import (
 	"bytes"
@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	// "github.com/jurelou/forensibus/utils"
-	"github.com/jurelou/forensibus/utils/splunk"
+	"github.com/jurelou/forensibus/utils/writer"
 )
 
 func TestCreateEvent(t *testing.T) {
@@ -45,14 +45,14 @@ func TestCreateEvent(t *testing.T) {
 	}))
 	defer svr.Close()
 
-	hec := splunk.NewHEC(svr.URL, "test-token")
+	hec := writer.NewHEC(svr.URL, "test-token")
 	defer hec.Close()
 	hec.SetDefaultHost("host_x")
 	hec.SetDefaultIndex("main_x")
 	hec.SetDefaultSource("source_x")
 	hec.SetDefaultSourceType("stype_x")
 
-	e := splunk.NewEvent("test_event")
+	e := writer.NewEvent("test_event")
 	hec.WriteEvent(e)
 }
 
@@ -62,8 +62,8 @@ func TestCreateEventNoFlush(t *testing.T) {
 	}))
 	defer svr.Close()
 
-	hec := splunk.NewHEC(svr.URL, "test-token")
-	e := splunk.NewEvent("test_event")
+	hec := writer.NewHEC(svr.URL, "test-token")
+	e := writer.NewEvent("test_event")
 	hec.WriteEvent(e)
 }
 
@@ -73,9 +73,9 @@ func TestCreateEmptyEvent(t *testing.T) {
 	}))
 	defer svr.Close()
 
-	hec := splunk.NewHEC(svr.URL, "test-token")
+	hec := writer.NewHEC(svr.URL, "test-token")
 	defer hec.Close()
-	e := splunk.NewEvent(nil)
+	e := writer.NewEvent(nil)
 	hec.WriteEvent(e)
 }
 
@@ -109,14 +109,14 @@ func TestCreateEventOverride(t *testing.T) {
 	}))
 	defer svr.Close()
 
-	hec := splunk.NewHEC(svr.URL, "test-token")
+	hec := writer.NewHEC(svr.URL, "test-token")
 	defer hec.Close()
 	hec.SetDefaultHost("host_x")
 	hec.SetDefaultIndex("main_x")
 	hec.SetDefaultSource("source_x")
 	hec.SetDefaultSourceType("stype_x")
 
-	e := splunk.NewEvent("new_event")
+	e := writer.NewEvent("new_event")
 	e.Host = "new_host"
 	e.Index = "new_index"
 	e.Source = "new_source"
@@ -133,10 +133,10 @@ func TestCreateEvent500Invalid(t *testing.T) {
 	}))
 	defer svr.Close()
 
-	hec := splunk.NewHEC(svr.URL, "test-token")
+	hec := writer.NewHEC(svr.URL, "test-token")
 	defer hec.Close()
 
-	e := splunk.NewEvent("new_event")
+	e := writer.NewEvent("new_event")
 
 	hec.WriteEvent(e)
 }
@@ -154,10 +154,10 @@ func TestCreateEvent500Valid(t *testing.T) {
 	}))
 	defer svr.Close()
 
-	hec := splunk.NewHEC(svr.URL, "test-token")
+	hec := writer.NewHEC(svr.URL, "test-token")
 	defer hec.Close()
 
-	e := splunk.NewEvent("new_event")
+	e := writer.NewEvent("new_event")
 
 	hec.WriteEvent(e)
 }
