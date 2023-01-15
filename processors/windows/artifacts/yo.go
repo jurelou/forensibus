@@ -2,8 +2,8 @@ package windows_artifacts
 
 import (
 	"github.com/jurelou/forensibus/utils"
-	"github.com/jurelou/forensibus/utils/writer"
 	"github.com/jurelou/forensibus/utils/processors"
+	"github.com/jurelou/forensibus/utils/writer"
 )
 
 type EvtxProcessor struct {

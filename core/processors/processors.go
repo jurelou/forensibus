@@ -39,7 +39,7 @@ func RunSingleProcessor(procName string) {
 	for i := 0; i < p.Total; i++ {
 		// p.UpdateTitle(fakeInstallList[i])         // Update the title of the progressbar.
 		pterm.Success.Println(fakeInstallList[i]) // If a progressbar is running, each print will be printed above the progressbar.
-		p.Increment()                                              // Increment the progressbar by one. Use Add(x int) to increment by a custom amount.
-		time.Sleep(time.Millisecond * 350)                         // Sleep 350 milliseconds.
+		p.Increment()                             // Increment the progressbar by one. Use Add(x int) to increment by a custom amount.
+		time.Sleep(time.Millisecond * 350)        // Sleep 350 milliseconds.
 	}
 }

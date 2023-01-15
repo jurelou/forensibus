@@ -9,8 +9,8 @@ import (
 	"www.velocidex.com/golang/go-prefetch"
 
 	"github.com/jurelou/forensibus/utils"
-	"github.com/jurelou/forensibus/utils/writer"
 	"github.com/jurelou/forensibus/utils/processors"
+	"github.com/jurelou/forensibus/utils/writer"
 )
 
 type PrefetchEntry struct {
@@ -31,7 +31,7 @@ func (proc PrefetchProcessor) Configure() error {
 	return nil
 }
 
-func (proc PrefetchProcessor) parsePrefetch(in string) (PrefetchEntry, error)  {
+func (proc PrefetchProcessor) parsePrefetch(in string) (PrefetchEntry, error) {
 	fd, err := os.Open(in)
 	if err != nil {
 		utils.Log.Warnf("Could not open prefetch file `%s`", in)
@@ -47,11 +47,13 @@ func (proc PrefetchProcessor) parsePrefetch(in string) (PrefetchEntry, error)  {
 
 func (proc PrefetchProcessor) Run(in string, out writer.OutputWriter) error {
 	// utils.Log.Debugf("Run pf processor against `%s`", in)
-	entry, err := proc.parsePrefetch(in) ; if err != nil {
+	entry, err := proc.parsePrefetch(in)
+	if err != nil {
 		return err
 	}
 
-	json, err := json.Marshal(entry) ; if err != nil {
+	json, err := json.Marshal(entry)
+	if err != nil {
 		return err
 	}
 

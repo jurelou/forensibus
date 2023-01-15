@@ -20,4 +20,3 @@ type OutputWriter interface {
 func New() OutputWriter {
 	return NewHEC(utils.Config.Splunk.Hec.Address, utils.Config.Splunk.Hec.Token)
 }
-

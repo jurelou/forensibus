@@ -1,14 +1,12 @@
 package worker
 
 import (
-	// "fmt"
 	"context"
 
 	"github.com/jurelou/forensibus/proto/worker"
 	"github.com/jurelou/forensibus/utils"
 	"github.com/jurelou/forensibus/utils/processors"
 	"github.com/jurelou/forensibus/utils/writer"
-
 )
 
 func (s *Server) Work(ctx context.Context, in *worker.WorkRequest) (*worker.WorkResponse, error) {

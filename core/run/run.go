@@ -6,6 +6,7 @@ import (
 	"os/signal"
 	"path/filepath"
 	"strings"
+
 	"github.com/pterm/pterm"
 
 	dsl "github.com/jurelou/forensibus/core"
