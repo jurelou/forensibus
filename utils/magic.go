@@ -16,7 +16,7 @@ func GetMagic(filePath string) string {
 func init() {
 	handle = magic.NewMagicHandle(magic.MAGIC_NONE)
 	// defer handle.Close()
-	handle.SetFlags(magic.MAGIC_MIME_TYPE)
+	// handle.SetFlags(magic.MAGIC_MIME_TYPE)
 	handle.SetFlags(magic.MAGIC_PRESERVE_ATIME)
 
 	if err := magic_files.LoadDefaultMagic(handle); err != nil {

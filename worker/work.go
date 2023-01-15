@@ -17,6 +17,7 @@ func (s *Server) Work(ctx context.Context, in *worker.WorkRequest) (*worker.Work
 	// Try to load the processor
 	processor, err := processors.Get(procName)
 	if err != nil {
+		utils.Log.Warnf("Could not find processor %s", procName)
 		return &worker.WorkResponse{Status: utils.Failure, Error: err.Error()}, err
 	}
 
@@ -29,7 +30,7 @@ func (s *Server) Work(ctx context.Context, in *worker.WorkRequest) (*worker.Work
 
 	// Run the processor
 	if err := processor.Run(source, out); err != nil {
-		// fmt.Println("oops", err)
+		utils.Log.Warnf("Error while running %s against %s: %s", procName, source, err.Error())
 		return &worker.WorkResponse{Status: utils.Failure, Error: err.Error()}, nil
 	}
 

@@ -30,7 +30,7 @@ func find(steps []dsl.Step, config dsl.FindConfig) []dsl.Step {
 		files, err := utils.FindFiles(utils.FindFilesParams{Path: step.NextArtifact, PathPatterns: config.Patterns, FileFormats: config.MimeTypes})
 		// latestErr = err
 		if err != nil {
-			pterm.Error.Printfln("Error while searching for `%s` files from %s: %w", config.Name, step.NextArtifact, err)
+			pterm.Error.Printfln("Error while searching for `%s` files from %s: %s", config.Name, step.NextArtifact, err.Error())
 			continue
 		}
 		filesLen := len(files)
@@ -56,7 +56,7 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 	for _, in := range files {
 		out, err := decompress.Decompress(in.NextArtifact, in.CurrentFolder)
 		if err != nil {
-			pterm.Error.Printfln("Error while decompressing %s: %w", in.NextArtifact, err)
+			pterm.Error.Printfln("Error while decompressing %s: %s", in.NextArtifact, err.Error())
 			continue
 		}
 		outs = append(outs, dsl.Step{Name: "from_extract", NextArtifact: out, CurrentFolder: out})
@@ -65,7 +65,7 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 		if outLen == 0 {
 			pterm.Warning.Printfln("Extracted 0 `%s` files from %s", config.Name, in.NextArtifact)
 		} else {
-			pterm.Success.Printfln("Extracted %d `%s` files", outLen, config.Name, in.NextArtifact)
+			pterm.Success.Printfln("Extracted %d `%s` files from %s", outLen, config.Name, in.NextArtifact)
 		}
 
 	}
@@ -132,15 +132,15 @@ func MonitorResults(stepsCount int, results <-chan JobResult, finish chan<- bool
 	globalBar, _ := pterm.DefaultProgressbar.WithTotal(stepsCount).WithTitle("Total").WithRemoveWhenDone(false).Start()
 
 	for result := range results {
-		globalBar.Increment()
 		if utils.IsErrored(result.Status) {
-			utils.Log.Warnf("Error !!!!", result)
+			// utils.Log.Warnf("Error !!!!", result)
 			pterm.Error.Printfln("Error while running `%s` against `%s`: %s", result.Job.Name, result.Job.Step.NextArtifact, result.Error)
 
 		} else {
 			pterm.Success.Printfln("Successfully ran `%s` against `%s`", result.Job.Name, result.Job.Step.NextArtifact)
 		}
 	}
+	globalBar.Increment()
 	finish <- true
 }
 
@@ -215,5 +215,6 @@ func Run(pipelineconfigFile string, paths []string) {
 	// Wait for monitoring to finish
 	<-finishMonitoring
 
-	fmt.Println("\nDone!")
+	pterm.Info.Println("Done!")
+	// fmt.Println("\nDone!")
 }

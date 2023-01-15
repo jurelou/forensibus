@@ -1,51 +1,14 @@
 
 pipeline "testpipe" {
 
-    extract "zip archives" {
-      patterns = [".*.zip$"]
+    find "evtx files" {
+      patterns = [".*"]
+      mime_types = ["MS Windows Vista Event Log"]
 
       process "evtxdump" {}
 
     }
 
-  // extract "7z archives" {
-  //     patterns = [".*.7z$"]
-  
-    find "co files" {
-        patterns = [".*"]
-
-        process "prefetch" {}
-
-    }
-
-    // }
-
-
-  // find "first" {
-  //   patterns = [".zip$"]
-  //   // mime_types = ["application/evtx"]
-
-  //   process "evtxdump" {}
-  //   extract "lol" {
-  //     patterns = [".*"]
-  //   }
-
-  //   find "first_second" {
-  //     patterns = ["main.go$"]
-
-  //     process "evtxdump" {}
-
-  //   }
-
-  // }
-
-  find "bis" {
-    patterns = []
-    mime_types = ["application/evtx"]
-
-    process "evtxdump" {}
-
-  }
 
 }
 

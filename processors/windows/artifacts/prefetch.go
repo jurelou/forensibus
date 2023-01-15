@@ -24,7 +24,7 @@ type PrefetchEntry struct {
 }
 
 type PrefetchProcessor struct {
-	Input string `yaml:"input"`
+	// Input string
 }
 
 func (proc PrefetchProcessor) Configure() error {

@@ -38,9 +38,8 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 		if checkFileFormat {
 			magic := GetMagic(filePath)
 			for _, mime := range params.FileFormats {
-				if mime == magic {
+				if strings.Contains(magic, mime) {
 					magicMatches = true
-					// files = append(files, filePath)
 					break
 				}
 			}

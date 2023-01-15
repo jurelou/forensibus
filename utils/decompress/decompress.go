@@ -60,23 +60,12 @@ func Decompress(in string, out string) (string, error) {
 
 	magic := utils.GetMagic(in)
 
-	if magic == "application/x-7z-compressed" {
-		return outputFolder, DecompressSevenZip(in, outputFolder)
-		// } else if filetype.IsMIME(head, "application/x-tar") {
-		// 	return DecompressSevenZip(in, out)
-		// } else if filetype.IsMIME(head, "application/x-xz") {
-		// 	return DecompressSevenZip(in, out)
-		// } else if filetype.IsMIME(head, "application/vnd.rar") {
-		// 	return DecompressSevenZip(in, out)
-		// } else if filetype.IsMIME(head, "application/x-bzip2") {
-		// 	return DecompressSevenZip(in, out)
-		// } else if filetype.IsMIME(head, "application/x-tar") {
-		// 	return DecompressSevenZip(in, out)
-	} else if magic == "application/zip" {
+	if strings.Contains(magic, "7-zip archive") || strings.Contains(magic, "Zip archive") {
 		return outputFolder, DecompressSevenZip(in, outputFolder)
 	}
-
-	// handle := magic.NewMagicHandle(magic.MAGIC_NONE)
+	// else if strings.Contains(magic, "Zip archive") {
+	// 	return outputFolder, DecompressSevenZip(in, outputFolder)
+	// }
 
 	return outputFolder, errors.New(fmt.Sprintf("Invalid archive type"))
 }

@@ -17,6 +17,7 @@
 - Ability to lint the config file. (check if processors exists, ....)
 - splunk: configure event_renderers.conf to set event colors
 - splunk HEC configure indexer acknowledgement
+- https://parsiya.net/blog/2018-11-01-windows-filetime-timestamps-and-byte-wrangling-with-go/
 
 # Compiler pour les différents OS
 
