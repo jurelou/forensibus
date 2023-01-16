@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"sync"
 	"time"
+	// "github.com/pterm/pterm"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -70,14 +71,16 @@ func (w *Worker) Ping(timeout int) (*worker.Pong, error) {
 
 func (w *Worker) Work(wg *sync.WaitGroup, chans JobChannels) {
 	defer wg.Done()
-	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(utils.Config.ProcessorTimeout) * time.Second)
 	defer cancel()
-
 	for job := range chans.Jobs {
 		res, err := w.Client.Work(ctx, &worker.WorkRequest{Source: job.Step.NextArtifact, OutputFolder: job.Step.CurrentFolder, Processor: job.Name, Config: job.Config})
+		jobError := res.GetError()
+		jobStatus := res.GetStatus()
 		if err != nil {
-			utils.Log.Warnf("Error while sending work request: %s", err.Error())
+			jobError = fmt.Sprintf("Processor %s timed out (%s): %s", job.Name, job.Step.NextArtifact, err.Error())
+			jobStatus = utils.Timeout
 		}
-		chans.JobResults <- JobResult{Job: job, Status: res.GetStatus(), Error: res.GetError()}
+		chans.JobResults <- JobResult{Job: job, Status: jobStatus, Error: jobError}
 	}
 }

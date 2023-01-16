@@ -64,6 +64,7 @@ func NewHEC(address string, token string) *HEC {
 }
 
 func (hec *HEC) Close() {
+	fmt.Printf("Closing !%d\n", hec.buffer.Len())
 	hec.flushBuffer()
 }
 
@@ -133,7 +134,7 @@ LOOP:
 			goto LOOP
 		}
 	}
-	utils.Log.Debugf("Sent %d bytes to splunk", hec.buffer.Len())
+	// utils.Log.Debugf("Sent %d bytes to splunk", hec.buffer.Len())
 	return nil
 }
 

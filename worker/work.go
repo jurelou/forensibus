@@ -24,15 +24,16 @@ func (s *Server) Work(ctx context.Context, in *worker.WorkRequest) (*worker.Work
 	// Configure output writer
 	// TODO: make writer global
 	out := writer.New()
-	defer out.Close()
+	// defer out.Close()
 	out.SetDefaultSource(source)
-	out.SetDefaultIndex("main")
+	out.SetDefaultIndex(utils.Config.Splunk.Index)
 
 	// Run the processor
 	if err := processor.Run(source, out); err != nil {
 		utils.Log.Warnf("Error while running %s against %s: %s", procName, source, err.Error())
+		out.Close()
 		return &worker.WorkResponse{Status: utils.Failure, Error: err.Error()}, nil
 	}
-
+	out.Close()
 	return &worker.WorkResponse{Status: utils.Success, Error: ""}, nil
 }

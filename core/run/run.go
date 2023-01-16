@@ -16,10 +16,15 @@ import (
 
 var serverAddress = "localhost:50051"
 
+type CurrentProcess struct {
+	StepsCount int
+	ProcessName string
+}
+
 type JobChannels struct {
-	// List of input / output channels
-	Jobs       chan Job
-	JobResults chan JobResult
+	CurrentProcess	chan CurrentProcess
+	Jobs       		chan Job
+	JobResults 		chan JobResult
 }
 
 func find(steps []dsl.Step, config dsl.FindConfig) []dsl.Step {
@@ -65,7 +70,7 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 		if outLen == 0 {
 			pterm.Warning.Printfln("Extracted 0 `%s` files from %s", config.Name, in.NextArtifact)
 		} else {
-			pterm.Success.Printfln("Extracted %d `%s` files from %s", outLen, config.Name, in.NextArtifact)
+			// pterm.Success.Printfln("Extracted %d `%s` files from %s", outLen, config.Name, in.NextArtifact)
 		}
 
 	}
@@ -74,10 +79,12 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 
 func process(steps []dsl.Step, config dsl.ProcessConfig, jobs chan Job) {
 	// RunProcessor(steps, config)
+	pterm.Info.Printfln("Running %s processor against %d files", config.Name, len(steps))
 	for _, in := range steps {
-		pterm.Info.Printfln("Running %s processor against %s", config.Name, in.NextArtifact)
 		jobs <- Job{Step: in, Config: config.Config, Name: config.Name}
 	}
+	// pterm.Success.Printfln("Terminated %s processor", config.Name)
+
 }
 
 func MakeInputs(sources []string) ([]dsl.Step, error) {
@@ -120,27 +127,13 @@ func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, chans JobChannel
 
 		case dsl.ProcessConfig:
 			processConfig := item.(dsl.ProcessConfig)
+			chans.CurrentProcess <- CurrentProcess{StepsCount: len(in), ProcessName: processConfig.Name}
 			process(in, processConfig, chans.Jobs)
 			return []dsl.Step{}
 
 		}
 		return in
 	})
-}
-
-func MonitorResults(stepsCount int, results <-chan JobResult, finish chan<- bool) {
-	globalBar, _ := pterm.DefaultProgressbar.WithTotal(stepsCount).WithTitle("Total").WithRemoveWhenDone(false).Start()
-
-	for result := range results {
-		if utils.IsErrored(result.Status) {
-			// utils.Log.Warnf("Error !!!!", result)
-			pterm.Error.Printfln("Error while running `%s` against `%s`: %s", result.Job.Name, result.Job.Step.NextArtifact, result.Error)
-		} else {
-			pterm.Success.Printfln("Successfully ran `%s` against `%s`", result.Job.Name, result.Job.Step.NextArtifact)
-		}
-	}
-	globalBar.Increment()
-	finish <- true
 }
 
 func loadDSL(filePath string) (dsl.Config, error) {
@@ -187,16 +180,17 @@ func Run(pipelineconfigFile string, paths []string) {
 	}
 
 	utils.Log.Infof("Worker %s (%s) is up! (cap: %d)", worker.Address, worker.Name, worker.Capacity)
+	utils.Log.Infof("Using splunk index `%s`", utils.Config.Splunk.Index)
 
 	// Queue size should be > than workers capacity so that workers are never starving
 	queueSize := workers.Capacity()
-	chans := JobChannels{Jobs: make(chan Job, queueSize*2), JobResults: make(chan JobResult, queueSize*2)}
+	chans := JobChannels{CurrentProcess: make(chan CurrentProcess, stepsCount + 1), Jobs: make(chan Job, queueSize*2), JobResults: make(chan JobResult, queueSize*2)}
 
 	workers.Work(chans)
 	utils.Log.Infof("Launched a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
 
 	finishMonitoring := make(chan bool)
-	go MonitorResults(stepsCount, chans.JobResults, finishMonitoring)
+	go MonitorResults(stepsCount, chans, finishMonitoring)
 
 	// Catch SIGINT
 	c := make(chan os.Signal, 1)
@@ -211,6 +205,8 @@ func Run(pipelineconfigFile string, paths []string) {
 	workers.Wait()
 	// Finally, close results channel
 	close(chans.JobResults)
+	// Finally, close the global "currentProcessor" chan
+	close(chans.CurrentProcess)
 	// Wait for monitoring to finish
 	<-finishMonitoring
 

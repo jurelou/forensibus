@@ -1,53 +1,39 @@
 
-archives_passwords = ["virus", "avproof"]
-temporary_folder = "/tmp/forensibus"
-
-pipeline "mypipeline4orc" {
+pipeline "DFIR-ORC" {
 
   extract "DFIR-ORC archives" {
-    // Return a list of files
-    patterns = ["Collect_.*.7z$", "DFIR-.*.7z$"]
+    patterns = ["Collect_.*.7z$", "DFIR-.*.7z$", "ORC_.*.7z$"]
+    mime_types = ["7-zip archive data"]
 
-    extract "evtx archives" {
-      // Return a list of files
-      patterns = ["Evtx.7z$", "Events.7z$"]
+    extract "Evtx archives" {
+      patterns = ["[Ee]vents?.7z$"]
+      mime_types = ["7-zip archive data"]
 
-      find "evtx files" {
-        patterns = []
-        mime_types = ["application/evtx"]
+      find "Evtx files" {
+        patterns = [".evtx$", ".evtx_data$"]
+        mime_types = ["MS Windows Vista Event Log"]
 
         process "evtxdump" {}
 
       }
 
-      process "hayabusa" {
-        config = {"rules_folder": "/tmp/myrules"}
-        // Process le dossier evtx complet
-      }
-
     }
 
-    extract "artifacts archive" {
-      patterns = ["Artifacts.7z"]
+    extract "Artifacts" {
+      patterns = ["[Aa]rtefacts?.7z$"]
+      mime_types = ["7-zip archive data"]
 
-      find "files matching lnk" {
-        patterns = [".*.lnk$"]
+      find "Prefetch files" {
+        patterns = [".pf$", ".pf_data$"]
 
-        process "lnk" {}
+        process "prefetch" {}
 
       }
 
-      process "yara" {
-        config = {"rules_path": "/tmp/myrules"}
-        // Process sur le dossier artifacts
-      }
 
     }
   }
 
-  process "something" {
-    config = {"abc": "def"}
-  }
 
 }
 

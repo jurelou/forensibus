@@ -1,8 +1,8 @@
-port: 123
+processorTimeout: 120 # seconds
 outputFolder: /tmp/forensibus
 outputType: splunk
 splunk:
-  index: main
+  index: a
   # managementAddress: https://localhost:8089
   hec:
     address: http://localhost:8088

@@ -10,6 +10,7 @@ import (
 var Config Configuration
 
 type Configuration struct {
+	ProcessorTimeout int
 	Splunk           SplunkConfiguration
 	OutputFolder     string
 	ArchivePasswords []string

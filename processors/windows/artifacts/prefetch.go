@@ -2,7 +2,6 @@ package windows_artifacts
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"time"
 
@@ -57,10 +56,8 @@ func (proc PrefetchProcessor) Run(in string, out writer.OutputWriter) error {
 		return err
 	}
 
-	out.SetDefaultSourceType("prefetch")
 	e := writer.NewEvent(string(json))
 	out.WriteEvent(e)
-	fmt.Println("ok")
 	return nil
 }
 

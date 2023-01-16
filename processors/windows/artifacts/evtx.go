@@ -1,8 +1,8 @@
 package windows_artifacts
 
 import (
-	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/Velocidex/ordereddict"
 	"www.velocidex.com/golang/evtx"
@@ -12,27 +12,11 @@ import (
 	"github.com/jurelou/forensibus/utils/writer"
 )
 
-type EvtxProcessor struct {
-	// Input string
-}
+type EvtxProcessor struct {}
 
 func (proc EvtxProcessor) Configure() error {
 	return nil
 }
-
-// func (proc EvtxProcessor) parseEvtx(in string) (PrefetchEntry, error) {
-// 	fd, err := os.Open(in)
-// 	if err != nil {
-// 		utils.Log.Warnf("Could not open prefetch file `%s`", in)
-// 		return PrefetchEntry{}, err
-// 	}
-// 	pf, err := prefetch.LoadPrefetch(fd)
-// 	if err != nil {
-// 		utils.Log.Warnf("Prefetch file `%s` is invalid: `%s`", in, err.Error())
-// 		return PrefetchEntry{}, err
-// 	}
-// 	return PrefetchEntry(*pf), nil
-// }
 
 func (proc EvtxProcessor) Run(in string, out writer.OutputWriter) error {
 	fd, err := os.Open(in)
@@ -40,6 +24,14 @@ func (proc EvtxProcessor) Run(in string, out writer.OutputWriter) error {
 		return err
 	}
 	defer fd.Close()
+
+	out.SetDefaultSourceType("evtxdump")
+
+	return parseEvtx(fd, out)
+}
+
+
+func parseEvtx(fd *os.File, out writer.OutputWriter) error {
 
 	chunks, err := evtx.GetChunks(fd)
 	if err != nil {
@@ -53,35 +45,32 @@ func (proc EvtxProcessor) Run(in string, out writer.OutputWriter) error {
 		}
 		for _, record := range records {
 
+			event := writer.NewEvent("")
+
 			event_map, ok := record.Event.(*ordereddict.Dict)
 			if !ok {
 				utils.Log.Warnf("Could not read event")
 				continue
 			}
 
-			// err := json.Unmarshal([]byte(record.Event.(string)), &event); if err != nil {
-			// 	utils.Log.Warnf("Error while converting event to json")
-			// 	continue
-			// }
-			// event_map, ok := record.Event.(*Dict)
-			event, ok := ordereddict.GetMap(event_map, "Event")
+			eventDict, ok := ordereddict.GetMap(event_map, "Event")
 			if !ok {
-				continue
+				return nil
 			}
-			system, ok := ordereddict.GetMap(event, "System")
+			system, ok := ordereddict.GetMap(eventDict, "System")
 			if !ok {
-				continue
+				return nil
 			}
-
-			userData, ok := ordereddict.GetMap(event, "UserData")
+		
+			userData, ok := ordereddict.GetMap(eventDict, "UserData")
 			if ok {
 				system.MergeFrom(userData)
 			}
-			eventData, ok := ordereddict.GetMap(event, "EventData")
+			eventData, ok := ordereddict.GetMap(eventDict, "EventData")
 			if ok {
 				system.MergeFrom(eventData)
 			}
-
+		
 			systemEventId, ok := ordereddict.GetMap(system, "EventID")
 			if ok {
 				eventId, ok := systemEventId.GetInt64("Value")
@@ -89,37 +78,26 @@ func (proc EvtxProcessor) Run(in string, out writer.OutputWriter) error {
 					system.Set("EventID", eventId)
 				}
 			}
-
+		
 			systemTimeCreated, ok := ordereddict.GetMap(system, "TimeCreated")
 			if ok {
 				systemTime, ok := systemTimeCreated.GetInt64("SystemTime")
 				if ok {
-					system.Set("SystemTime", systemTime)
+					event.Time = strconv.Itoa(int(systemTime))
+					// system.Set("SystemTime", systemTime)
 				}
 			}
-			json, err := system.MarshalJSON()
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(json))
 
+			
+			eventJson, err := system.MarshalJSON()
+			if err != nil {
+				utils.Log.Warnf("Could not convert event to json")
+				continue
+			}
+			event.Event = string(eventJson)
+			out.WriteEvent(event)
 		}
 	}
-	// utils.Log.Debugf("Run pf processor against `%s`", in)
-	// entry, err := proc.parseEvtx(in)
-	// if err != nil {
-	// 	return err
-	// }
-
-	// json, err := json.Marshal(entry)
-	// if err != nil {
-	// 	return err
-	// }
-
-	// out.SetDefaultSourceType("prefetch")
-	// e := writer.NewEvent(string(json))
-	// out.WriteEvent(e)
-
 	return nil
 }
 

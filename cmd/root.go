@@ -44,5 +44,5 @@ func init() {
 	// when this action is called directly.
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
