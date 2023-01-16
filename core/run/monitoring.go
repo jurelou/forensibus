@@ -3,7 +3,6 @@ package run
 import (
 	"github.com/pterm/pterm"
 	// "github.com/jurelou/forensibus/utils"
-
 )
 
 func MonitorResults(stepsCount int, chans JobChannels, finish chan<- bool) {
@@ -40,7 +39,6 @@ func MonitorResults(stepsCount int, chans JobChannels, finish chan<- bool) {
 				break
 			}
 		}
-
 
 		if chans.JobResults == nil && chans.CurrentProcess == nil {
 			break

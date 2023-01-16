@@ -15,7 +15,7 @@ import (
 
 var (
 	pipelineconfig string
-	splunkIndex string
+	splunkIndex    string
 
 	runCmd = &cobra.Command{
 		Use:     "run [path]",

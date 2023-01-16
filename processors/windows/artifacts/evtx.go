@@ -12,7 +12,7 @@ import (
 	"github.com/jurelou/forensibus/utils/writer"
 )
 
-type EvtxProcessor struct {}
+type EvtxProcessor struct{}
 
 func (proc EvtxProcessor) Configure() error {
 	return nil
@@ -30,9 +30,7 @@ func (proc EvtxProcessor) Run(in string, out writer.OutputWriter) error {
 	return parseEvtx(fd, out)
 }
 
-
 func parseEvtx(fd *os.File, out writer.OutputWriter) error {
-
 	chunks, err := evtx.GetChunks(fd)
 	if err != nil {
 		return err
@@ -61,7 +59,7 @@ func parseEvtx(fd *os.File, out writer.OutputWriter) error {
 			if !ok {
 				return nil
 			}
-		
+
 			userData, ok := ordereddict.GetMap(eventDict, "UserData")
 			if ok {
 				system.MergeFrom(userData)
@@ -70,7 +68,7 @@ func parseEvtx(fd *os.File, out writer.OutputWriter) error {
 			if ok {
 				system.MergeFrom(eventData)
 			}
-		
+
 			systemEventId, ok := ordereddict.GetMap(system, "EventID")
 			if ok {
 				eventId, ok := systemEventId.GetInt64("Value")
@@ -78,7 +76,7 @@ func parseEvtx(fd *os.File, out writer.OutputWriter) error {
 					system.Set("EventID", eventId)
 				}
 			}
-		
+
 			systemTimeCreated, ok := ordereddict.GetMap(system, "TimeCreated")
 			if ok {
 				systemTime, ok := systemTimeCreated.GetInt64("SystemTime")
@@ -88,7 +86,6 @@ func parseEvtx(fd *os.File, out writer.OutputWriter) error {
 				}
 			}
 
-			
 			eventJson, err := system.MarshalJSON()
 			if err != nil {
 				utils.Log.Warnf("Could not convert event to json")

@@ -17,14 +17,14 @@ import (
 var serverAddress = "localhost:50051"
 
 type CurrentProcess struct {
-	StepsCount int
+	StepsCount  int
 	ProcessName string
 }
 
 type JobChannels struct {
-	CurrentProcess	chan CurrentProcess
-	Jobs       		chan Job
-	JobResults 		chan JobResult
+	CurrentProcess chan CurrentProcess
+	Jobs           chan Job
+	JobResults     chan JobResult
 }
 
 func find(steps []dsl.Step, config dsl.FindConfig) []dsl.Step {
@@ -84,7 +84,6 @@ func process(steps []dsl.Step, config dsl.ProcessConfig, jobs chan Job) {
 		jobs <- Job{Step: in, Config: config.Config, Name: config.Name}
 	}
 	// pterm.Success.Printfln("Terminated %s processor", config.Name)
-
 }
 
 func MakeInputs(sources []string) ([]dsl.Step, error) {
@@ -184,7 +183,7 @@ func Run(pipelineconfigFile string, paths []string) {
 
 	// Queue size should be > than workers capacity so that workers are never starving
 	queueSize := workers.Capacity()
-	chans := JobChannels{CurrentProcess: make(chan CurrentProcess, stepsCount + 1), Jobs: make(chan Job, queueSize*2), JobResults: make(chan JobResult, queueSize*2)}
+	chans := JobChannels{CurrentProcess: make(chan CurrentProcess, stepsCount+1), Jobs: make(chan Job, queueSize*2), JobResults: make(chan JobResult, queueSize*2)}
 
 	workers.Work(chans)
 	utils.Log.Infof("Launched a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
