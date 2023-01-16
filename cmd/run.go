@@ -8,7 +8,6 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 
 	run "github.com/jurelou/forensibus/core/run"
 	"github.com/jurelou/forensibus/utils"
@@ -44,12 +43,6 @@ var (
 			if !utils.FileExists(pipelineconfig) {
 				return fmt.Errorf("%s file does not exists.\n", pipelineconfig)
 			}
-			if splunkIndex != "" {
-				fmt.Println("====")
-				utils.Configure()
-				// utils.Config.Splunk.Index = splunkIndex
-				viper.Set("splunk", splunkIndex)
-			}
 			run.Run(pipelineconfig, utils.UniqueListOfStrings(filepaths))
 			return nil
 		},
@@ -60,9 +53,8 @@ func init() {
 	rootCmd.AddCommand(runCmd)
 
 	runCmd.PersistentFlags().StringVarP(&pipelineconfig, "pipeline", "p", "", "A pipeline configuration file.")
-	runCmd.PersistentFlags().StringVarP(&splunkIndex, "splunk-index", "s", "", "Change default splunk index (WON'T BE CREATED).")
+	// runCmd.PersistentFlags().StringVarP(&splunkIndex, "splunk-index", "s", "", "Change default splunk index (WON'T BE CREATED).")
 
-	viper.BindPFlag("Splunk.Index", runCmd.Flags().Lookup("splunk-index"))
 	err := runCmd.MarkPersistentFlagRequired("pipeline")
 	if err != nil {
 		fmt.Printf("Could nork mark pipeline as a persistent flag")
