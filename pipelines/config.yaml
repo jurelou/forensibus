@@ -2,8 +2,7 @@ processorTimeout: 120 # seconds
 outputFolder: /tmp/forensibus
 outputType: splunk
 splunk:
-  index: a
-  # managementAddress: https://localhost:8089
+  index: maina
   hec:
     address: http://localhost:8088
     token: 42424242-4242-4242-4242-424242424242
@@ -13,5 +12,6 @@ splunk:
   #   password: password
 
 ArchivePasswords:
+  - avproof
+  - virus
   - password
-  - passwd

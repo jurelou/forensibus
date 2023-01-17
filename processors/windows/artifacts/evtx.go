@@ -19,6 +19,8 @@ func (proc EvtxProcessor) Configure() error {
 }
 
 func (proc EvtxProcessor) Run(in string, out writer.OutputWriter) error {
+	return nil
+
 	fd, err := os.Open(in)
 	if err != nil {
 		return err

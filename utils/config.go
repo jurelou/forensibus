@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"runtime"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
@@ -14,6 +15,7 @@ type Configuration struct {
 	Splunk           SplunkConfiguration
 	OutputFolder     string
 	ArchivePasswords []string
+	WorkersCount	uint32
 }
 
 type SplunkHECConfiguration struct {
@@ -28,6 +30,7 @@ type SplunkConfiguration struct {
 
 func setDefaults() {
 	viper.SetDefault("ArchivePasswords", []string{})
+	viper.SetDefault("WorkersCount", uint32(runtime.NumCPU()))
 }
 
 func Reload() error {
@@ -57,7 +60,17 @@ func Configure() error {
 
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
-		fmt.Println("Config file changed:", e.Name)
+		err := Reload()
+		if err != nil {
+			fmt.Println("Error while uploading config: %s", err.Error())
+			return
+		}
+		fmt.Println("Config file changed.")
+		fmt.Printf("\t* OutputFolder: %d\n", Config.OutputFolder)
+		fmt.Printf("\t* ArchivePasswords: %v\n", Config.ArchivePasswords)
+		fmt.Printf("\t* ProcessorTimeout: %d\n", Config.ProcessorTimeout)
+		fmt.Printf("\t* Splunk: %+v\n", Config.Splunk)
+
 	})
 
 	return nil

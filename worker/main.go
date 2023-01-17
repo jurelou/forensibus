@@ -5,6 +5,7 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
+	"github.com/spf13/viper"
 
 	"github.com/jurelou/forensibus/proto/worker"
 	"github.com/jurelou/forensibus/utils"
@@ -14,7 +15,9 @@ import (
 	_ "time"
 )
 
-var port = 50051
+var (
+	port = 50051
+)
 
 // server is used to implement proto.WorkerServer.
 type Server struct {
@@ -44,6 +47,10 @@ func runGRPCServer() {
 	}
 }
 
-func Run() {
+func Run(workersCount uint32) {
+	viper.Set("WorkersCount", workersCount)
+	utils.Config.WorkersCount =  workersCount
+	utils.Log.Infof("Launched with %d workers", utils.Config.WorkersCount)
+
 	runGRPCServer()
 }

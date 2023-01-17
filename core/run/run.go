@@ -19,6 +19,7 @@ var serverAddress = "localhost:50051"
 type CurrentProcess struct {
 	StepsCount  int
 	ProcessName string
+	TerminatedSteps int
 }
 
 type JobChannels struct {
@@ -59,7 +60,9 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 	files := find(steps, dsl.FindConfig{Name: config.Name, Patterns: config.Patterns, MimeTypes: config.MimeTypes})
 
 	for _, in := range files {
-		out, err := decompress.Decompress(in.NextArtifact, in.CurrentFolder)
+		inputFilenameWoExt := strings.TrimSuffix(in.NextArtifact, filepath.Ext(in.NextArtifact))
+
+		out, err := decompress.Decompress(in.NextArtifact, filepath.Join(in.CurrentFolder, filepath.Base(inputFilenameWoExt)))
 		if err != nil {
 			pterm.Error.Printfln("Error while decompressing %s: %s", in.NextArtifact, err.Error())
 			continue
@@ -126,7 +129,7 @@ func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, chans JobChannel
 
 		case dsl.ProcessConfig:
 			processConfig := item.(dsl.ProcessConfig)
-			chans.CurrentProcess <- CurrentProcess{StepsCount: len(in), ProcessName: processConfig.Name}
+			chans.CurrentProcess <- CurrentProcess{TerminatedSteps: 0, StepsCount: len(in), ProcessName: processConfig.Name}
 			process(in, processConfig, chans.Jobs)
 			return []dsl.Step{}
 
@@ -149,7 +152,10 @@ func loadDSL(filePath string) (dsl.Config, error) {
 
 func onSigint(sigint <-chan os.Signal) {
 	exit := false
+
 	for range sigint {
+		os.Exit(1)
+
 		if exit == true {
 			os.Exit(1)
 		}
