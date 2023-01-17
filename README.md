@@ -4,17 +4,13 @@
 - wrap errors properly
 - grpc-plugin
 - utils/filesystem: add some file types to the filetype lib. (evtx, registry, text ...)
-- cli: convert relative filepath to absolute filepath
 - Add a --force flag to the run command, force exec even if some errors appear (some workers are unavailable, ....)
 - Find (hcl) Add a `recurse` boolean
 - Find (hcl) Add a `type` option file/dir (file by default)
 - set windows PE ressources : https://github.com/tc-hib/go-winres
 - cli: Add worker ping, plugin list, plugin info, ....
 
-- cli manage flags with viper  + cobra / https://github.com/desdic/playground/blob/master/go/cobraviper/cmd/root.go
-- use libmagic bindings instead of filetype 
 - Add more archives extraction types
-- Ability to lint the config file. (check if processors exists, ....)
 - splunk: configure event_renderers.conf to set event colors
 - splunk HEC configure indexer acknowledgement
 - https://parsiya.net/blog/2018-11-01-windows-filetime-timestamps-and-byte-wrangling-with-go/
