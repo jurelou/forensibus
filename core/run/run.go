@@ -17,8 +17,8 @@ import (
 var serverAddress = "localhost:50051"
 
 type CurrentProcess struct {
-	StepsCount  int
-	ProcessName string
+	StepsCount      int
+	ProcessName     string
 	TerminatedSteps int
 }
 

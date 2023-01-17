@@ -5,12 +5,10 @@ import (
 	"time"
 
 	"github.com/pterm/pterm"
-	// "github.com/jurelou/forensibus/utils"
 )
 
 func MonitorResults(stepsCount int, chans JobChannels, finish chan<- bool) {
-
-	var currentBar	*pterm.ProgressbarPrinter
+	var currentBar *pterm.ProgressbarPrinter
 	processes := make(map[string]*CurrentProcess)
 	var curProcess string
 
@@ -21,7 +19,8 @@ func MonitorResults(stepsCount int, chans JobChannels, finish chan<- bool) {
 				chans.JobResults = nil
 				break
 			}
-			key, exists := processes[j.Job.Name]; if !exists{
+			key, exists := processes[j.Job.Name]
+			if !exists {
 				// This should never happens since a CurrentProcess will always be created before a process finishes
 				break
 			}

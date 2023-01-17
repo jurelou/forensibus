@@ -15,7 +15,7 @@ type Configuration struct {
 	Splunk           SplunkConfiguration
 	OutputFolder     string
 	ArchivePasswords []string
-	WorkersCount	uint32
+	WorkersCount     uint32
 }
 
 type SplunkHECConfiguration struct {
@@ -62,15 +62,14 @@ func Configure() error {
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		err := Reload()
 		if err != nil {
-			fmt.Println("Error while uploading config: %s", err.Error())
+			fmt.Printf("Error while updating config: %s\n", err.Error())
 			return
 		}
 		fmt.Println("Config file changed.")
-		fmt.Printf("\t* OutputFolder: %d\n", Config.OutputFolder)
+		fmt.Printf("\t* OutputFolder: %s\n", Config.OutputFolder)
 		fmt.Printf("\t* ArchivePasswords: %v\n", Config.ArchivePasswords)
 		fmt.Printf("\t* ProcessorTimeout: %d\n", Config.ProcessorTimeout)
 		fmt.Printf("\t* Splunk: %+v\n", Config.Splunk)
-
 	})
 
 	return nil
