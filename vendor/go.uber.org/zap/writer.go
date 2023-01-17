@@ -24,9 +24,8 @@ import (
 	"fmt"
 	"io"
 
-	"go.uber.org/zap/zapcore"
-
 	"go.uber.org/multierr"
+	"go.uber.org/zap/zapcore"
 )
 
 // Open is a high-level wrapper that takes a variadic number of URLs, opens or
