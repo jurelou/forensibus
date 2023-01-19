@@ -19,26 +19,29 @@ func MonitorResults(stepsCount int, chans JobChannels, finish chan<- bool) {
 				chans.JobResults = nil
 				break
 			}
-			key, exists := processes[j.Job.Name]
+			key, exists := processes[j.Job.Identifier]
 			if !exists {
+				pterm.Error.Println("Undefined job")
+
 				// This should never happens since a CurrentProcess will always be created before a process finishes
 				break
 			}
 			if curProcess == "" {
 				// Monitoring just started, set the first progress bar to the current job
-				curProcess = j.Job.Name
+				curProcess = j.Job.Identifier
 				currentBar, _ = pterm.DefaultProgressbar.WithElapsedTimeRoundingFactor(time.Millisecond).WithTotal(key.StepsCount).WithTitle(key.ProcessName).WithShowElapsedTime(true).Start()
 			}
 			key.TerminatedSteps++
-			if key.ProcessName == curProcess {
+
+			if key.Identifier == curProcess {
 				// Update the progress bar is the process that finished coressponds to the current progress bar
 				currentBar.Increment()
 			}
 
 			if key.TerminatedSteps >= key.StepsCount {
 				// The process has finished, remove it from the map
-				delete(processes, key.ProcessName)
-				if key.ProcessName != curProcess {
+				delete(processes, j.Job.Identifier)
+				if key.Identifier != curProcess {
 					break
 				}
 				// If the current process has finished, restart a new progress bar
@@ -48,6 +51,7 @@ func MonitorResults(stepsCount int, chans JobChannels, finish chan<- bool) {
 					// The first progress bar is the first map entry
 					curProcess = k
 					currentBar, _ = pterm.DefaultProgressbar.WithTotal(processes[k].StepsCount).WithTitle(processes[k].ProcessName).WithShowElapsedTime(true).Start()
+					currentBar.Add(processes[k].TerminatedSteps)
 					break
 				}
 			}
@@ -57,24 +61,14 @@ func MonitorResults(stepsCount int, chans JobChannels, finish chan<- bool) {
 				chans.CurrentProcess = nil
 				break
 			}
-			procName := c.ProcessName
-			_, exists := processes[procName]
+			_, exists := processes[c.Identifier]
 			if exists {
-				processes[procName].StepsCount +=  c.StepsCount
-				// Process already exists in the map.
-				// This might happen if a processor is called multiple times in the same pipeline
-				// Generate a suffix (foobar_1, foobar_2, ...)
-
-				// for i := 1; i < 42; i++ {
-				// 	procName = fmt.Sprintf("%s_%d", procName, i)
-				// 	_, exists := processes[procName]
-				// 	if !exists {
-				// 		break
-				// 	}
-				// }
+				// This should never happen ... 
+				pterm.Error.Println("Duplicate process identifier detected !!!!!")
+				break
 			}
 			if &c != nil {
-				processes[procName] = &c
+				processes[c.Identifier] = &c
 			}
 
 		}

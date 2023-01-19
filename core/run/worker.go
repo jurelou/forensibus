@@ -23,6 +23,7 @@ import (
 
 type Job struct {
 	Name   string
+	Identifier string
 	Step   dsl.Step
 	Config map[string]string
 }

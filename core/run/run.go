@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/pterm/pterm"
-	// "github.com/google/uuid"
+	"github.com/google/uuid"
 
 	dsl "github.com/jurelou/forensibus/core"
 	"github.com/jurelou/forensibus/utils"
@@ -21,6 +21,7 @@ type CurrentProcess struct {
 	StepsCount      int
 	ProcessName     string
 	TerminatedSteps int
+	Identifier		string
 }
 
 type JobChannels struct {
@@ -81,11 +82,11 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 	return outs
 }
 
-func process(steps []dsl.Step, config dsl.ProcessConfig, jobs chan Job) {
+func process(identifier string, steps []dsl.Step, config dsl.ProcessConfig, jobs chan Job) {
 	// RunProcessor(steps, config)
 	pterm.Info.Printfln("Running %s processor against %d files", config.Name, len(steps))
 	for _, in := range steps {
-		jobs <- Job{Step: in, Config: config.Config, Name: config.Name}
+		jobs <- Job{Identifier: identifier, Step: in, Config: config.Config, Name: config.Name}
 	}
 	// pterm.Success.Printfln("Terminated %s processor", config.Name)
 }
@@ -130,10 +131,10 @@ func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, chans JobChannel
 
 		case dsl.ProcessConfig:
 			processConfig := item.(dsl.ProcessConfig)
-			chans.CurrentProcess <- CurrentProcess{TerminatedSteps: 0, StepsCount: len(in), ProcessName: processConfig.Name}
-			process(in, processConfig, chans.Jobs)
+			id := uuid.NewString()
+			chans.CurrentProcess <- CurrentProcess{Identifier: id, TerminatedSteps: 0, StepsCount: len(in), ProcessName: processConfig.Name}
+			process(id, in, processConfig, chans.Jobs)
 			return []dsl.Step{}
-
 		}
 		return in
 	})

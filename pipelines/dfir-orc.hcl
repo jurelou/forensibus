@@ -19,6 +19,19 @@ pipeline "DFIR-ORC" {
 
     }
 
+    extract "Artifacts" {
+      patterns = ["[Aa]rtefacts?.7z$"]
+      mime_types = ["7-zip archive data"]
+
+      find "Prefetch files" {
+        patterns = [".pf$", ".pf_data$"]
+
+        process "prefetch" {}
+
+      }
+    }
+
+
     extract "NTFSInfo archives" {
       patterns = ["NTFSInfo.7z$"]
       mime_types = ["7-zip archive data"]
@@ -55,19 +68,6 @@ pipeline "DFIR-ORC" {
 
 
 
-    extract "Artifacts" {
-      patterns = ["[Aa]rtefacts?.7z$"]
-      mime_types = ["7-zip archive data"]
-
-      find "Prefetch files" {
-        patterns = [".pf$", ".pf_data$"]
-
-        process "prefetch" {}
-
-      }
-
-
-    }
   }
 
 
