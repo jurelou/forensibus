@@ -144,13 +144,12 @@ func LintPipeline(item PipelineConfig) error {
 	dummy := make([]Step, 1)
 	dummy = append(dummy, Step{Name: "dummy", CurrentFolder: "DummyCurrent", NextArtifact: "DummyNext"})
 	var lastErr error
-
 	WalkPipeline(item, dummy, func(item interface{}, in []Step) []Step {
 		switch item.(type) {
 		case ProcessConfig:
 			processConfig := item.(ProcessConfig)
 			if _, err := processors.Get(processConfig.Name); err != nil {
-				lastErr = fmt.Errorf("Invalid pipeline definition, processor %s is not found", processConfig.Name)
+				lastErr = fmt.Errorf("Processor `%s` does not exists", processConfig.Name)
 			}
 		case FindConfig:
 			findConfig := item.(FindConfig)

@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/pterm/pterm"
+	// "github.com/google/uuid"
 
 	dsl "github.com/jurelou/forensibus/core"
 	"github.com/jurelou/forensibus/utils"
@@ -138,7 +139,7 @@ func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, chans JobChannel
 	})
 }
 
-func loadDSL(filePath string) (dsl.Config, error) {
+func loadAndLintDSL(filePath string) (dsl.Config, error) {
 	// Load and lint the given pipeline
 	config, err := dsl.LoadDSLFile(filePath)
 	if err != nil {
@@ -165,7 +166,7 @@ func onSigint(sigint <-chan os.Signal) {
 }
 
 func Run(pipelineconfigFile string, paths []string) {
-	config, err := dsl.LoadDSLFile(pipelineconfigFile)
+	config, err := loadAndLintDSL(pipelineconfigFile)
 	if err != nil {
 		utils.Log.Warnf(err.Error())
 		return

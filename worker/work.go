@@ -12,7 +12,8 @@ import (
 func (s *Server) Work(ctx context.Context, in *worker.WorkRequest) (*worker.WorkResponse, error) {
 	procName := in.GetProcessor()
 	source := in.GetSource()
-	utils.Log.Infof("Got a task (%s): %s", procName, source)
+	config := in.GetConfig()
+	utils.Log.Infof("Got a task (%s): %s with config %v", procName, source, config)
 
 	// Try to load the processor
 	processor, err := processors.Get(procName)

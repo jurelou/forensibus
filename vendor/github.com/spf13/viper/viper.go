@@ -39,6 +39,7 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/cast"
 	"github.com/spf13/pflag"
+
 	"github.com/spf13/viper/internal/encoding"
 	"github.com/spf13/viper/internal/encoding/dotenv"
 	"github.com/spf13/viper/internal/encoding/hcl"

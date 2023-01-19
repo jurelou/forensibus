@@ -19,6 +19,42 @@ pipeline "DFIR-ORC" {
 
     }
 
+    extract "NTFSInfo archives" {
+      patterns = ["NTFSInfo.7z$"]
+      mime_types = ["7-zip archive data"]
+
+      find "NTFS info files" {
+        patterns = ["NTFSInfo_.*.csv$"]
+
+        process "csv" {}
+      }
+    }
+
+    extract "NTFS I30 archives" {
+      patterns = ["NTFSInfo_[Ii]30Info.7z$"]
+      mime_types = ["7-zip archive data"]
+
+      find "NTFS I30 files" {
+        patterns = ["I30Info_.*.csv$"]
+
+        process "csv" {}
+      }
+    }
+
+
+    extract "NTFS security descriptors archives" {
+      patterns = ["NTFSInfo_SecDesc.7z$"]
+      mime_types = ["7-zip archive data"]
+
+      find "NTFS security descriptors files" {
+        patterns = ["SecDescr_.*.csv$"]
+
+        process "csv" {}
+      }
+    }
+
+
+
     extract "Artifacts" {
       patterns = ["[Aa]rtefacts?.7z$"]
       mime_types = ["7-zip archive data"]

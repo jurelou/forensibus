@@ -1,15 +1,15 @@
 
 pipeline "testpipe" {
 
-    find "evtx files" {
-      patterns = [".*"]
-      mime_types = ["MS Windows Vista Event Log"]
+    find "csv files" {
+      patterns = [".*.[Cc][Ss][Vv]$"]
 
-      process "evtxdump" {}
-
+      process "csv" {
+        config = {
+          aa = 1
+        }
+      }
     }
-
-
 }
 
 output "splunk" {

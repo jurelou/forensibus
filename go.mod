@@ -6,7 +6,7 @@ require (
 	github.com/Velocidex/go-magic v0.0.0-20211018155418-c5dc48282f28
 	github.com/Velocidex/ordereddict v0.0.0-20210502082334-cf5d9045c0d1
 	github.com/fsnotify/fsnotify v1.6.0
-	github.com/google/uuid v1.1.2
+	github.com/google/uuid v1.3.0
 	github.com/hashicorp/hcl/v2 v2.15.0
 	github.com/pterm/pterm v0.12.53
 	github.com/spf13/cobra v1.6.1

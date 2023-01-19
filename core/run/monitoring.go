@@ -1,7 +1,7 @@
 package run
 
 import (
-	"fmt"
+	// "fmt"
 	"time"
 
 	"github.com/pterm/pterm"
@@ -52,7 +52,7 @@ func MonitorResults(stepsCount int, chans JobChannels, finish chan<- bool) {
 				}
 			}
 
-		case c, ok := <-chans.CurrentProcess:
+		case c, ok := <-chans.CurrentProcess: 
 			if !ok {
 				chans.CurrentProcess = nil
 				break
@@ -60,16 +60,18 @@ func MonitorResults(stepsCount int, chans JobChannels, finish chan<- bool) {
 			procName := c.ProcessName
 			_, exists := processes[procName]
 			if exists {
+				processes[procName].StepsCount +=  c.StepsCount
 				// Process already exists in the map.
 				// This might happen if a processor is called multiple times in the same pipeline
 				// Generate a suffix (foobar_1, foobar_2, ...)
-				for i := 1; i < 42; i++ {
-					procName = fmt.Sprintf("%s_%d", procName, i)
-					_, exists := processes[procName]
-					if !exists {
-						break
-					}
-				}
+
+				// for i := 1; i < 42; i++ {
+				// 	procName = fmt.Sprintf("%s_%d", procName, i)
+				// 	_, exists := processes[procName]
+				// 	if !exists {
+				// 		break
+				// 	}
+				// }
 			}
 			if &c != nil {
 				processes[procName] = &c
