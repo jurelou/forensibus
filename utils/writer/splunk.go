@@ -40,6 +40,7 @@ type HEC struct {
 	buffer bytes.Buffer
 	errors []string
 
+	tag               string
 	defaultHost       string
 	defaultIndex      string
 	defaultSource     string
@@ -59,13 +60,15 @@ func NewHEC(address string, token string) *HEC {
 		Timeout:   timeout,
 	}
 	endpoint := strings.TrimSuffix(address, "/") + hecEndpoint
-	utils.Log.Debugf("Created new splunk output (%s) with token %s", endpoint, token)
 	return &HEC{endpoint: endpoint, token: token, client: &client}
 }
 
 func (hec *HEC) Close() {
-	fmt.Printf("Closing !%d\n", hec.buffer.Len())
 	hec.flushBuffer()
+}
+
+func (hec *HEC) SetTag(tag string) {
+	hec.tag = tag
 }
 
 func (hec *HEC) SetDefaultIndex(index string) {
@@ -150,10 +153,11 @@ func (hec *HEC) flushBuffer() {
 }
 
 func (hec *HEC) WriteEvent(event *Event) {
-	if event.Event == nil {
+	if event.Event == "" {
 		utils.Log.Warnf("Tried to send empty event to splunk")
 		return
 	}
+
 	if event.Index == "" {
 		event.Index = hec.defaultIndex
 	}
@@ -165,6 +169,12 @@ func (hec *HEC) WriteEvent(event *Event) {
 	}
 	if event.Host == "" {
 		event.Host = hec.defaultHost
+	}
+
+	if event.Event[0] != '{' {
+		utils.Log.Warnf("Event is invalid json (does not start with `{`): %s", event.Event)
+	} else if hec.tag != "" {
+		event.Event = fmt.Sprintf("{\"forensibus_tag\": \"%s\", %s", hec.tag, event.Event[1:])
 	}
 
 	json, _ := json.Marshal(event)

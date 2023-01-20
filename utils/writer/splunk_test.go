@@ -75,7 +75,7 @@ func TestCreateEmptyEvent(t *testing.T) {
 
 	hec := writer.NewHEC(svr.URL, "test-token")
 	defer hec.Close()
-	e := writer.NewEvent(nil)
+	e := writer.NewEvent("")
 	hec.WriteEvent(e)
 }
 

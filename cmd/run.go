@@ -16,6 +16,7 @@ import (
 var (
 	pipelineconfig string
 	splunkIndex    string
+	tag            string
 
 	runCmd = &cobra.Command{
 		Use:     "run [path]",
@@ -43,7 +44,7 @@ var (
 			if !utils.FileExists(pipelineconfig) {
 				return fmt.Errorf("%s file does not exists.\n", pipelineconfig)
 			}
-			run.Run(pipelineconfig, utils.UniqueListOfStrings(filepaths))
+			run.Run(pipelineconfig, utils.UniqueListOfStrings(filepaths), tag)
 			return nil
 		},
 	}
@@ -53,6 +54,8 @@ func init() {
 	rootCmd.AddCommand(runCmd)
 
 	runCmd.PersistentFlags().StringVarP(&pipelineconfig, "pipeline", "p", "", "A pipeline configuration file.")
+	runCmd.PersistentFlags().StringVarP(&tag, "tag", "t", "", "Tag the process to identify it more easily")
+
 	// runCmd.PersistentFlags().StringVarP(&splunkIndex, "splunk-index", "s", "", "Change default splunk index (WON'T BE CREATED).")
 
 	err := runCmd.MarkPersistentFlagRequired("pipeline")

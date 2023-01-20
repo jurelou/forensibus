@@ -9,6 +9,7 @@ var Registry = make(map[string]OutputWriter)
 type OutputWriter interface {
 	// New()
 	Close()
+	SetTag(string)
 	SetDefaultIndex(string)
 	SetDefaultSource(string)
 	SetDefaultSourceType(string)

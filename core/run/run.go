@@ -7,12 +7,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/pterm/pterm"
 	"github.com/google/uuid"
+	"github.com/pterm/pterm"
 
 	dsl "github.com/jurelou/forensibus/core"
 	"github.com/jurelou/forensibus/utils"
 	"github.com/jurelou/forensibus/utils/decompress"
+	"github.com/jurelou/forensibus/utils/names_generator"
 )
 
 var serverAddress = "localhost:50051"
@@ -21,7 +22,7 @@ type CurrentProcess struct {
 	StepsCount      int
 	ProcessName     string
 	TerminatedSteps int
-	Identifier		string
+	ProcessId       string
 }
 
 type JobChannels struct {
@@ -82,15 +83,6 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 	return outs
 }
 
-func process(identifier string, steps []dsl.Step, config dsl.ProcessConfig, jobs chan Job) {
-	// RunProcessor(steps, config)
-	pterm.Info.Printfln("Running %s processor against %d files", config.Name, len(steps))
-	for _, in := range steps {
-		jobs <- Job{Identifier: identifier, Step: in, Config: config.Config, Name: config.Name}
-	}
-	// pterm.Success.Printfln("Terminated %s processor", config.Name)
-}
-
 func MakeInputs(sources []string) ([]dsl.Step, error) {
 	ins := make([]dsl.Step, 0, len(sources))
 	for _, source := range sources {
@@ -116,7 +108,7 @@ func MakeInputs(sources []string) ([]dsl.Step, error) {
 	return ins, nil
 }
 
-func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, chans JobChannels) {
+func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, chans JobChannels, tag string) {
 	dsl.WalkPipeline(pipeline, steps, func(item interface{}, in []dsl.Step) []dsl.Step {
 		switch item.(type) {
 		case dsl.FindConfig:
@@ -132,8 +124,13 @@ func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, chans JobChannel
 		case dsl.ProcessConfig:
 			processConfig := item.(dsl.ProcessConfig)
 			id := uuid.NewString()
-			chans.CurrentProcess <- CurrentProcess{Identifier: id, TerminatedSteps: 0, StepsCount: len(in), ProcessName: processConfig.Name}
-			process(id, in, processConfig, chans.Jobs)
+			chans.CurrentProcess <- CurrentProcess{ProcessId: id, TerminatedSteps: 0, StepsCount: len(in), ProcessName: processConfig.Name}
+
+			pterm.Info.Printfln("Running %s processor against %d files", processConfig.Name, len(in))
+			for _, i := range in {
+				chans.Jobs <- Job{ProcessId: id, Tag: tag, Step: i, Config: processConfig.Config, Name: processConfig.Name}
+			}
+			// pterm.Success.Printfln("Terminated %s processor", config.Name)
 			return []dsl.Step{}
 		}
 		return in
@@ -166,7 +163,11 @@ func onSigint(sigint <-chan os.Signal) {
 	}
 }
 
-func Run(pipelineconfigFile string, paths []string) {
+func Run(pipelineconfigFile string, paths []string, tag string) {
+	if tag == "" {
+		tag = names_generator.GetRandomName()
+	}
+	pterm.Success.Printfln("Using tag `%s`", tag)
 	config, err := loadAndLintDSL(pipelineconfigFile)
 	if err != nil {
 		utils.Log.Warnf(err.Error())
@@ -204,7 +205,7 @@ func Run(pipelineconfigFile string, paths []string) {
 	signal.Notify(c, os.Interrupt)
 	go onSigint(c)
 
-	RunPipeline(config.Pipeline, inputs, chans)
+	RunPipeline(config.Pipeline, inputs, chans, tag)
 
 	// Pipeline is done, close job channel
 	close(chans.Jobs)

@@ -16,21 +16,22 @@ import (
 	// _ "github.com/jurelou/forensibus/processors/linux"
 	// _ "github.com/jurelou/forensibus/processors/linux/commands"
 	_ "github.com/jurelou/forensibus/processors"
-	_ "github.com/jurelou/forensibus/processors/windows"
+	// _ "github.com/jurelou/forensibus/processors/windows"
 	_ "github.com/jurelou/forensibus/processors/windows/artifacts"
 	_ "github.com/jurelou/forensibus/processors/windows/commands"
 )
 
 type Job struct {
-	Name   string
-	Identifier string
-	Step   dsl.Step
-	Config map[string]string
+	Name      string
+	Tag       string
+	ProcessId string
+	Step      dsl.Step
+	Config    map[string]string
 }
 
 type JobResult struct {
 	Status uint32
-	Error  string
+	Errors []string
 	Job    Job
 }
 
@@ -75,13 +76,13 @@ func (w *Worker) Work(wg *sync.WaitGroup, chans JobChannels) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(utils.Config.ProcessorTimeout)*time.Second)
 	defer cancel()
 	for job := range chans.Jobs {
-		res, err := w.Client.Work(ctx, &worker.WorkRequest{Source: job.Step.NextArtifact, OutputFolder: job.Step.CurrentFolder, Processor: job.Name, Config: job.Config})
-		jobError := res.GetError()
+		res, err := w.Client.Work(ctx, &worker.WorkRequest{Source: job.Step.NextArtifact, OutputFolder: job.Step.CurrentFolder, Processor: job.Name, Config: job.Config, Tag: job.Tag})
+		jobErrors := res.GetErrors()
 		jobStatus := res.GetStatus()
 		if err != nil {
-			jobError = fmt.Sprintf("Processor %s timed out (%s): %s", job.Name, job.Step.NextArtifact, err.Error())
+			jobErrors = []string{fmt.Sprintf("Processor %s timed out (%s): %s", job.Name, job.Step.NextArtifact, err.Error())}
 			jobStatus = utils.Timeout
 		}
-		chans.JobResults <- JobResult{Job: job, Status: jobStatus, Error: jobError}
+		chans.JobResults <- JobResult{Job: job, Status: jobStatus, Errors: jobErrors}
 	}
 }

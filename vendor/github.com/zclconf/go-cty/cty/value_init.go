@@ -5,9 +5,8 @@ import (
 	"math/big"
 	"reflect"
 
-	"golang.org/x/text/unicode/norm"
-
 	"github.com/zclconf/go-cty/cty/set"
+	"golang.org/x/text/unicode/norm"
 )
 
 // BoolVal returns a Value of type Number whose internal value is the given

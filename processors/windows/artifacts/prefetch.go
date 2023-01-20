@@ -44,21 +44,24 @@ func (proc PrefetchProcessor) parsePrefetch(in string) (PrefetchEntry, error) {
 	return PrefetchEntry(*pf), nil
 }
 
-func (proc PrefetchProcessor) Run(in string, out writer.OutputWriter) error {
-	// utils.Log.Debugf("Run pf processor against `%s`", in)
+func (proc PrefetchProcessor) Run(in string, out writer.OutputWriter) processors.PError {
+	errors := processors.PError{}
+
 	entry, err := proc.parsePrefetch(in)
 	if err != nil {
-		return err
+		errors.Add(err)
+		return errors
 	}
 
 	json, err := json.Marshal(entry)
 	if err != nil {
-		return err
+		errors.Add(err)
+		return errors
 	}
 
 	e := writer.NewEvent(string(json))
 	out.WriteEvent(e)
-	return nil
+	return errors
 }
 
 func init() {

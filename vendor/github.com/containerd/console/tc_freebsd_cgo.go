@@ -1,3 +1,4 @@
+//go:build freebsd && cgo
 // +build freebsd,cgo
 
 /*
@@ -18,18 +19,18 @@
 
 package console
 
+/*
+#include <stdlib.h>
+#include <unistd.h>
+*/
+import "C"
+
 import (
 	"fmt"
 	"os"
 
 	"golang.org/x/sys/unix"
 )
-
-/*
-#include <stdlib.h>
-#include <unistd.h>
-*/
-import "C"
 
 const (
 	cmdTcGet = unix.TIOCGETA

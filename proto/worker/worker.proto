@@ -22,13 +22,14 @@ message Pong {
 
 // Work
 message WorkRequest {
-    string source = 1;
-    string outputFolder = 2;
-    string processor = 3;
-    map<string,string> config = 4;
+    string tag = 1;
+    string source = 2;
+    string outputFolder = 3;
+    string processor = 4;
+    map<string,string> config = 5;
 }
 
 message WorkResponse {
     uint32 status = 1;
-    string error = 2;
+    repeated string errors = 2;
 }

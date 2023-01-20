@@ -32,7 +32,7 @@ func TestLintInvalidProcessor(t *testing.T) {
 		t.Errorf("Pipeline should be invalid")
 		return
 	}
-	if err.Error() != "Invalid pipeline definition, processor ThisProcessorWillNeverExists is not found" {
+	if err.Error() != "Processor `ThisProcessorWillNeverExists` does not exists" {
 		t.Errorf("Invalid lint error message %s", err.Error())
 	}
 }
