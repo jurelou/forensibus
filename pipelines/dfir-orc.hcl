@@ -14,7 +14,6 @@ pipeline "DFIR-ORC" {
         mime_types = ["MS Windows Vista Event Log"]
 
         process "evtxdump" {}
-
       }
 
     }
@@ -27,10 +26,8 @@ pipeline "DFIR-ORC" {
         patterns = [".pf$", ".pf_data$"]
 
         process "prefetch" {}
-
       }
     }
-
 
     extract "NTFSInfo archives" {
       patterns = ["NTFSInfo.7z$"]
@@ -63,6 +60,18 @@ pipeline "DFIR-ORC" {
         patterns = ["SecDescr_.*.csv$"]
 
         process "csv" {}
+      }
+    }
+
+    extract "System hives archives" {
+      patterns = ["SystemHives.7z$"]
+      mime_types = ["7-zip archive data"]
+
+      find "System registry hives" {
+        patterns = [".*"]
+        mime_types = ["MS Windows registry file"]
+
+        process "registry" {}
       }
     }
 
