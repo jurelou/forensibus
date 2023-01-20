@@ -10,11 +10,10 @@ import (
 	"sort"
 	"sync"
 
-	"google.golang.org/protobuf/internal/genid"
-
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/internal/descfmt"
 	"google.golang.org/protobuf/internal/errors"
+	"google.golang.org/protobuf/internal/genid"
 	"google.golang.org/protobuf/internal/pragma"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )

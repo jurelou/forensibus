@@ -6,6 +6,7 @@ package magic
  #include <stdlib.h>
 */
 import "C"
+
 import (
 	"sync"
 	"unsafe"

@@ -5,9 +5,7 @@ import (
 	"github.com/jurelou/forensibus/utils/writer"
 )
 
-
-type DummyProcessor struct {
-}
+type DummyProcessor struct{}
 
 func (proc DummyProcessor) Configure() error {
 	return nil

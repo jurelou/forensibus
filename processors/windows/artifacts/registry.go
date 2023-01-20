@@ -1,12 +1,10 @@
 package windows_artifacts
 
 import (
-	"os"
 	"fmt"
-	// "time"
+	"os"
 
 	"www.velocidex.com/golang/regparser"
-	// "www.velocidex.com/golang/regparser/appcompatcache"
 
 	"github.com/jurelou/forensibus/utils"
 	"github.com/jurelou/forensibus/utils/processors"
@@ -17,8 +15,7 @@ const (
 	appcompatcache_path = "/ControlSet001/Control/Session Manager/AppCompatCache"
 )
 
-type RegistryProcessor struct {
-}
+type RegistryProcessor struct{}
 
 func (proc RegistryProcessor) Configure() error {
 	return nil
@@ -42,7 +39,6 @@ func (proc RegistryProcessor) Run(in string, out writer.OutputWriter) processors
 	key := registry.OpenKey(appcompatcache_path)
 	if key != nil {
 		fmt.Println("<<<<<<<<<<<", key)
-
 	}
 	// time.Sleep(1 * time.Second)
 
