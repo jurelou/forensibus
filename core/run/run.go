@@ -42,18 +42,6 @@ type TaskEnded struct {
 	Errors			[]string
 }
 
-// type CurrentProcess struct {
-// 	StepsCount      int
-// 	ProcessName     string
-// 	TerminatedSteps int
-// 	ProcessId       string
-// }
-
-// type JobChannels struct {
-// 	CurrentProcess chan CurrentProcess
-// 	Jobs           chan Job
-// 	JobResults     chan JobResult
-// }
 
 func find(steps []dsl.Step, config dsl.FindConfig) []dsl.Step {
 	var out []dsl.Step
@@ -107,17 +95,6 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 	return outs
 }
 
-// func process() {
-// 	id := uuid.NewString()
-// 	chans.CurrentProcess <- CurrentProcess{ProcessId: id, TerminatedSteps: 0, StepsCount: len(in), ProcessName: processConfig.Name}
-
-// 	pterm.Info.Printfln("Running %s processor against %d files", processConfig.Name, len(in))
-// 	for _, i := range in {
-// 		chans.Jobs <- Job{ProcessId: id, Tag: tag, Step: i, Config: processConfig.Config, Name: processConfig.Name}
-// 	}
-// 	// pterm.Success.Printfln("Terminated %s processor", config.Name)
-
-// }
 
 func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, tag string, sProcesses chan<- ProcessStarted, sTasks chan<- TaskStarted) {
 	dsl.WalkPipeline(pipeline, steps, func(item interface{}, in []dsl.Step) []dsl.Step {
@@ -202,33 +179,23 @@ func MakeInputs(sources []string) ([]dsl.Step, error) {
 	return ins, nil
 }
 
-func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWorker bool) {
-
-	// Configure logger, if local worker is disabled, do not print to stdout
-	err := utils.ConfigureLogger(true)//disableLocalWorker)
-	if err != nil {
-		pterm.Error.Printfln(err.Error())
-		return
-	}
-
+func MakeWorkers(disableLocalWorker bool, tStart <-chan TaskStarted, tEnd chan<- TaskEnded) (*WorkerPool, error) {
 	workers := new(WorkerPool)
 	var localWorkerServer *grpc.Server
 
 	if !disableLocalWorker {
 		port := utils.FindOpenTcpPort()
 		if port == 0 {
-			pterm.Error.Printfln("Could not find a port to listen on")
-			return
+			return nil, fmt.Errorf("Could not find a port to listen on")
 		}
 
 		go worker.RunWorkerServer(localWorkerServer, port)
 
 		lWorker, err := workers.Connect(fmt.Sprintf("localhost:%d", port))
 		if err != nil {
-			pterm.Error.Printfln("Could not start local worker: %s", err.Error())
-			return
+			return nil, fmt.Errorf("Could not start local worker: %s", err.Error())
 		}
-		pterm.Success.Printfln("Local worker is up (capacity of %d)", lWorker.Capacity)
+		pterm.Info.Printfln("Local worker is up (capacity of %d)", lWorker.Capacity)
 		// if localWorkerServer != nil {
 		// 	localWorkerServer.Stop()
 		// }
@@ -237,12 +204,29 @@ func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWork
 		pterm.Warning.Printfln("Disabled local worker")
 	}
 
+	// worker, err := workers.Connect(serverAddress)
+	// if err != nil {
+	// 	utils.Log.Warnf(err.Error())
+	// 	return
+	// }
 
+
+	workers.Work(tStart, tEnd)
+	return workers, nil
+}
+
+func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWorker bool) {
+
+	// Configure logger, if local worker is disabled, do not print to stdout
+	err := utils.ConfigureLogger(disableLocalWorker)
+	if err != nil {
+		pterm.Error.Printfln(err.Error())
+		return
+	}
 
 	if tag == "" {
 		tag = names_generator.GetRandomName()
 	}
-
 
 	config, err := dsl.LoadAndLint(pipelineconfigFile)
 	if err != nil {
@@ -251,8 +235,6 @@ func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWork
 	}
 	stepsCount := dsl.CountPipelineSteps(config.Pipeline)
 
-
-
 	inputs, err := MakeInputs(paths)
 	if err != nil {
 		utils.Log.Warnf(err.Error())
@@ -260,29 +242,20 @@ func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWork
 	}
 
 	pterm.Info.Printfln("Running pipeline `%s` (%d processors)", config.Pipeline.Name, stepsCount)
-
 	pterm.Info.Printfln("Using tag `%s`", tag)
 	pterm.Info.Printfln("Using splunk index `%s`", utils.Config.Splunk.Index)
 
-
 	startedProcesses := make(chan ProcessStarted, stepsCount)
-	startedTasks := make(chan TaskStarted, workers.Capacity() * 2)
-	endedTasks := make(chan TaskEnded, workers.Capacity() * 2)
+	startedTasks := make(chan TaskStarted, 512)
+	endedTasks := make(chan TaskEnded, 512)
 
-	// worker, err := workers.Connect(serverAddress)
-	// if err != nil {
-	// 	utils.Log.Warnf(err.Error())
-	// 	return
-	// }
-
-	// utils.Log.Infof("Worker %s (%s) is up! (cap: %d)", worker.Address, worker.Name, worker.Capacity)
-
-	// Queue size should be > than workers capacity so that workers are never starving
-	// queueSize := workers.Capacity()
-	// chans := JobChannels{CurrentProcess: make(chan CurrentProcess, stepsCount+1), Jobs: make(chan Job, queueSize*2), JobResults: make(chan JobResult, queueSize*2)}
-
-	workers.Work(startedTasks, endedTasks)
-	// utils.Log.Infof("Launched a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
+	workers, err := MakeWorkers(disableLocalWorker, startedTasks, endedTasks)
+	if err != nil {
+		pterm.Error.Printfln(err.Error())
+		return
+	}
+	pterm.Info.Printfln("Running pipeline `%s` (%d processors)", config.Pipeline.Name, stepsCount)
+	pterm.Success.Printfln("Launched a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
 
 	finishMonitoring := make(chan bool)
 	go MonitorResults(finishMonitoring, startedProcesses, endedTasks)
@@ -297,15 +270,11 @@ func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWork
 	// Pipeline is done, close tasks channel
 	close(startedProcesses)
 	close(startedTasks)
-
 	// Wait for last jobs to finish
 	workers.Wait()
 	// Finally, close results channel
 	close(endedTasks)
-	// Finally, close the global "currentProcessor" chan
-	// close(chans.CurrentProcess)
-
-	// Wait for monitoring to finish
+	// Wait for monitoring thread to finish
 	<-finishMonitoring
 	pterm.Info.Println("Done!")
 }
