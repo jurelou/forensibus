@@ -20,11 +20,13 @@ type Server struct {
 	worker.UnimplementedWorkerServer
 }
 
-func loadProcessors() {
+func loadProcessors() error {
 	for procName, proc := range processors.Registry {
-		proc.Configure()
-		utils.Log.Infof("Configured processor %s", procName)
+		if err := proc.Configure(); err != nil {
+			return fmt.Errorf("Error while loading `%s`: %w", procName, err)
+		}
 	}
+	return nil
 }
 
 func RunWorkerServer(srv *grpc.Server, port int) error {
@@ -33,7 +35,9 @@ func RunWorkerServer(srv *grpc.Server, port int) error {
 		return fmt.Errorf("failed to listen on port %d: %w", port, err)
 	}
 
-	loadProcessors()
+	if err := loadProcessors(); err != nil {
+		return err
+	}
 
 	s := grpc.NewServer()
 	worker.RegisterWorkerServer(s, &Server{})

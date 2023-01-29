@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"runtime"
+	"log"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
@@ -49,9 +50,9 @@ func Reload() error {
 
 func Configure() error {
 	viper.AddConfigPath(".")
-	viper.AddConfigPath("./pipelines")
-	viper.AddConfigPath("../pipelines")
-	viper.AddConfigPath("../../pipelines")
+	viper.AddConfigPath("./config")
+	viper.AddConfigPath("../config")
+	viper.AddConfigPath("../../config")
 	viper.SetConfigName("config")
 	setDefaults()
 
@@ -79,6 +80,6 @@ func Configure() error {
 
 func init() {
 	if err := Configure(); err != nil {
-		fmt.Println("Could not load config:", err)
+		log.Fatal(err.Error())
 	}
 }

@@ -1,15 +1,24 @@
 package common_processors
 
 import (
-	"github.com/jurelou/forensibus/utils/processors"
-	"github.com/jurelou/forensibus/utils/writer"
+	"fmt"
 
 	yara "github.com/Velocidex/go-yara"
+
+	"github.com/jurelou/forensibus/utils/processors"
+	"github.com/jurelou/forensibus/utils/writer"
 )
 
-type YaraProcessor struct{}
+type YaraProcessor struct{
+	Compiler *yara.Compiler
+}
 
 func (proc YaraProcessor) Configure() error {
+	compiler, err := yara.NewCompiler()
+	if err != nil {
+		return fmt.Errorf("Could not instanciate a yara compiler: %w", err)
+	}
+	proc.Compiler = compiler
 	return nil
 }
 
