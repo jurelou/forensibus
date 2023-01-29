@@ -216,7 +216,6 @@ func MakeWorkers(disableLocalWorker bool, tStart <-chan TaskStarted, tEnd chan<-
 }
 
 func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWorker bool) {
-
 	// Configure logger, if local worker is disabled, do not print to stdout
 	err := utils.ConfigureLogger(disableLocalWorker)
 	if err != nil {
@@ -233,8 +232,8 @@ func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWork
 		utils.Log.Warnf(err.Error())
 		return
 	}
-	stepsCount := dsl.CountPipelineSteps(config.Pipeline)
 
+	stepsCount := dsl.CountPipelineSteps(config.Pipeline)
 	inputs, err := MakeInputs(paths)
 	if err != nil {
 		utils.Log.Warnf(err.Error())
@@ -254,7 +253,7 @@ func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWork
 		pterm.Error.Printfln(err.Error())
 		return
 	}
-	pterm.Info.Printfln("Running pipeline `%s` (%d processors)", config.Pipeline.Name, stepsCount)
+
 	pterm.Success.Printfln("Launched a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
 
 	finishMonitoring := make(chan bool)
