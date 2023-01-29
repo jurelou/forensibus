@@ -1,7 +1,7 @@
 package windows_artifacts
 
 import (
-	"fmt"
+	// "fmt"
 	"os"
 
 	"www.velocidex.com/golang/regparser"
@@ -30,7 +30,7 @@ func (proc RegistryProcessor) Run(in string, out writer.OutputWriter) processors
 		return errors
 	}
 
-	fmt.Println(">>>>>>>>>>>>", in)
+	// fmt.Println(">>>>>>>>>>>>", in)
 	registry, err := regparser.NewRegistry(fd)
 	if err != nil {
 		errors.Add(err)
@@ -38,7 +38,7 @@ func (proc RegistryProcessor) Run(in string, out writer.OutputWriter) processors
 	}
 	key := registry.OpenKey(appcompatcache_path)
 	if key != nil {
-		fmt.Println("<<<<<<<<<<<", key)
+		// fmt.Println("<<<<<<<<<<<", key)
 	}
 	// time.Sleep(1 * time.Second)
 

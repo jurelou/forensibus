@@ -11,6 +11,8 @@ import (
 var Config Configuration
 
 type Configuration struct {
+	YaraRulesFolder	string
+	SigmaRulesFolder string
 	ProcessorTimeout int
 	Splunk           SplunkConfiguration
 	OutputFolder     string
