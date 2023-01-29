@@ -15,8 +15,6 @@ import (
 	_ "time"
 )
 
-var port = 50051
-
 // server is used to implement proto.WorkerServer.
 type Server struct {
 	worker.UnimplementedWorkerServer
@@ -29,10 +27,10 @@ func loadProcessors() {
 	}
 }
 
-func runGRPCServer() {
+func RunWorkerServer(srv *grpc.Server, port int) error {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
-		utils.Log.Fatalf("failed to listen on port %d: %v", port, err)
+		return fmt.Errorf("failed to listen on port %d: %w", port, err)
 	}
 
 	loadProcessors()
@@ -41,14 +39,27 @@ func runGRPCServer() {
 	worker.RegisterWorkerServer(s, &Server{})
 	utils.Log.Infof("Worker listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
-		utils.Log.Fatalf("failed to serve: %v", err)
+		return fmt.Errorf("failed to serve: %w", err)
 	}
+	return nil
 }
 
 func Run(workersCount uint32) {
+	err := utils.ConfigureLogger(true)
+	if err != nil {
+		utils.Log.Errorf(err.Error())
+		return
+	}
+
 	viper.Set("WorkersCount", workersCount)
 	utils.Config.WorkersCount = workersCount
 	utils.Log.Infof("Launched with %d workers", utils.Config.WorkersCount)
 
-	runGRPCServer()
+	var port = 50051
+	var server *grpc.Server
+
+	err = RunWorkerServer(server, port)
+	if err != nil {
+		utils.Log.Errorf("Could not start worker server: %s", err.Error())
+	}
 }

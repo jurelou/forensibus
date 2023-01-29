@@ -9,8 +9,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/pterm/pterm"
+    "google.golang.org/grpc"
 
 	dsl "github.com/jurelou/forensibus/core"
+	"github.com/jurelou/forensibus/worker"
 	"github.com/jurelou/forensibus/utils"
 	"github.com/jurelou/forensibus/utils/decompress"
 	"github.com/jurelou/forensibus/utils/names_generator"
@@ -18,18 +20,40 @@ import (
 
 var serverAddress = "localhost:50051"
 
-type CurrentProcess struct {
-	StepsCount      int
-	ProcessName     string
-	TerminatedSteps int
-	ProcessId       string
+type ProcessStarted struct {
+	Name			string
+	ProcessId		string
+	TasksCount		int
+	TasksTerminated	int
 }
 
-type JobChannels struct {
-	CurrentProcess chan CurrentProcess
-	Jobs           chan Job
-	JobResults     chan JobResult
+type TaskStarted struct {
+	ProcessId		string
+	Tag				string
+	Step			dsl.Step
+	ProcessConfig	dsl.ProcessConfig
 }
+
+type TaskEnded struct {
+	Name			string
+	Source			string
+	ProcessId		string
+	Status			uint32
+	Errors			[]string
+}
+
+// type CurrentProcess struct {
+// 	StepsCount      int
+// 	ProcessName     string
+// 	TerminatedSteps int
+// 	ProcessId       string
+// }
+
+// type JobChannels struct {
+// 	CurrentProcess chan CurrentProcess
+// 	Jobs           chan Job
+// 	JobResults     chan JobResult
+// }
 
 func find(steps []dsl.Step, config dsl.FindConfig) []dsl.Step {
 	var out []dsl.Step
@@ -83,6 +107,76 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 	return outs
 }
 
+// func process() {
+// 	id := uuid.NewString()
+// 	chans.CurrentProcess <- CurrentProcess{ProcessId: id, TerminatedSteps: 0, StepsCount: len(in), ProcessName: processConfig.Name}
+
+// 	pterm.Info.Printfln("Running %s processor against %d files", processConfig.Name, len(in))
+// 	for _, i := range in {
+// 		chans.Jobs <- Job{ProcessId: id, Tag: tag, Step: i, Config: processConfig.Config, Name: processConfig.Name}
+// 	}
+// 	// pterm.Success.Printfln("Terminated %s processor", config.Name)
+
+// }
+
+func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, tag string, sProcesses chan<- ProcessStarted, sTasks chan<- TaskStarted) {
+	dsl.WalkPipeline(pipeline, steps, func(item interface{}, in []dsl.Step) []dsl.Step {
+		switch item.(type) {
+		case dsl.FindConfig:
+			findConfig := item.(dsl.FindConfig)
+			out := find(in, findConfig)
+			return out
+
+		case dsl.ExtractConfig:
+			extractConfig := item.(dsl.ExtractConfig)
+			out := extract(in, extractConfig)
+			return out
+
+		case dsl.ProcessConfig:
+			processConfig := item.(dsl.ProcessConfig)
+			id := uuid.NewString()
+
+			sProcesses <- ProcessStarted{
+				Name: processConfig.Name,
+				ProcessId: id,
+				TasksCount: len(in),
+				TasksTerminated: 0,
+			}
+			
+			pterm.Info.Printfln("Running %s processor against %d files", processConfig.Name, len(in))
+			for _, i := range in {
+				sTasks <- TaskStarted{
+					ProcessId: id,
+					Tag: tag,
+					Step: i,
+					ProcessConfig: processConfig,
+				}
+			}
+			return []dsl.Step{}
+		}
+		return in
+	})
+}
+
+
+func onSigint(sigint <-chan os.Signal) {
+	exit := false
+
+	for range sigint {
+		os.Exit(1)
+
+		if exit == true {
+			os.Exit(1)
+		}
+		fmt.Println("Caught SIGINT. Press ctrl-C once more to exit")
+		exit = true
+	}
+}
+
+// func makeWorkers(disableLocalWorker bool) *WorkerPool {
+
+// }
+
 func MakeInputs(sources []string) ([]dsl.Step, error) {
 	ins := make([]dsl.Step, 0, len(sources))
 	for _, source := range sources {
@@ -108,116 +202,110 @@ func MakeInputs(sources []string) ([]dsl.Step, error) {
 	return ins, nil
 }
 
-func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, chans JobChannels, tag string) {
-	dsl.WalkPipeline(pipeline, steps, func(item interface{}, in []dsl.Step) []dsl.Step {
-		switch item.(type) {
-		case dsl.FindConfig:
-			findConfig := item.(dsl.FindConfig)
-			out := find(in, findConfig)
-			return out
+func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWorker bool) {
 
-		case dsl.ExtractConfig:
-			extractConfig := item.(dsl.ExtractConfig)
-			out := extract(in, extractConfig)
-			return out
-
-		case dsl.ProcessConfig:
-			processConfig := item.(dsl.ProcessConfig)
-			id := uuid.NewString()
-			chans.CurrentProcess <- CurrentProcess{ProcessId: id, TerminatedSteps: 0, StepsCount: len(in), ProcessName: processConfig.Name}
-
-			pterm.Info.Printfln("Running %s processor against %d files", processConfig.Name, len(in))
-			for _, i := range in {
-				chans.Jobs <- Job{ProcessId: id, Tag: tag, Step: i, Config: processConfig.Config, Name: processConfig.Name}
-			}
-			// pterm.Success.Printfln("Terminated %s processor", config.Name)
-			return []dsl.Step{}
-		}
-		return in
-	})
-}
-
-func loadAndLintDSL(filePath string) (dsl.Config, error) {
-	// Load and lint the given pipeline
-	config, err := dsl.LoadDSLFile(filePath)
+	// Configure logger, if local worker is disabled, do not print to stdout
+	err := utils.ConfigureLogger(true)//disableLocalWorker)
 	if err != nil {
-		return dsl.Config{}, fmt.Errorf("Could not load DSL file %s: %w", filePath, err)
+		pterm.Error.Printfln(err.Error())
+		return
 	}
-	if err := dsl.LintPipeline(config.Pipeline); err != nil {
-		return dsl.Config{}, fmt.Errorf("Error while checking pipeline: %w", err)
-	}
-	return config, nil
-}
 
-func onSigint(sigint <-chan os.Signal) {
-	exit := false
+	workers := new(WorkerPool)
+	var localWorkerServer *grpc.Server
 
-	for range sigint {
-		os.Exit(1)
-
-		if exit == true {
-			os.Exit(1)
+	if !disableLocalWorker {
+		port := utils.FindOpenTcpPort()
+		if port == 0 {
+			pterm.Error.Printfln("Could not find a port to listen on")
+			return
 		}
-		fmt.Println("Caught SIGINT. Press ctrl-C once more to exit")
-		exit = true
-	}
-}
 
-func Run(pipelineconfigFile string, paths []string, tag string) {
+		go worker.RunWorkerServer(localWorkerServer, port)
+
+		lWorker, err := workers.Connect(fmt.Sprintf("localhost:%d", port))
+		if err != nil {
+			pterm.Error.Printfln("Could not start local worker: %s", err.Error())
+			return
+		}
+		pterm.Success.Printfln("Local worker is up (capacity of %d)", lWorker.Capacity)
+		// if localWorkerServer != nil {
+		// 	localWorkerServer.Stop()
+		// }
+
+	} else {
+		pterm.Warning.Printfln("Disabled local worker")
+	}
+
+
+
 	if tag == "" {
 		tag = names_generator.GetRandomName()
 	}
-	pterm.Success.Printfln("Using tag `%s`", tag)
-	config, err := loadAndLintDSL(pipelineconfigFile)
+
+
+	config, err := dsl.LoadAndLint(pipelineconfigFile)
 	if err != nil {
 		utils.Log.Warnf(err.Error())
 		return
 	}
 	stepsCount := dsl.CountPipelineSteps(config.Pipeline)
+
+
+
 	inputs, err := MakeInputs(paths)
 	if err != nil {
 		utils.Log.Warnf(err.Error())
 		return
 	}
 
-	workers := new(WorkerPool)
-	worker, err := workers.Connect(serverAddress)
-	if err != nil {
-		utils.Log.Warnf(err.Error())
-		return
-	}
+	pterm.Info.Printfln("Running pipeline `%s` (%d processors)", config.Pipeline.Name, stepsCount)
 
-	utils.Log.Infof("Worker %s (%s) is up! (cap: %d)", worker.Address, worker.Name, worker.Capacity)
-	utils.Log.Infof("Using splunk index `%s`", utils.Config.Splunk.Index)
+	pterm.Info.Printfln("Using tag `%s`", tag)
+	pterm.Info.Printfln("Using splunk index `%s`", utils.Config.Splunk.Index)
+
+
+	startedProcesses := make(chan ProcessStarted, stepsCount)
+	startedTasks := make(chan TaskStarted, workers.Capacity() * 2)
+	endedTasks := make(chan TaskEnded, workers.Capacity() * 2)
+
+	// worker, err := workers.Connect(serverAddress)
+	// if err != nil {
+	// 	utils.Log.Warnf(err.Error())
+	// 	return
+	// }
+
+	// utils.Log.Infof("Worker %s (%s) is up! (cap: %d)", worker.Address, worker.Name, worker.Capacity)
 
 	// Queue size should be > than workers capacity so that workers are never starving
-	queueSize := workers.Capacity()
-	chans := JobChannels{CurrentProcess: make(chan CurrentProcess, stepsCount+1), Jobs: make(chan Job, queueSize*2), JobResults: make(chan JobResult, queueSize*2)}
+	// queueSize := workers.Capacity()
+	// chans := JobChannels{CurrentProcess: make(chan CurrentProcess, stepsCount+1), Jobs: make(chan Job, queueSize*2), JobResults: make(chan JobResult, queueSize*2)}
 
-	workers.Work(chans)
-	utils.Log.Infof("Launched a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
+	workers.Work(startedTasks, endedTasks)
+	// utils.Log.Infof("Launched a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
 
 	finishMonitoring := make(chan bool)
-	go MonitorResults(stepsCount, chans, finishMonitoring)
+	go MonitorResults(finishMonitoring, startedProcesses, endedTasks)
 
 	// Catch SIGINT
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 	go onSigint(c)
 
-	RunPipeline(config.Pipeline, inputs, chans, tag)
+	RunPipeline(config.Pipeline, inputs, tag, startedProcesses, startedTasks)
 
-	// Pipeline is done, close job channel
-	close(chans.Jobs)
+	// Pipeline is done, close tasks channel
+	close(startedProcesses)
+	close(startedTasks)
+
 	// Wait for last jobs to finish
 	workers.Wait()
 	// Finally, close results channel
-	close(chans.JobResults)
+	close(endedTasks)
 	// Finally, close the global "currentProcessor" chan
-	close(chans.CurrentProcess)
+	// close(chans.CurrentProcess)
+
 	// Wait for monitoring to finish
 	<-finishMonitoring
-
 	pterm.Info.Println("Done!")
-	// fmt.Println("\nDone!")
 }

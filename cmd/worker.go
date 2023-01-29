@@ -18,7 +18,7 @@ var (
 	workerCmd = &cobra.Command{
 		Use:     "worker",
 		Aliases: []string{"w"},
-		Short:   "A brief description of your command",
+		Short:   "Run a processing worker",
 		Long: `A longer description that spans multiple lines and likely contains examples
 	and usage of using your command. For example:
 

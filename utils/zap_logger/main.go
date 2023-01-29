@@ -2,39 +2,33 @@ package zap_logger
 
 import (
 	"fmt"
-	"log"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-func GetLogger() (*zap.SugaredLogger, error) {
-	var sugarLogger *zap.SugaredLogger
+func GetLogger(enableStdout bool) (*zap.SugaredLogger, error) {
+	// var sugarLogger *zap.SugaredLogger
 
-	logger, err := configureLogger()
-	if err != nil {
-		log.Println("Could not configure logger")
-		return sugarLogger, err
-	}
-	defer logger.Sync()
-
-	sugarLogger = logger.Sugar()
-	return sugarLogger, nil
-}
-
-func configureLogger() (zap.Logger, error) {
 	// standard configuration
 	cfg := zap.NewProductionConfig()
 	cfg.Level = zap.NewAtomicLevelAt(zapcore.DebugLevel)
 	cfg.Encoding = "console"
 	cfg.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 	cfg.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
-	cfg.OutputPaths = []string{"forensibus.log", "stdout"}
+	if enableStdout {
+		cfg.OutputPaths = []string{"forensibus.log", "stdout"}
+	} else {
+		cfg.OutputPaths = []string{"forensibus.log"}
+	}
 	// cfg.ErrorOutputPaths = []string{"forensibus.log", "stderr"}
 
-	zLogger, err := cfg.Build()
+	logger, err := cfg.Build()
 	if err != nil {
-		return zap.Logger{}, fmt.Errorf("Could not configure zap logger: %w", err)
+		return nil, fmt.Errorf("Could not configure zap logger: %w", err)
 	}
-	return *zLogger, nil
+	defer logger.Sync()
+
+	sugarLogger := logger.Sugar()
+	return sugarLogger, nil
 }

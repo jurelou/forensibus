@@ -28,5 +28,5 @@ func Register(procName string, proc Processor) {
 		utils.Log.Warnf("Component: %s has already been added to the registry", procName)
 	}
 	Registry[procName] = proc
-	utils.Log.Debugf("Registered new processor: %s", procName)
+	// utils.Log.Debugf("Registered new processor: %s", procName)
 }

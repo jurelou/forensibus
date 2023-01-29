@@ -20,10 +20,11 @@ type Logger interface {
 	Debug(args ...interface{})
 }
 
-func init() {
+func ConfigureLogger(enableStdout bool) error {
 	var err error
-	Log, err = zap_logger.GetLogger()
+	Log, err = zap_logger.GetLogger(enableStdout)
 	if err != nil {
-		panic(fmt.Sprintf("Could not create a logger : %s", err))
+		return fmt.Errorf("Could not create a logger: %w", err)
 	}
+	return nil
 }

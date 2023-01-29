@@ -27,11 +27,11 @@ func (p *WorkerPool) Connect(address string) (Worker, error) {
 	return *worker, nil
 }
 
-func (p *WorkerPool) Work(chans JobChannels) {
+func (p *WorkerPool) Work(tStart <-chan TaskStarted, tEnd chan<- TaskEnded) {
 	for _, worker := range p.Workers {
 		for i := uint32(0); i < worker.Capacity; i++ {
 			p.Wg.Add(1)
-			go worker.Work(&p.Wg, chans)
+			go worker.Work(&p.Wg, tStart, tEnd)
 		}
 	}
 }

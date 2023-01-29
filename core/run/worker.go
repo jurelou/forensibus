@@ -62,27 +62,41 @@ func (w *Worker) Connect(address string) error {
 func (w *Worker) Ping(timeout int) (*worker.Pong, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	defer cancel()
-	var pong *worker.Pong
 
-	pong, err := w.Client.Ping(ctx, &worker.PingRequest{Identifier: "forensibusCore"}) // TODO: get hostname here
-	if err != nil {
-		return nil, fmt.Errorf("Could not ping worker %s: %w", w.Address, err)
+	for attempts := 0 ; attempts < 4; attempts++ {
+		pong, err := w.Client.Ping(ctx, &worker.PingRequest{Identifier: "forensibusCore"}) // TODO: get hostname here
+		if err == nil && pong != nil {
+			return pong, nil
+		}
+		time.Sleep(1 * time.Second)
 	}
-	return pong, nil
+	return nil, fmt.Errorf("Could not ping worker at %s", w.Address)
 }
 
-func (w *Worker) Work(wg *sync.WaitGroup, chans JobChannels) {
+func (w *Worker) Work(wg *sync.WaitGroup, tStart <-chan TaskStarted, tEnd chan<- TaskEnded) {
 	defer wg.Done()
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(utils.Config.ProcessorTimeout)*time.Second)
 	defer cancel()
-	for job := range chans.Jobs {
-		res, err := w.Client.Work(ctx, &worker.WorkRequest{Source: job.Step.NextArtifact, OutputFolder: job.Step.CurrentFolder, Processor: job.Name, Config: job.Config, Tag: job.Tag})
+	for task := range tStart {
+		res, err := w.Client.Work(ctx, &worker.WorkRequest{
+			Source: task.Step.NextArtifact,
+			OutputFolder: task.Step.CurrentFolder,
+			Processor: task.ProcessConfig.Name,
+			Config: task.ProcessConfig.Config,
+			Tag: task.Tag,
+		})
 		jobErrors := res.GetErrors()
 		jobStatus := res.GetStatus()
 		if err != nil {
-			jobErrors = []string{fmt.Sprintf("Processor %s timed out (%s): %s", job.Name, job.Step.NextArtifact, err.Error())}
+			jobErrors = []string{fmt.Sprintf("Processor %s timed out (%s): %s", task.ProcessConfig.Name, task.Step.NextArtifact, err.Error())}
 			jobStatus = utils.Timeout
 		}
-		chans.JobResults <- JobResult{Job: job, Status: jobStatus, Errors: jobErrors}
+		tEnd <- TaskEnded{
+			Name: task.ProcessConfig.Name,
+			Source: task.Step.NextArtifact,
+			ProcessId: task.ProcessId,
+			Status: jobStatus,
+			Errors: jobErrors,
+		}		
 	}
 }

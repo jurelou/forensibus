@@ -53,6 +53,8 @@ github.com/MarvinJWendt/testza v0.4.2/go.mod h1:mSdhXiKH8sg/gQehJ63bINcCKp7RtYew
 github.com/MarvinJWendt/testza v0.5.1 h1:a9Fqx6vQrHQ4CyiaLhktfTTelwGotmFWy8MNhyaohw8=
 github.com/Velocidex/go-magic v0.0.0-20211018155418-c5dc48282f28 h1:3FMhXfGzZR4oNHmV8NizrviyaTv+2SmLuj+43cMJCUQ=
 github.com/Velocidex/go-magic v0.0.0-20211018155418-c5dc48282f28/go.mod h1:n9o/44DFcqU/E55pWoIt4sKkxBC3k4JVNqvTAb9kZlI=
+github.com/Velocidex/go-yara v1.1.10-0.20221202090138-c7dde4c43aa4 h1:sBy6e+0saSFIwwST8VfziY0yO2uCra1m8lxOIv56UEk=
+github.com/Velocidex/go-yara v1.1.10-0.20221202090138-c7dde4c43aa4/go.mod h1:5KKwF74avzF4GPZg37NoWfJiDgrBF5ASHH27g1p83zk=
 github.com/Velocidex/ordereddict v0.0.0-20191106020901-97c468e5e403/go.mod h1:pxJpvN5ISMtDwrdIdqnJ3ZrjIngCw+WT6gfNil6Zjvo=
 github.com/Velocidex/ordereddict v0.0.0-20200723153557-9460a6764ab8/go.mod h1:pxJpvN5ISMtDwrdIdqnJ3ZrjIngCw+WT6gfNil6Zjvo=
 github.com/Velocidex/ordereddict v0.0.0-20210502082334-cf5d9045c0d1 h1:SssgTG84Ujch5Divx7AmqjbKQaQr7lrARQ51S1dAScA=

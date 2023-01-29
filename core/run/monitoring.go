@@ -4,84 +4,82 @@ import (
 	"time"
 
 	"github.com/pterm/pterm"
-
 	"github.com/jurelou/forensibus/utils"
 )
 
-func MonitorResults(stepsCount int, chans JobChannels, finish chan<- bool) {
-	var currentBar *pterm.ProgressbarPrinter
-	processes := make(map[string]*CurrentProcess)
-	var curProcess string
+func MonitorResults(done chan<- bool, startedProcesses <-chan ProcessStarted, endedTasks <-chan TaskEnded) {
+	var currentProcess string
+	var pBar *pterm.ProgressbarPrinter
+	processes := make(map[string]*ProcessStarted)
 
 	for {
 		select {
-		case j, ok := <-chans.JobResults:
+		case proc, ok := <-startedProcesses:
 			if !ok {
-				chans.JobResults = nil
+				startedProcesses = nil
 				break
 			}
-			if utils.IsErrored(j.Status) {
-				pterm.Error.Printfln("Processor %s failed (%d errors) against %s: %v", j.Job.Name, len(j.Errors), j.Job.Step.NextArtifact, j.Errors)
+			_, exists := processes[proc.ProcessId]
+			if exists {
+				// This should never happen ... (ProcessId is a valid UUID4)
+				pterm.Error.Println("Duplicate process ID detected . . .")
+				break
 			}
-			key, exists := processes[j.Job.ProcessId]
+			if &proc != nil {
+				processes[proc.ProcessId] = &proc
+			}
+
+			if currentProcess == "" {
+				// It is the first processor 
+				currentProcess = proc.ProcessId
+				pBar, _ = pterm.DefaultProgressbar.WithElapsedTimeRoundingFactor(time.Millisecond).WithTotal(proc.TasksCount).WithTitle(proc.Name).WithShowElapsedTime(true).Start()
+			}
+
+		case task, ok := <-endedTasks:
+			if !ok {
+				endedTasks = nil
+				break
+			}
+			if utils.IsErrored(task.Status) {
+				pterm.Error.Printfln("Processor %s failed (%d errors) against %s: %v", task.Name, len(task.Errors), task.Source, task.Errors)
+			}
+			key, exists := processes[task.ProcessId]
 			if !exists {
-				pterm.Error.Println("Undefined job")
-
-				// This should never happens since a CurrentProcess will always be created before a process finishes
+				pterm.Error.Println("Undefined job . . .")
 				break
 			}
-			if curProcess == "" {
-				// Monitoring just started, set the first progress bar to the current job
-				curProcess = j.Job.ProcessId
-				currentBar, _ = pterm.DefaultProgressbar.WithElapsedTimeRoundingFactor(time.Millisecond).WithTotal(key.StepsCount).WithTitle(key.ProcessName).WithShowElapsedTime(true).Start()
-			}
-			key.TerminatedSteps++
 
-			if key.ProcessId == curProcess {
+			key.TasksTerminated++
+			if key.ProcessId == currentProcess {
 				// Update the progress bar is the process that finished coressponds to the current progress bar
-				currentBar.Increment()
+				pBar.Increment()
 			}
 
-			if key.TerminatedSteps >= key.StepsCount {
+			if key.TasksTerminated >= key.TasksCount {
 				// The process has finished, remove it from the map
-				delete(processes, j.Job.ProcessId)
-				if key.ProcessId != curProcess {
+				delete(processes, task.ProcessId)
+				if key.ProcessId != currentProcess {
+					// A processor which has no progress bar has finished
 					break
 				}
 				// If the current process has finished, restart a new progress bar
-				currentBar.Stop()
-				curProcess = ""
+				pBar.Stop()
+				currentProcess = ""
 				for k := range processes {
 					// The first progress bar is the first map entry
-					curProcess = k
-					currentBar, _ = pterm.DefaultProgressbar.WithTotal(processes[k].StepsCount).WithTitle(processes[k].ProcessName).WithShowElapsedTime(true).Start()
-					currentBar.Add(processes[k].TerminatedSteps)
+					currentProcess = k
+					pBar, _ = pterm.DefaultProgressbar.WithTotal(processes[k].TasksCount).WithTitle(processes[k].Name).WithShowElapsedTime(true).Start()
+					pBar.Add(processes[k].TasksTerminated)
 					break
 				}
 			}
 
-		case c, ok := <-chans.CurrentProcess:
-			if !ok {
-				chans.CurrentProcess = nil
-				break
-			}
-			_, exists := processes[c.ProcessId]
-			if exists {
-				// This should never happen ...
-				pterm.Error.Println("Duplicate process identifier detected !!!!!")
-				break
-			}
-			if &c != nil {
-				processes[c.ProcessId] = &c
-			}
 
 		}
-
-		if chans.JobResults == nil && chans.CurrentProcess == nil {
+		if startedProcesses == nil && endedTasks == nil {
 			break
 		}
-
 	}
 
-	finish <- true
+	done <- true
 }

@@ -14,8 +14,25 @@
 - splunk: configure event_renderers.conf to set event colors
 - splunk HEC configure indexer acknowledgement
 - https://parsiya.net/blog/2018-11-01-windows-filetime-timestamps-and-byte-wrangling-with-go/
+- extract: add parralelism
 
-# Compiler pour les différents OS
+# Install development dependencies
+
+sudo apt-get install automake libtool make gcc pkg-config libssl-dev
+
+## Yara 4.2.x
+
+
+```
+wget https://github.com/VirusTotal/yara/archive/refs/tags/v4.2.3.tar.gz
+tar -xzvf v4.2.3.tar.gz
+./bootstrap.sh
+./configure
+make
+sudo make install
+make check
+
+```
 
 sudo apt-get install mingw-w64-x86-64-dev gcc-mingw-w64-x86-64 gcc-mingw-w64 gcc-multilib
 

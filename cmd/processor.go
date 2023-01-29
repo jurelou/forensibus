@@ -15,7 +15,7 @@ import (
 var processorCmd = &cobra.Command{
 	Use:     "processor [PROCESSOR_NAME]",
 	Aliases: []string{"p", "proc"},
-	Short:   "A brief description of your command",
+	Short:   "Get informations about available processors",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 

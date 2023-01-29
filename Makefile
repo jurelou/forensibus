@@ -1,21 +1,27 @@
 PACKAGES = cmd core processors utils worker
 
-UNIX_LDFLAGS = -ldflags="-s -w -linkmode external -extldflags=-static"
+LDFLAGS = -ldflags="-s -w"
 
 MODULES = $(shell go list -f '{{.Dir}}' -v ./...)
+BIN_FOLDER = ./bin
 
-all:
-	@mkdir -p bin
-	GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc go build -o ./bin/forensibus_windows_amd64.exe main.go
-	GOOS=windows GOARCH=386 CGO_ENABLED=1 CC=i686-w64-mingw32-gcc go build -o ./bin/forensibus_windows_x86.exe main.go
+all: windows linux
 
-	# GOOS=darwin GOARCH=amd64 go build $(UNIX_LDFLAGS) -o ./bin/forensibus_darwin_amd64 main.go
+windows:
+	mkdir -p $(BIN_FOLDER)
+	CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -o $(BIN_FOLDER)/forensibus_windows_amd64.exe main.go
+	CGO_ENABLED=1 GOOS=windows GOARCH=386 CC=i686-w64-mingw32-gcc go build -o $(BIN_FOLDER)/forensibus_windows_x86.exe main.go
+
+darwin:
+	mkdir -p $(BIN_FOLDER)
+	CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build $(LDFLAGS) -o ${BIN_FOLDER}/forensibus_darwin_amd64 main.go
 	# GOOS=darwin GOARCH=arm64 go build -ldflags="-extldflags=-static" -o ./bin/forensibus_darwin_arm64 main.go
 
-	GOOS=linux GOARCH=amd64 go build $(UNIX_LDFLAGS) -o ./bin/forensibus_linux_amd64 main.go 2>&1 | grep -vi warning
-	# GOOS=linux GOARCH=386 go build $(UNIX_LDFLAGS)  -o ./bin/forensibus_linux_x86 main.go 2>&1 | grep -vi warning
+linux:
+	mkdir -p $(BIN_FOLDER)
+	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o $(BIN_FOLDER)/forensibus_linux_amd64 main.go
+	# GOOS=linux GOARCH=386 go build $(LDFLAGS) -o $(BIN_FOLDER)/forensibus_linux_x86 main.go
 
-	#sudo chroot . ./forensibus
 
 install:
 	go install mvdan.cc/gofumpt@latest

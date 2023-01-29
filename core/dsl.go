@@ -189,3 +189,15 @@ func CountPipelineSteps(item PipelineConfig) int {
 	})
 	return count
 }
+
+func LoadAndLint(filePath string) (Config, error) {
+	// Load and lint the given pipeline
+	config, err := LoadDSLFile(filePath)
+	if err != nil {
+		return Config{}, fmt.Errorf("Could not load DSL file %s: %w", filePath, err)
+	}
+	if err := LintPipeline(config.Pipeline); err != nil {
+		return Config{}, fmt.Errorf("Error while checking pipeline: %w", err)
+	}
+	return config, nil
+}

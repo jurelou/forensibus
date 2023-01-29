@@ -17,6 +17,7 @@ var (
 	pipelineconfig string
 	splunkIndex    string
 	tag            string
+	disableWorker	bool
 
 	runCmd = &cobra.Command{
 		Use:     "run [path]",
@@ -44,7 +45,7 @@ var (
 			if !utils.FileExists(pipelineconfig) {
 				return fmt.Errorf("%s file does not exists.\n", pipelineconfig)
 			}
-			run.Run(pipelineconfig, utils.UniqueListOfStrings(filepaths), tag)
+			run.Run(pipelineconfig, utils.UniqueListOfStrings(filepaths), tag, disableWorker)
 			return nil
 		},
 	}
@@ -55,6 +56,7 @@ func init() {
 
 	runCmd.PersistentFlags().StringVarP(&pipelineconfig, "pipeline", "p", "", "A pipeline configuration file.")
 	runCmd.PersistentFlags().StringVarP(&tag, "tag", "t", "", "Tag the process to identify it more easily")
+	runCmd.PersistentFlags().BoolVarP(&disableWorker, "disable_worker", "d", false, "Disable local worker")
 
 	// runCmd.PersistentFlags().StringVarP(&splunkIndex, "splunk-index", "s", "", "Change default splunk index (WON'T BE CREATED).")
 
@@ -70,5 +72,4 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// runCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
