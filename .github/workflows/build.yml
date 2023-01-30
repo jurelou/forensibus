@@ -1,0 +1,38 @@
+name: Build release
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18.x
+      - name: Get dependencies
+        run: |
+          go get -v .
+          sudo apt-get install mingw-w64-x86-64-dev gcc-mingw-w64-x86-64 gcc-mingw-w64 make
+      - name: Build release
+        run: make
+      - name: Upload windows_amd64
+        uses: actions/upload-artifact@v3
+        with:
+          name: forensibus_windows_amd64.exe
+          path: bin/forensibus_windows_amd64.exe
+      - name: Upload windows_x86
+        uses: actions/upload-artifact@v3
+        with:
+          name: forensibus_windows_x86.exe
+          path: bin/forensibus_windows_x86.exe
+      - name: Upload linux_amd64
+        uses: actions/upload-artifact@v3
+        with:
+          name: forensibus_linux_amd64
+          path: bin/forensibus_linux_amd64

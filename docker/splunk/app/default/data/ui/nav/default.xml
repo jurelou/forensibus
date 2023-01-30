@@ -1,0 +1,16 @@
+<nav color="#20C20E" search_view="search">
+
+  <view name="overview" default="true"/>
+
+  <collection label="1. TODO">
+    <view source="all" match="1_" />
+  </collection>
+
+  <collection label="2. TODO">
+    <view source="all" match="2_" />
+  </collection>
+
+
+  <view name="search" />
+
+</nav>

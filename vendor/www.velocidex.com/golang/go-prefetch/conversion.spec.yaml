@@ -1,0 +1,12 @@
+Module: prefetch
+Profile: PrefetchProfile
+Filename: profile_vtypes.json
+GenerateDebugString: true
+Structs:
+  - MAMHeader
+  - SCCAHeader
+  - FileInformationWin10
+  - FileMetricsEntryV30
+  - FileInformationVista
+  - FileInformationXP
+  - FileMetricsEntryV17
