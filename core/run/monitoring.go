@@ -26,9 +26,7 @@ func MonitorResults(done chan<- bool, startedProcesses <-chan ProcessStarted, en
 				pterm.Error.Println("Duplicate process ID detected . . .")
 				break
 			}
-			if &proc != nil {
-				processes[proc.ProcessId] = &proc
-			}
+			processes[proc.ProcessId] = &proc
 
 			if currentProcess == "" {
 				// It is the first processor

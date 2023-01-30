@@ -36,7 +36,7 @@ func setDefaults() {
 	viper.SetDefault("WorkersCount", uint32(runtime.NumCPU()))
 }
 
-func Reload() error {
+func ReloadConfig() error {
 	// viper.SetDefault("ContentDir", "content")
 	if err := viper.ReadInConfig(); err != nil {
 		return fmt.Errorf("could not read config: %w", err)
@@ -56,14 +56,14 @@ func Configure() error {
 	viper.SetConfigName("config")
 	setDefaults()
 
-	err := Reload()
+	err := ReloadConfig()
 	if err != nil {
 		return err
 	}
 
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
-		err := Reload()
+		err := ReloadConfig()
 		if err != nil {
 			fmt.Printf("Error while updating config: %s\n", err.Error())
 			return
