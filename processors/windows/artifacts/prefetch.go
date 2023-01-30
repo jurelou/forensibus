@@ -23,14 +23,10 @@ type PrefetchEntry struct {
 }
 
 type PrefetchProcessor struct {
-	// Input string
+	processors.Default
 }
 
-func (proc PrefetchProcessor) Configure() error {
-	return nil
-}
-
-func (proc PrefetchProcessor) parsePrefetch(in string) (PrefetchEntry, error) {
+func (PrefetchProcessor) parsePrefetch(in string) (PrefetchEntry, error) {
 	fd, err := os.Open(in)
 	if err != nil {
 		utils.Log.Warnf("Could not open prefetch file `%s`", in)

@@ -14,13 +14,11 @@ const (
 	appcompatcache_path = "/ControlSet001/Control/Session Manager/AppCompatCache"
 )
 
-type RegistryProcessor struct{}
-
-func (proc RegistryProcessor) Configure() error {
-	return nil
+type RegistryProcessor struct {
+	processors.Default
 }
 
-func (proc RegistryProcessor) Run(in string, out writer.OutputWriter) processors.PError {
+func (RegistryProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
 	fd, err := os.Open(in)
 	if err != nil {

@@ -13,28 +13,11 @@ import (
 )
 
 type CSVProcessor struct {
+	processors.Default
 	// Input string
 }
 
-func (proc CSVProcessor) Configure() error {
-	return nil
-}
-
-// func (proc CSVProcessor) parseCsv(in string) (PrefetchEntry, error) {
-// 	fd, err := os.Open(in)
-// 	if err != nil {
-// 		utils.Log.Warnf("Could not open prefetch file `%s`", in)
-// 		return PrefetchEntry{}, err
-// 	}
-// 	pf, err := prefetch.LoadPrefetch(fd)
-// 	if err != nil {
-// 		utils.Log.Warnf("Prefetch file `%s` is invalid: `%s`", in, err.Error())
-// 		return PrefetchEntry{}, err
-// 	}
-// 	return PrefetchEntry(*pf), nil
-// }
-
-func (proc CSVProcessor) Run(in string, out writer.OutputWriter) processors.PError {
+func (CSVProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
 	fd, err := os.Open(in)
 	if err != nil {

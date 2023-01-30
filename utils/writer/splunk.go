@@ -170,11 +170,12 @@ func (hec *HEC) WriteEvent(event *Event) {
 	if event.Host == "" {
 		event.Host = hec.defaultHost
 	}
-
 	if event.Event[0] != '{' {
 		utils.Log.Warnf("Event is invalid json (does not start with `{`): %s", event.Event)
-	} else if hec.tag != "" {
-		event.Event = fmt.Sprintf("{\"forensibus_tag\": \"%s\", %s", hec.tag, event.Event[1:])
+		event.Event = fmt.Sprintf("{\"raw\":%q}", event.Event)
+	}
+	if hec.tag != "" {
+		event.Event = fmt.Sprintf("{\"forensibus_tag\":%q,%s", hec.tag, event.Event[1:])
 	}
 
 	json, _ := json.Marshal(event)

@@ -5,15 +5,16 @@ import (
 	"github.com/jurelou/forensibus/utils/writer"
 )
 
-type DummyProcessor struct{}
+type DummyProcessor struct {
+	// processors.Default
+}
 
 func (proc DummyProcessor) Configure() error {
 	return nil
 }
 
-func (proc DummyProcessor) Run(in string, out writer.OutputWriter) processors.PError {
+func (DummyProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
-
 	return errors
 }
 

@@ -36,7 +36,7 @@ func TestCreateEvent(t *testing.T) {
 		if err != nil {
 			t.Errorf("Could not read decompressed body: %s", err.Error())
 		}
-		if string(body) != "{\"host\":\"host_x\",\"index\":\"main_x\",\"source\":\"source_x\",\"sourcetype\":\"stype_x\",\"event\":\"test_event\"}\n" {
+		if string(body) != "{\"host\":\"host_x\",\"index\":\"main_x\",\"source\":\"source_x\",\"sourcetype\":\"stype_x\",\"event\":\"{\\\"forensibus_tag\\\":\\\"tag_x\\\",\\\"raw\\\":\\\"test_event\\\"}\"}\n" {
 			t.Errorf("Invalid body: %s", string(body))
 		}
 		w.WriteHeader(http.StatusOK)
@@ -46,6 +46,7 @@ func TestCreateEvent(t *testing.T) {
 
 	hec := writer.NewHEC(svr.URL, "test-token")
 	defer hec.Close()
+	hec.SetTag("tag_x")
 	hec.SetDefaultHost("host_x")
 	hec.SetDefaultIndex("main_x")
 	hec.SetDefaultSource("source_x")
@@ -102,7 +103,7 @@ func TestCreateEventOverride(t *testing.T) {
 		if err != nil {
 			t.Errorf("Could not read decompressed body: %s", err.Error())
 		}
-		if string(body) != "{\"host\":\"new_host\",\"index\":\"new_index\",\"source\":\"new_source\",\"sourcetype\":\"new_stype\",\"time\":\"new_time\",\"event\":\"new_event\"}\n" {
+		if string(body) != "{\"host\":\"new_host\",\"index\":\"new_index\",\"source\":\"new_source\",\"sourcetype\":\"new_stype\",\"time\":\"new_time\",\"event\":\"{\\\"raw\\\":\\\"new_event\\\"}\"}\n" {
 			t.Errorf("Invalid body: %s", string(body))
 		}
 	}))

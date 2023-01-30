@@ -13,13 +13,11 @@ import (
 	"github.com/jurelou/forensibus/utils/writer"
 )
 
-type EvtxProcessor struct{}
-
-func (proc EvtxProcessor) Configure() error {
-	return nil
+type EvtxProcessor struct {
+	processors.Default
 }
 
-func (proc EvtxProcessor) Run(in string, out writer.OutputWriter) processors.PError {
+func (EvtxProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
 	fd, err := os.Open(in)
 	if err != nil {
