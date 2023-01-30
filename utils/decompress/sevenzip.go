@@ -81,14 +81,6 @@ func findSevenZipFromCurrentFolder() string {
 	return path
 }
 
-func getSevenZipPath() {
-	sevenZipPath = findSevenZipFromPath()
-	if sevenZipPath != "" {
-		return
-	}
-	sevenZipPath = findSevenZipFromCurrentFolder()
-}
-
 func advanceToFirstEntry(scanner *bufio.Scanner) error {
 	for scanner.Scan() {
 		s := scanner.Text()
@@ -186,7 +178,7 @@ func decompress(in string, out string, password string) error {
 	cmd.Stderr = &stderr
 	err := cmd.Run()
 	if err != nil {
-		return fmt.Errorf("error while decompressing 7z %s: %s", in, string(stderr.Bytes()))
+		return fmt.Errorf("error while decompressing 7z %s: %s", in, stderr.String())
 	}
 	return nil
 }
@@ -200,17 +192,12 @@ func DecompressSevenZip(in string, out string) error {
 		return fmt.Errorf("cannot decompress folder %s", in)
 	}
 
-	getSevenZipPath()
-	if sevenZipPath == "" {
-		return fmt.Errorf("could not find 7z binary")
-	}
-
 	encrypted, errEncrypted := IsEncrypted(in)
 	if errEncrypted != nil {
 		return errEncrypted
 	}
 
-	if encrypted == false {
+	if !encrypted {
 		// Decompress unencrypted archive
 		if err := decompress(in, out, ""); err != nil {
 			fmt.Printf("could not decompress %s: %s", in, err.Error())
@@ -229,4 +216,15 @@ func DecompressSevenZip(in string, out string) error {
 		}
 	}
 	return fmt.Errorf("could not decrypt archive %s with passwords %s", in, utils.Config.ArchivePasswords)
+}
+
+func init() {
+	sevenZipPath = findSevenZipFromPath()
+	if sevenZipPath != "" {
+		return
+	}
+	sevenZipPath = findSevenZipFromCurrentFolder()
+	if sevenZipPath == "" {
+		utils.Log.Fatalf("Could not find 7z binary")
+	}
 }

@@ -177,8 +177,7 @@ func CountPipelineSteps(item PipelineConfig) int {
 	dummy = append(dummy, Step{Name: "dummy", CurrentFolder: "DummyCurrent", NextArtifact: "DummyNext"})
 	count := 0
 	WalkPipeline(item, dummy, func(item interface{}, in []Step) []Step {
-		switch item.(type) {
-		case ProcessConfig:
+		if _, ok := item.(ProcessConfig); ok {
 			count++
 		}
 		return dummy

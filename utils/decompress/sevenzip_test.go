@@ -87,7 +87,7 @@ func TestEncrypted7zInvalidPasswd(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Decompressing an encrypted archive with invalid passwords should fail")
 	}
-	if exists := utils.FileExists(outputFile); exists {
+	if utils.FileExists(outputFile) {
 		t.Fatalf("On failure, should not generate output files")
 	}
 }
