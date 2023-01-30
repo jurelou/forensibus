@@ -2,8 +2,8 @@ package run
 
 import (
 	"fmt"
-	"os"
-	"os/signal"
+	// "os"
+	// "os/signal"
 	"path/filepath"
 	"strings"
 
@@ -96,35 +96,32 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 
 func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, tag string, sProcesses chan<- ProcessStarted, sTasks chan<- TaskStarted) {
 	dsl.WalkPipeline(pipeline, steps, func(item interface{}, in []dsl.Step) []dsl.Step {
-		switch item.(type) {
+		switch config := item.(type) {
 		case dsl.FindConfig:
-			findConfig := item.(dsl.FindConfig)
-			out := find(in, findConfig)
+			out := find(in, config)
 			return out
 
 		case dsl.ExtractConfig:
-			extractConfig := item.(dsl.ExtractConfig)
-			out := extract(in, extractConfig)
+			out := extract(in, config)
 			return out
 
 		case dsl.ProcessConfig:
-			processConfig := item.(dsl.ProcessConfig)
 			id := uuid.NewString()
 
 			sProcesses <- ProcessStarted{
-				Name:            processConfig.Name,
+				Name:            config.Name,
 				ProcessId:       id,
 				TasksCount:      len(in),
 				TasksTerminated: 0,
 			}
 
-			pterm.Info.Printfln("Running %s processor against %d files", processConfig.Name, len(in))
+			pterm.Info.Printfln("Running %s processor against %d files", config.Name, len(in))
 			for _, i := range in {
 				sTasks <- TaskStarted{
 					ProcessId:     id,
 					Tag:           tag,
 					Step:          i,
-					ProcessConfig: processConfig,
+					ProcessConfig: config,
 				}
 			}
 			return []dsl.Step{}
@@ -133,19 +130,19 @@ func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, tag string, sPro
 	})
 }
 
-func onSigint(sigint <-chan os.Signal) {
-	exit := false
+// func onSigint(sigint <-chan os.Signal) {
+// 	exit := false
 
-	for range sigint {
-		os.Exit(1)
+// 	for range sigint {
+// 		os.Exit(1)
 
-		if exit == true {
-			os.Exit(1)
-		}
-		fmt.Println("Caught SIGINT. Press ctrl-C once more to exit")
-		exit = true
-	}
-}
+// 		if exit == true {
+// 			os.Exit(1)
+// 		}
+// 		fmt.Println("Caught SIGINT. Press ctrl-C once more to exit")
+// 		exit = true
+// 	}
+// }
 
 // func makeWorkers(disableLocalWorker bool) *WorkerPool {
 
@@ -256,9 +253,9 @@ func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWork
 	go MonitorResults(finishMonitoring, startedProcesses, endedTasks)
 
 	// Catch SIGINT
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-	go onSigint(c)
+	// c := make(chan os.Signal, 1)
+	// signal.Notify(c, os.Interrupt)
+	// go onSigint(c)
 
 	RunPipeline(config.Pipeline, inputs, tag, startedProcesses, startedTasks)
 

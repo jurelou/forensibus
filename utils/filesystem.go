@@ -55,7 +55,6 @@ func FindFiles(params FindFilesParams) ([]string, error) {
 				return
 			}
 		}
-		return
 	}
 
 	// Compile file paths patterns
@@ -128,7 +127,11 @@ func CopyFile(in, out string) error {
 	if err != nil {
 		return fmt.Errorf("could not open %s: %w", in, err)
 	}
-	defer source.Close()
+	defer func() {
+		if errClose := source.Close(); err != nil {
+			err = errClose
+		}
+	}()
 
 	outputInfo, err := os.Stat(out)
 	if err != nil {
@@ -140,7 +143,11 @@ func CopyFile(in, out string) error {
 		if err != nil {
 			return fmt.Errorf("could not create %s: %w", out, err)
 		}
-		defer destination.Close()
+		defer func() {
+			if errClose := destination.Close(); err != nil {
+				err = errClose
+			}
+		}()
 	} else {
 		// Output already exists
 		if outputInfo.IsDir() {
@@ -149,7 +156,12 @@ func CopyFile(in, out string) error {
 			if err != nil {
 				return fmt.Errorf("could not create %s: %w", out, err)
 			}
-			defer destination.Close()
+			defer func() {
+				if errClose := destination.Close(); err != nil {
+					err = errClose
+				}
+			}()
+
 		} else {
 			return fmt.Errorf("refusing to copy file %s to already existing file %s", in, out)
 		}

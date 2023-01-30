@@ -221,7 +221,7 @@ func DecompressSevenZip(in string, out string) error {
 
 	// Archive is encrypted
 	if len(utils.Config.ArchivePasswords) == 0 {
-		return fmt.Errorf("archive %s is encrypted, but no passwords are provided.", in)
+		return fmt.Errorf("archive %s is encrypted, but no passwords were provided", in)
 	}
 	for _, passwd := range utils.Config.ArchivePasswords {
 		if err := decompress(in, out, passwd); err == nil {

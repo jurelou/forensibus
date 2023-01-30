@@ -73,7 +73,7 @@ func LoadDSLFile(filePath string) (Config, error) {
 	err := hclsimple.DecodeFile(filePath, nil, &config)
 	if err != nil {
 		// log.Fatalf("Failed to load configuration: %s", err)
-		return config, fmt.Errorf("Could not decode file %s: %w", filePath, err)
+		return config, fmt.Errorf("could not decode file %s: %w", filePath, err)
 	}
 	return config, nil
 }
@@ -145,28 +145,24 @@ func LintPipeline(item PipelineConfig) error {
 	dummy = append(dummy, Step{Name: "dummy", CurrentFolder: "DummyCurrent", NextArtifact: "DummyNext"})
 	var lastErr error
 	WalkPipeline(item, dummy, func(item interface{}, in []Step) []Step {
-		switch item.(type) {
+		switch config := item.(type) {
 		case ProcessConfig:
-			processConfig := item.(ProcessConfig)
-			if _, err := processors.Get(processConfig.Name); err != nil {
-				lastErr = fmt.Errorf("processor `%s` does not exists", processConfig.Name)
+			if _, err := processors.Get(config.Name); err != nil {
+				lastErr = fmt.Errorf("processor `%s` does not exists", config.Name)
 			}
 		case FindConfig:
-			findConfig := item.(FindConfig)
-
-			for _, pattern := range findConfig.Patterns {
+			for _, pattern := range config.Patterns {
 				_, err := regexp.Compile(pattern)
 				if err != nil {
-					lastErr = fmt.Errorf("invalid find file pattern for %s (%s)", findConfig.Name, pattern)
+					lastErr = fmt.Errorf("invalid find file pattern for %s (%s)", config.Name, pattern)
 				}
 			}
 		case ExtractConfig:
-			extractConfig := item.(ExtractConfig)
 
-			for _, pattern := range extractConfig.Patterns {
+			for _, pattern := range config.Patterns {
 				_, err := regexp.Compile(pattern)
 				if err != nil {
-					lastErr = fmt.Errorf("invalid extract pattern for %s (%s)", extractConfig.Name, pattern)
+					lastErr = fmt.Errorf("invalid extract pattern for %s (%s)", config.Name, pattern)
 				}
 			}
 		}

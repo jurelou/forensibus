@@ -47,7 +47,7 @@ func genOutputFolder(in string, out string) (string, error) {
 
 func Decompress(in string, out string) (string, error) {
 	if exists := utils.FileExists(in); !exists {
-		return "", fmt.Errorf("file %s does not exists.", in)
+		return "", fmt.Errorf("file %s does not exists", in)
 	}
 
 	outputFolder, err := genOutputFolder(in, out)

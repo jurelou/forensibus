@@ -100,7 +100,7 @@ func TestEncrypted7zWhithoutPasswords(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Decompressing an encrypted archive whithout passwords should generate an error")
 	}
-	if !strings.Contains(err.Error(), "is encrypted, but no passwords are provided") {
+	if !strings.Contains(err.Error(), "is encrypted, but no passwords were provided") {
 		t.Fatalf("Invalid error while decompressing encrypted archive")
 	}
 }

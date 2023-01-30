@@ -43,7 +43,7 @@ func parseEvtx(fd *os.File, out writer.OutputWriter) processors.PError {
 	for _, chunk := range chunks {
 		records, err := chunk.Parse(0)
 		if err != nil {
-			errors.Add(fmt.Errorf("Error while parsing evtx chunk: %w", err))
+			errors.Add(fmt.Errorf("error while parsing evtx chunk: %w", err))
 			continue
 		}
 		for _, record := range records {
@@ -51,18 +51,18 @@ func parseEvtx(fd *os.File, out writer.OutputWriter) processors.PError {
 			event := writer.NewEvent("")
 			event_map, ok := record.Event.(*ordereddict.Dict)
 			if !ok {
-				errors.Add(fmt.Errorf("Error while reading evtx event: %w", err))
+				errors.Add(fmt.Errorf("error while reading evtx event: %w", err))
 				continue
 			}
 
 			eventDict, ok := ordereddict.GetMap(event_map, "Event")
 			if !ok {
-				errors.Add(fmt.Errorf("Error while retrieving evtx Event field"))
+				errors.Add(fmt.Errorf("error while retrieving evtx Event field"))
 				continue
 			}
 			system, ok := ordereddict.GetMap(eventDict, "System")
 			if !ok {
-				errors.Add(fmt.Errorf("Error while retrieving evtx System field"))
+				errors.Add(fmt.Errorf("error while retrieving evtx System field"))
 				continue
 			}
 
@@ -94,7 +94,7 @@ func parseEvtx(fd *os.File, out writer.OutputWriter) processors.PError {
 
 			eventJson, err := system.MarshalJSON()
 			if err != nil {
-				errors.Add(fmt.Errorf("Could not convert event to json: %w", err))
+				errors.Add(fmt.Errorf("could not convert event to json: %w", err))
 				continue
 			}
 			event.Event = string(eventJson)

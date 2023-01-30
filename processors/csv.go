@@ -54,7 +54,7 @@ func (CSVProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 			continue
 		}
 		if len(record) != columnsCount {
-			errors.Add(fmt.Errorf("Invalid csv line %v (expected %d columns, got %d)", record, columnsCount, len(record)))
+			errors.Add(fmt.Errorf("invalid csv line %v (expected %d columns, got %d)", record, columnsCount, len(record)))
 			continue
 		}
 		row := make(map[string]string, columnsCount)
