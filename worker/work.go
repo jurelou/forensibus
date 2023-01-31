@@ -29,6 +29,7 @@ func (s *Server) Work(ctx context.Context, in *worker.WorkRequest) (*worker.Work
 	out := writer.New()
 	// defer out.Close()
 	out.SetTag(tag)
+	out.SetDefaultSourceType("forensibus:" + procName)
 	out.SetDefaultSource(source)
 	out.SetDefaultIndex(utils.Config.Splunk.Index)
 

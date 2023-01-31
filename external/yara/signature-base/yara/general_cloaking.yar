@@ -9,61 +9,6 @@
 
 */
 
-rule EXE_cloaked_as_TXT {
-	meta:
-		description = "Executable with TXT extension"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth"
-	condition:
-		uint16(0) == 0x5a4d 					// Executable
-		and filename matches /\.txt$/is   // TXT extension (case insensitive)
-}
-
-rule EXE_extension_cloaking {
-	meta:
-		description = "Executable showing different extension (Windows default 'hide known extension')"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth"
-	condition:
-		filename matches /\.txt\.exe$/is or	// Special file extensions
-		filename matches /\.pdf\.exe$/is		// Special file extensions
-}
-
-rule Cloaked_RAR_File {
-	meta:
-		description = "RAR file cloaked by a different extension"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth"
-	condition:
-		uint32be(0) == 0x52617221							// RAR File Magic Header
-		and not filename matches /(rarnew.dat|\.rar)$/is	// not the .RAR extension
-		and not filename matches /\.[rR][\d]{2}$/           // split RAR file
-		and not filepath contains "Recycle" 				// not a deleted RAR file in recycler
-}
-
-rule Base64_encoded_Executable : FILE {
-	meta:
-		description = "Detects an base64 encoded executable (often embedded)"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth"
-		date = "2015-05-28"
-		score = 40
-	strings:
-		$s1 = "TVpTAQEAAAAEAAAA//8AALgAAAA" // 14 samples in goodware archive
-		$s2 = "TVoAAAAAAAAAAAAAAAAAAAAAAAA" // 26 samples in goodware archive
-		$s3 = "TVqAAAEAAAAEABAAAAAAAAAAAAA" // 75 samples in goodware archive
-		$s4 = "TVpQAAIAAAAEAA8A//8AALgAAAA" // 168 samples in goodware archive
-		$s5 = "TVqQAAMAAAAEAAAA//8AALgAAAA" // 28,529 samples in goodware archive
-	condition:
-		1 of them
-		and not filepath contains "Thunderbird"
-      and not filepath contains "Internet Explorer"
-      and not filepath contains "Chrome"
-      and not filepath contains "Opera"
-      and not filepath contains "Outlook"
-      and not filepath contains "Temporary Internet Files"
-}
-
 rule Gen_Base64_EXE: HIGHVOL {
    meta:
       description = "Detects Base64 encoded Executable in Executable"

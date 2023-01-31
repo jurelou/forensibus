@@ -39,5 +39,5 @@ rule SUSP_XORed_URL_in_EXE {
          ( $s2 and #s2 > #f2 )
       )
       and not 1 of ($fp*)
-      and not pe.number_of_signatures > 0
+
 }

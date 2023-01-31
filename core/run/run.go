@@ -183,7 +183,12 @@ func MakeWorkers(disableLocalWorker bool, tStart <-chan TaskStarted, tEnd chan<-
 			return nil, fmt.Errorf("could not find a port to listen on")
 		}
 
-		go worker.RunWorkerServer(localWorkerServer, port)
+		go func() {
+			err := worker.RunWorkerServer(localWorkerServer, port)
+			if err != nil {
+				pterm.Error.Printfln("Could not run worker: %s", err.Error())
+			}
+		}()
 
 		lWorker, err := workers.Connect(fmt.Sprintf("localhost:%d", port))
 		if err != nil {
@@ -222,7 +227,7 @@ func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWork
 
 	config, err := dsl.LoadAndLint(pipelineconfigFile)
 	if err != nil {
-		utils.Log.Warnf(err.Error())
+		pterm.Error.Printfln(err.Error())
 		return
 	}
 

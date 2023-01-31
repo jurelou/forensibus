@@ -29,7 +29,8 @@
 # Getting started
 
 # TODO
-
+- A single processor processes multiple files at once
+- Add support for yara arguments (filepath, filename, extension, ...)
 - wrap errors properly
 - processors as grpc plugins
 - utils/filesystem: add some file types to the filetype lib. (evtx, registry, text ...)

@@ -15,5 +15,4 @@ func TestConfig(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error while Reloading config %s", err.Error())
 	}
-	passwds := utils.Config.ArchivePasswords
 }
