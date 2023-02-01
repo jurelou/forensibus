@@ -47,7 +47,7 @@ func dumpAppCompatCache(nk *regparser.CM_KEY_NODE, out writer.OutputWriter) {
 			continue
 		}
 		for idx, entry := range appcompatcache.ParseValueData(value.ValueData().Data) {
-			fmt.Printf("%d: %v  %v\n", idx, entry.Time, entry.Name)
+			// fmt.Printf("%d: %v  %v\n", idx, entry.Time, entry.Name)
 			entry := AppCompatCacheEntry{
 				Time: entry.Time,
 				Name: entry.Name,
