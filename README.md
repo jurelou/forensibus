@@ -47,7 +47,7 @@
 
 # License
 
-Source code in `forensibus` is available under the [GNU General Public License v3.0.](/LICENSE).
+Source code in `forensibus` is available under the [GNU General Public License v3.0](/LICENSE).
 
 
 # Install development dependencies
