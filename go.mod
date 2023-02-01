@@ -16,6 +16,7 @@ require (
 	google.golang.org/grpc v1.51.0
 	google.golang.org/protobuf v1.28.1
 	www.velocidex.com/golang/evtx v0.2.0
+	www.velocidex.com/golang/go-ese v0.1.0
 	www.velocidex.com/golang/go-prefetch v0.0.0-20220801101854-338dbe61982a
 	www.velocidex.com/golang/regparser v0.0.0-20221020153526-bbc758cbd18b
 )

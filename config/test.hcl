@@ -1,9 +1,10 @@
 
 pipeline "DFIR-ORC" {
 
-  find "f" {
+  find "ese" {
         patterns = [".*"]
-        process "yara" {}
+        mime_types = [ "Extensible storage engine" ]
+        process "srum" {}
   }
 
 

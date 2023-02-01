@@ -315,6 +315,9 @@ www.velocidex.com/golang/binparsergen/reader
 # www.velocidex.com/golang/evtx v0.2.0
 ## explicit; go 1.13
 www.velocidex.com/golang/evtx
+# www.velocidex.com/golang/go-ese v0.1.0
+## explicit; go 1.13
+www.velocidex.com/golang/go-ese/parser
 # www.velocidex.com/golang/go-pe v0.1.1-0.20211006062218-8f6d1ad6b2d5
 ## explicit; go 1.13
 www.velocidex.com/golang/go-pe
