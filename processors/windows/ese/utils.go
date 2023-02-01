@@ -41,6 +41,7 @@ type SID struct {
     Offset int64
     Profile *MiscProfile
 }
+
 func (self *SID) Revision() byte {
 	return ParseUint8(self.Reader, self.Profile.Off_SID_Revision + self.Offset)
  }
