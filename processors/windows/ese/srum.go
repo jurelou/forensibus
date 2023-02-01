@@ -50,6 +50,8 @@ func (SrumProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 			fmt.Println("====", FormatGUID(idBlob))
 		} else {
 
+
+			
 		}
 		// id_details := &SRUMId{}
 		// err := arg_parser.ExtractArgsWithContext(ctx, scope, row, id_details)
