@@ -324,3 +324,4 @@ www.velocidex.com/golang/go-prefetch
 # www.velocidex.com/golang/regparser v0.0.0-20221020153526-bbc758cbd18b
 ## explicit; go 1.18
 www.velocidex.com/golang/regparser
+www.velocidex.com/golang/regparser/appcompatcache
