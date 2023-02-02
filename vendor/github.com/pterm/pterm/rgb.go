@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/gookit/color"
-
 	"github.com/pterm/pterm/internal"
 )
 

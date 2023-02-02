@@ -1,11 +1,11 @@
 package windows_ese
 
 import (
-	"os"
 	"fmt"
+	"os"
 
-	"www.velocidex.com/golang/go-ese/parser"
 	"github.com/Velocidex/ordereddict"
+	"www.velocidex.com/golang/go-ese/parser"
 
 	"github.com/jurelou/forensibus/utils/processors"
 	"github.com/jurelou/forensibus/utils/writer"
@@ -24,7 +24,6 @@ func (ESEProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 		return errors
 	}
 	defer fd.Close()
-
 
 	ese_ctx, err := parser.NewESEContext(fd)
 	if err != nil {

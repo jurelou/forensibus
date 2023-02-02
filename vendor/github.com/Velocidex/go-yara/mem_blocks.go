@@ -19,6 +19,7 @@ YR_MEMORY_BLOCK* memoryBlockIteratorNext(YR_MEMORY_BLOCK_ITERATOR*);
 uint64_t memoryBlockIteratorFilesize(YR_MEMORY_BLOCK_ITERATOR*);
 */
 import "C"
+
 import (
 	"reflect"
 	"unsafe"

@@ -1,8 +1,8 @@
 package windows_ese
 
 import (
-	"os"
 	"fmt"
+	"os"
 
 	// "www.velocidex.com/golang/go-ese/parser"
 	"github.com/Velocidex/ordereddict"
@@ -37,21 +37,18 @@ func (SrumProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 		if !exists {
 			return nil
 		}
-		idIndex, exists := row.GetInt64("IdIndex")
-		if !exists {
-			return nil
-		}
+		// idIndex, exists := row.GetInt64("IdIndex")
+		// if !exists {
+		// 	return nil
+		// }
 		idBlob, exists := row.GetString("IdBlob")
 		if !exists {
 			return nil
 		}
-		fmt.Println(">>>>>>>", idType, idIndex, idBlob)
+		// fmt.Println(">>>>>>>", idType, idIndex, idBlob)
 		if idType == 3 {
-			fmt.Println("====", FormatGUID(idBlob))
+			fmt.Println("====", FormatSID(idBlob))
 		} else {
-
-
-			
 		}
 		// id_details := &SRUMId{}
 		// err := arg_parser.ExtractArgsWithContext(ctx, scope, row, id_details)

@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/gookit/color"
-
 	"github.com/pterm/pterm/internal"
 )
 

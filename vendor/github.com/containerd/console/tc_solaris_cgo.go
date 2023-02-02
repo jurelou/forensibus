@@ -1,3 +1,4 @@
+//go:build solaris && cgo
 // +build solaris,cgo
 
 /*
@@ -18,14 +19,14 @@
 
 package console
 
+//#include <stdlib.h>
+import "C"
+
 import (
 	"os"
 
 	"golang.org/x/sys/unix"
 )
-
-//#include <stdlib.h>
-import "C"
 
 const (
 	cmdTcGet = unix.TCGETS

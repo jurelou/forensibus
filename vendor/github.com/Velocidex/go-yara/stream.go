@@ -6,14 +6,14 @@
 
 package yara
 
+// #include <string.h>
+import "C"
+
 import (
 	"io"
 	"reflect"
 	"unsafe"
 )
-
-// #include <string.h>
-import "C"
 
 //export streamRead
 func streamRead(ptr unsafe.Pointer, size, nmemb C.size_t, userData unsafe.Pointer) C.size_t {
