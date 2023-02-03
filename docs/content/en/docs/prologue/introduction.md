@@ -23,11 +23,9 @@ Forensibus is a modern data processing tool dedicated to forensic analysts and i
 
 Forensibus aims to improve efficiency by emphasizing automation within the digital forensic triage process.
 
-
 ## Architecture Overview
 
 The objective is to carry out the ETL (extract - transform - load) process by reading the raw artifacts and then formatting them so that they can be loaded into a database for further analysis.
-
 
 ![Green Sea Turtle Hatchling by Hannah Le Leu](/flow.png)
 
