@@ -1,6 +1,7 @@
 package windows_ese
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -36,20 +37,16 @@ func (ESEProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 		return errors
 	}
 	for _, name := range catalog.Tables.Keys() {
-		// table_any, _ := catalog.Tables.Get(name)
-		fmt.Println(">", name)
 		catalog.DumpTable(name, func(row *ordereddict.Dict) error {
-			fmt.Println(" ==", row)
+			jsonRow, err := json.Marshal(row)
+			if err != nil {
+				return nil
+			}
+			row.Set("TableName", name)
+			e := writer.NewEvent(string(jsonRow))
+			out.WriteEvent(e)
 			return nil
 		})
-		// table := table_any.(*parser.Table)
-		// fmt.Println("> ", table.Name)
-
-		// for _, column := range table.Columns {
-		// 	fmt.Println("  >", column.Name, column.Type)
-
-		// }
-
 	}
 	return errors
 }

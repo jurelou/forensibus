@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"www.velocidex.com/golang/go-ese/parser"
 	"github.com/Velocidex/ordereddict"
+	"www.velocidex.com/golang/go-ese/parser"
 )
-
 
 func GetCatalog(fd *os.File) (*parser.Catalog, error) {
 	ese_ctx, err := parser.NewESEContext(fd)
@@ -20,7 +19,6 @@ func GetCatalog(fd *os.File) (*parser.Catalog, error) {
 	}
 	return catalog, nil
 }
-
 
 func GetIdMap(catalog *parser.Catalog) map[int64]string {
 	idMap := make(map[int64]string)

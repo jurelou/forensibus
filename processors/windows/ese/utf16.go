@@ -1,12 +1,12 @@
 package windows_ese
 
 import (
-    "io"
 	"bytes"
+	"encoding/binary"
 	"encoding/hex"
-	"unicode/utf8"
+	"io"
 	"unicode/utf16"
-    "encoding/binary"
+	"unicode/utf8"
 )
 
 func UTF16BytesToUTF8(b []byte, o binary.ByteOrder) string {
@@ -34,7 +34,6 @@ func UTF16BytesToUTF8(b []byte, o binary.ByteOrder) string {
 	return string(utf16.Decode(utf))
 }
 
-
 func FormatUtf16String(hexencoded string) string {
 	buffer, err := hex.DecodeString(hexencoded)
 	if err != nil {
@@ -45,12 +44,12 @@ func FormatUtf16String(hexencoded string) string {
 
 	n, err := reader.ReadAt(data, 0)
 	if err != nil && err != io.EOF {
-	  return ""
+		return ""
 	}
- 
+
 	idx := bytes.Index(data[:n], []byte{0, 0})
 	if idx < 0 {
-	   idx = n-1
+		idx = n - 1
 	}
 	return UTF16BytesToUTF8(data[0:idx+1], binary.LittleEndian)
 }

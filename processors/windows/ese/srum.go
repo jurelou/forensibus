@@ -1,13 +1,12 @@
 package windows_ese
 
 import (
-	"fmt"
-	"time"
-	"os"
 	"encoding/json"
+	"fmt"
+	"os"
 	"strconv"
-	// "www.velocidex.com/golang/go-ese/parser"
-	// "github.com/Velocidex/ordereddict"
+	"time"
+
 	"github.com/Velocidex/ordereddict"
 
 	"github.com/jurelou/forensibus/utils/processors"
@@ -44,7 +43,6 @@ func (SrumProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 	idMap := GetIdMap(catalog)
 
 	for guid, tableName := range tablesGUIDs {
-
 		catalog.DumpTable(guid, func(row *ordereddict.Dict) error {
 			appId, exists := row.GetInt64("AppId")
 			if exists {
@@ -79,7 +77,6 @@ func (SrumProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 			out.WriteEvent(e)
 			return nil
 		})
-
 	}
 	return errors
 }
