@@ -1,0 +1,4 @@
+canonifyURLs = false
+
+[options]
+  darkMode = true

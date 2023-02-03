@@ -22,11 +22,12 @@ linux:
 	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o $(BIN_FOLDER)/forensibus_linux_amd64 main.go
 	# GOOS=linux GOARCH=386 go build $(LDFLAGS) -o $(BIN_FOLDER)/forensibus_linux_x86 main.go
 
-
 install:
 	go install mvdan.cc/gofumpt@latest
 	go install github.com/daixiang0/gci@latest
 
+docs:
+	cd docs; npm run start
 
 lint:
 	golangci-lint run
@@ -63,4 +64,4 @@ proto:
 
 release: vendor format all
 
-.PHONY: proto vendor splunk resplunk
+.PHONY: proto vendor splunk resplunk docs

@@ -1,3 +1,4 @@
+// Code mostly taken from https://github.com/Velocidex/velociraptor/blob/eced6fc858e659281d80749661340ba42e8e099e/vql/parsers/ese/sid.go
 package windows_ese
 
 import (

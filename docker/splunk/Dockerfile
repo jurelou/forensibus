@@ -16,8 +16,8 @@ COPY --chown=splunk:splunk \
     etc/apps/search/appserver/static/application.css
 
 COPY --chown=splunk:splunk \
-    assets/forensibus.jpg \
-    etc/apps/search/appserver/static/forensibus.jpg
+    app/appserver/static/forensibus.png \
+    etc/apps/search/appserver/static/forensibus.png
 
 COPY --chown=splunk:splunk \
     config/default.yml \

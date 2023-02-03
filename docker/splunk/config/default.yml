@@ -31,10 +31,10 @@ splunk:
             loginFooterText: 'https://github.com/jurelou/forensibus'
             loginPasswordHint: admin:password
 
-            loginCustomLogo: forensibus:logo.jpg
+            loginCustomLogo: forensibus:forensibus.png
 
             loginBackgroundImageOption: custom
-            loginCustomBackgroundImage: forensibus:background.jpg
+            loginCustomBackgroundImage: forensibus:background.png
 
             loginDocumentTitleOption: custom
             loginDocumentTitleText: FORENSIBUS - splunk
