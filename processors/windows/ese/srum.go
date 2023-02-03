@@ -1,4 +1,4 @@
-package windows_ese
+package ese
 
 import (
 	"encoding/json"

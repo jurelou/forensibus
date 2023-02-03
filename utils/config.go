@@ -53,6 +53,7 @@ func Configure() error {
 	viper.AddConfigPath("./config")
 	viper.AddConfigPath("../config")
 	viper.AddConfigPath("../../config")
+	viper.AddConfigPath("../../../config")
 
 	viper.SetConfigName("config")
 	setDefaults()

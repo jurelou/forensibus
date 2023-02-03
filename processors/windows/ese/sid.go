@@ -1,5 +1,5 @@
 // Code mostly taken from https://github.com/Velocidex/velociraptor/blob/eced6fc858e659281d80749661340ba42e8e099e/vql/parsers/ese/sid.go
-package windows_ese
+package ese
 
 import (
 	"encoding/binary"
@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	RevisionLevelOffset     int64 = 0
+	// RevisionLevelOffset     int64 = 0
 	SubAuthorityCountOffset int64 = 1
 	AuthorityOffset         int64 = 2
 	Authority2Offset        int64 = 4
@@ -35,32 +35,32 @@ type SID struct {
 	Offset int64
 }
 
-func (self *SID) Revision() byte {
-	return ParseUint8(self.Reader, RevisionLevelOffset+self.Offset)
+// func (s *SID) Revision() byte {
+// 	return ParseUint8(s.Reader, RevisionLevelOffset+s.Offset)
+// }
+
+func (s *SID) SubAuthCount() byte {
+	return ParseUint8(s.Reader, SubAuthorityCountOffset+s.Offset)
 }
 
-func (self *SID) SubAuthCount() byte {
-	return ParseUint8(self.Reader, SubAuthorityCountOffset+self.Offset)
+func (s *SID) Authority() uint16 {
+	return ParseUint16(s.Reader, AuthorityOffset+s.Offset)
 }
 
-func (self *SID) Authority() uint16 {
-	return ParseUint16(self.Reader, AuthorityOffset+self.Offset)
+func (s *SID) Authority2() uint32 {
+	return ParseUint32(s.Reader, Authority2Offset+s.Offset)
 }
 
-func (self *SID) Authority2() uint32 {
-	return ParseUint32(self.Reader, Authority2Offset+self.Offset)
+func (s *SID) Subauthority() []uint32 {
+	return ParseArray_uint32(s.Reader, SubauthorityOffset+s.Offset, 100)
 }
 
-func (self *SID) Subauthority() []uint32 {
-	return ParseArray_uint32(self.Reader, SubauthorityOffset+self.Offset, 100)
-}
+func (s *SID) String() string {
+	result := fmt.Sprintf("S-%d", uint64(bits.ReverseBytes16(s.Authority()))<<32+
+		uint64(bits.ReverseBytes32(s.Authority2())))
 
-func (self *SID) String() string {
-	result := fmt.Sprintf("S-%d", uint64(bits.ReverseBytes16(self.Authority()))<<32+
-		uint64(bits.ReverseBytes32(self.Authority2())))
-
-	sub_authorities := self.Subauthority()
-	for i := 0; i < int(self.SubAuthCount()); i++ {
+	sub_authorities := s.Subauthority()
+	for i := 0; i < int(s.SubAuthCount()); i++ {
 		if i > len(sub_authorities) {
 			break
 		}
@@ -112,22 +112,22 @@ type BufferReaderAt struct {
 	Buffer []byte
 }
 
-func (self *BufferReaderAt) ReadAt(buf []byte, offset int64) (int, error) {
+func (buff *BufferReaderAt) ReadAt(buf []byte, offset int64) (int, error) {
 	to_read := int64(len(buf))
 	if offset < 0 {
 		to_read += offset
 		offset = 0
 	}
 
-	if offset+to_read > int64(len(self.Buffer)) {
-		to_read = int64(len(self.Buffer)) - offset
+	if offset+to_read > int64(len(buff.Buffer)) {
+		to_read = int64(len(buff.Buffer)) - offset
 	}
 
 	if to_read < 0 {
 		return 0, nil
 	}
 
-	n := copy(buf, self.Buffer[offset:offset+to_read])
+	n := copy(buf, buff.Buffer[offset:offset+to_read])
 
 	return n, nil
 }

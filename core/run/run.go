@@ -87,7 +87,7 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 		if outLen == 0 {
 			pterm.Warning.Printfln("Extracted 0 `%s` files from %s", config.Name, in.NextArtifact)
 		} else {
-			// pterm.Success.Printfln("Extracted %d `%s` files from %s", outLen, config.Name, in.NextArtifact)
+			pterm.Success.Printfln("Extracted %d `%s` files from %s", outLen, config.Name, in.NextArtifact)
 		}
 
 	}

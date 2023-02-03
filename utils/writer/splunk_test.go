@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"compress/gzip"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -23,7 +23,7 @@ func TestCreateEvent(t *testing.T) {
 		if r.Header.Get("Authorization") != "Splunk test-token" {
 			t.Errorf("Invalid auth token: %s", r.Header.Get("Authorization"))
 		}
-		bodyCompressed, err := ioutil.ReadAll(r.Body)
+		bodyCompressed, err := io.ReadAll(r.Body)
 		if err != nil {
 			t.Errorf("Could not read body: %s", err.Error())
 		}
@@ -32,7 +32,7 @@ func TestCreateEvent(t *testing.T) {
 		if err != nil {
 			t.Errorf("Could not decompress body: %s", err.Error())
 		}
-		body, err := ioutil.ReadAll(gzipReader)
+		body, err := io.ReadAll(gzipReader)
 		if err != nil {
 			t.Errorf("Could not read decompressed body: %s", err.Error())
 		}
@@ -90,7 +90,7 @@ func TestCreateEventOverride(t *testing.T) {
 		if r.Header.Get("Authorization") != "Splunk test-token" {
 			t.Errorf("Invalid auth token: %s", r.Header.Get("Authorization"))
 		}
-		bodyCompressed, err := ioutil.ReadAll(r.Body)
+		bodyCompressed, err := io.ReadAll(r.Body)
 		if err != nil {
 			t.Errorf("Could not read body: %s", err.Error())
 		}
@@ -99,7 +99,7 @@ func TestCreateEventOverride(t *testing.T) {
 		if err != nil {
 			t.Errorf("Could not decompress body: %s", err.Error())
 		}
-		body, err := ioutil.ReadAll(gzipReader)
+		body, err := io.ReadAll(gzipReader)
 		if err != nil {
 			t.Errorf("Could not read decompressed body: %s", err.Error())
 		}

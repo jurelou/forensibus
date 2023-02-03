@@ -18,6 +18,32 @@ type OutputWriter interface {
 	WriteEvent(*Event)
 }
 
+type DefaultOutputWriter struct{}
+
+func (w DefaultOutputWriter) Close() {
+	return
+}
+
+func (w DefaultOutputWriter) SetTag(string) {
+	return
+}
+
+func (w DefaultOutputWriter) SetDefaultIndex(string) {
+	return
+}
+
+func (w DefaultOutputWriter) SetDefaultSource(string) {
+	return
+}
+
+func (w DefaultOutputWriter) SetDefaultSourceType(string) {
+	return
+}
+
+func (w DefaultOutputWriter) SetDefaultHost(string) {
+	return
+}
+
 func New() OutputWriter {
 	return NewHEC(utils.Config.Splunk.Hec.Address, utils.Config.Splunk.Hec.Token)
 }

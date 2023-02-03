@@ -2,7 +2,6 @@ package decompress_test
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -77,7 +76,7 @@ func TestDecompressSameName(t *testing.T) {
 	if !strings.HasPrefix(out, filepath.Join(outputFolder, "Simple")) {
 		t.Errorf("Invalid output folder: %s", out)
 	}
-	files, err := ioutil.ReadDir(outputFolder)
+	files, err := os.ReadDir(outputFolder)
 	if err != nil {
 		t.Fatalf("Error while reading folder %s", outputFolder)
 	}
