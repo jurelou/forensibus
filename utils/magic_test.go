@@ -25,7 +25,7 @@ func TestInvalidMagicFile(t *testing.T) {
 func TestEvtxMagic(t *testing.T) {
 	magic := utils.GetMagic("../datasets/artifacts/evtx/sysmon_3.evtx")
 	fmt.Println(magic)
-	// if !strings.Contains(magic, "No such file or directory") {
-	// 	t.Errorf("Invalid error code from unknown file")
-	// }
+	if magic != "MS Windows Vista Event Log, 1 chunks (no. 0 in use), next record no. 10" {
+		t.Errorf("Invalid magic for evtx file")
+	}
 }

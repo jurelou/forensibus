@@ -9,6 +9,6 @@ type Processor interface {
 
 type Default struct{}
 
-func (proc Default) Configure() error {
+func (Default) Configure() error {
 	return nil
 }

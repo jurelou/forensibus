@@ -15,7 +15,6 @@ import (
 
 var (
 	pipelineconfig string
-	splunkIndex    string
 	tag            string
 	disableWorker  bool
 

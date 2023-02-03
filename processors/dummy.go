@@ -9,7 +9,7 @@ type DummyProcessor struct {
 	// processors.Default
 }
 
-func (proc DummyProcessor) Configure() error {
+func (DummyProcessor) Configure() error {
 	return nil
 }
 

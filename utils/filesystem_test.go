@@ -225,7 +225,7 @@ func TestCopyFileToFolder(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not remove %s", output)
 	}
-	err = os.Mkdir(output, 0o755)
+	err = os.Mkdir(output, 0700)
 	if err != nil {
 		t.Fatalf("Could not create %s", output)
 	}

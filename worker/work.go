@@ -10,7 +10,7 @@ import (
 	"github.com/jurelou/forensibus/utils/writer"
 )
 
-func (s *Server) Work(ctx context.Context, in *worker.WorkRequest) (*worker.WorkResponse, error) {
+func (s *Server) Work(_ context.Context, in *worker.WorkRequest) (*worker.WorkResponse, error) {
 	procName := in.GetProcessor()
 	source := in.GetSource()
 	config := in.GetConfig()

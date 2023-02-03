@@ -20,27 +20,27 @@ type OutputWriter interface {
 
 type DefaultOutputWriter struct{}
 
-func (w DefaultOutputWriter) Close() {
+func (DefaultOutputWriter) Close() {
 	return
 }
 
-func (w DefaultOutputWriter) SetTag(string) {
+func (DefaultOutputWriter) SetTag(_ string) {
 	return
 }
 
-func (w DefaultOutputWriter) SetDefaultIndex(string) {
+func (DefaultOutputWriter) SetDefaultIndex(_ string) {
 	return
 }
 
-func (w DefaultOutputWriter) SetDefaultSource(string) {
+func (DefaultOutputWriter) SetDefaultSource(_ string) {
 	return
 }
 
-func (w DefaultOutputWriter) SetDefaultSourceType(string) {
+func (DefaultOutputWriter) SetDefaultSourceType(_ string) {
 	return
 }
 
-func (w DefaultOutputWriter) SetDefaultHost(string) {
+func (DefaultOutputWriter) SetDefaultHost(_ string) {
 	return
 }
 

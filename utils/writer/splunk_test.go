@@ -126,10 +126,10 @@ func TestCreateEventOverride(t *testing.T) {
 	hec.WriteEvent(e)
 }
 
-func TestCreateEvent500Invalid(t *testing.T) {
+func TestCreateEvent500Invalid(_ *testing.T) {
 	svr := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintf(w, "invalid return")
+		// t.Errorf("invalid return %s", )
 	}))
 	defer svr.Close()
 
@@ -141,7 +141,7 @@ func TestCreateEvent500Invalid(t *testing.T) {
 	hec.WriteEvent(e)
 }
 
-func TestCreateEvent500Valid(t *testing.T) {
+func TestCreateEvent500Valid(_ *testing.T) {
 	retry := 0
 	svr := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if retry < 1 {

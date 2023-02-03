@@ -9,7 +9,7 @@ import (
 	"github.com/jurelou/forensibus/utils"
 )
 
-func (s *Server) Ping(ctx context.Context, in *worker.PingRequest) (*worker.Pong, error) {
+func (*Server) Ping(_ context.Context, in *worker.PingRequest) (*worker.Pong, error) {
 	utils.Log.Infof("Got a ping from %s", in.GetIdentifier())
 	hostname, err := os.Hostname()
 	if err != nil {
