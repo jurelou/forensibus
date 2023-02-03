@@ -2,14 +2,24 @@ package windows_ese
 
 import (
 	"fmt"
+	"time"
 	"os"
-
+	"encoding/json"
+	"strconv"
 	// "www.velocidex.com/golang/go-ese/parser"
+	// "github.com/Velocidex/ordereddict"
 	"github.com/Velocidex/ordereddict"
 
 	"github.com/jurelou/forensibus/utils/processors"
 	"github.com/jurelou/forensibus/utils/writer"
 )
+
+var tablesGUIDs = map[string]string{
+	"{5C8CF1C7-7257-4F13-B223-970EF5939312}": "Execution",
+	"{973F5D5C-1D90-4944-BE8E-24B94231A174}": "Network usage",
+	"{DD6636C4-8929-4683-974E-22C046A43763}": "Network connections",
+	"{D10CA2FE-6FCF-4F6D-848E-B2E99266FA89}": "Application resource usage",
+}
 
 type SrumProcessor struct {
 	processors.Default
@@ -30,58 +40,47 @@ func (SrumProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 		errors.Add(err)
 		return errors
 	}
-	// var id_map map[int64]string
 
-	err = catalog.DumpTable("SruDbIdMapTable", func(row *ordereddict.Dict) error {
-		idType, exists := row.GetInt64("IdType")
-		if !exists {
+	idMap := GetIdMap(catalog)
+
+	for guid, tableName := range tablesGUIDs {
+
+		catalog.DumpTable(guid, func(row *ordereddict.Dict) error {
+			appId, exists := row.GetInt64("AppId")
+			if exists {
+				resolvedAppId, idExists := idMap[appId]
+				if idExists {
+					row.Set("AppId", resolvedAppId)
+				}
+			}
+			userId, exists := row.GetInt64("UserId")
+			if exists {
+				resolvedUserId, idExists := idMap[userId]
+				if idExists {
+					row.Set("UserId", resolvedUserId)
+				}
+			}
+			row.Set("TableName", tableName)
+
+			jsonRow, err := json.Marshal(row)
+			if err != nil {
+				return nil
+			}
+			e := writer.NewEvent(string(jsonRow))
+			timeAny, timeExists := row.Get("TimeStamp")
+			if timeExists {
+				switch timeStamp := timeAny.(type) {
+				case time.Time:
+					e.Time = strconv.FormatInt(timeStamp.Unix(), 10)
+				case string:
+					e.Time = timeStamp
+				}
+			}
+			out.WriteEvent(e)
 			return nil
-		}
-		// idIndex, exists := row.GetInt64("IdIndex")
-		// if !exists {
-		// 	return nil
-		// }
-		idBlob, exists := row.GetString("IdBlob")
-		if !exists {
-			return nil
-		}
-		// fmt.Println(">>>>>>>", idType, idIndex, idBlob)
-		if idType == 3 {
-			fmt.Println("====", FormatSID(idBlob))
-		} else {
-		}
-		// id_details := &SRUMId{}
-		// err := arg_parser.ExtractArgsWithContext(ctx, scope, row, id_details)
-		// if err != nil {
-		// 	return err
-		// }
+		})
 
-		// // Its a GUID
-		// if id_details.IdType == 3 {
-		// 	id_details.IdBlob = formatGUID(id_details.IdBlob)
-		// } else {
-		// 	id_details.IdBlob = formatString(id_details.IdBlob)
-		// }
-
-		// lookup_map[id_details.IdIndex] = id_details.IdBlob
-		return nil
-	})
-	// for _, name := range catalog.Tables.Keys() {
-	// 	// table_any, _ := catalog.Tables.Get(name)
-	// 	fmt.Println(">", name)
-	// 	catalog.DumpTable(name, func(row *ordereddict.Dict) error {
-	// 		fmt.Println(" ==", row)
-	// 		return nil
-	// 	})
-	// 	// table := table_any.(*parser.Table)
-	// 	// fmt.Println("> ", table.Name)
-
-	// 	// for _, column := range table.Columns {
-	// 	// 	fmt.Println("  >", column.Name, column.Type)
-
-	// 	// }
-
-	// }
+	}
 	return errors
 }
 

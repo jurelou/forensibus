@@ -90,7 +90,7 @@ func TestFindFilesInvalidRegex(t *testing.T) {
 }
 
 func TestFindFilesFromFolderWithFiletype(t *testing.T) {
-	files, err := utils.FindFiles(utils.FindFilesParams{Path: "../", FileFormats: []string{"application/x-tar", "application/gzip"}})
+	files, err := utils.FindFiles(utils.FindFilesParams{Path: "../core", FileFormats: []string{"application/x-tar", "application/gzip"}})
 	if err != nil {
 		t.Errorf("FindFiles returned an error: %s", err)
 	}
