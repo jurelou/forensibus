@@ -1,12 +1,10 @@
 package run_test
 
-import (
-	"fmt"
-	"testing"
-)
+// import (
+// 	"fmt"
+// 	"testing"
+// )
 
-func TestXxssx(t *testing.T) {
-	// TotoAa()
-	fmt.Println("a")
-	// utils.Log.Warnf("salut")
-}
+// func TestXxssx(t *testing.T) {
+// 	fmt.Println("a")
+// }

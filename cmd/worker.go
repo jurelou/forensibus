@@ -1,6 +1,3 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -17,7 +14,7 @@ var (
 
 	workerCmd = &cobra.Command{
 		Use:     "worker",
-		Aliases: []string{"w"},
+		Aliases: []string{"work"},
 		Short:   "Run a processing worker",
 		Long: `A longer description that spans multiple lines and likely contains examples
 	and usage of using your command. For example:

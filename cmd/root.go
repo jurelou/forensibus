@@ -1,6 +1,3 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -10,19 +7,18 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "forensibus",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Short: "...",
+	Long: `The command-line interface allows to parse digital forensics artifacts.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+There are two types of scanners:
+- run: Processes each given file or folder, each artifact will be re-processed.
+- watch: The application runs continuously, as soon as a new file is created it is processed.
+
+To process artifacts, you need to have workers available, you can either:
+1. Process artifacts locally (enabled by default when you execute "run" or "watch" command)
+2. Start a new worker with the "worker" command.`,
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() error {
 	return rootCmd.Execute()

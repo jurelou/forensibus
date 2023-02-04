@@ -1,6 +1,3 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -21,7 +18,7 @@ var (
 	runCmd = &cobra.Command{
 		Use:     "run [path]",
 		Aliases: []string{"r"},
-		Short:   "A brief description of your command",
+		Short:   "Run a pipeline against a given file or folder",
 		Long: `A longer description that spans multiple lines and likely contains examples
 	and usage of using your command. For example:
 
