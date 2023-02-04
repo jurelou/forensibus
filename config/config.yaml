@@ -1,0 +1,21 @@
+processorTimeout: 120 # seconds
+outputFolder: /tmp/forensibus
+tempFolder: /tmp/forensibus_tmp
+yaraRulesFolder: ./external/yara_rules
+sigmaRulesFolder: ./external/sigma_rules
+outputType: splunk
+
+splunk:
+  index: main
+  hec:
+    address: http://localhost:8088
+    token: 42424242-4242-4242-4242-424242424242
+  # management:
+  #   address: https://localhost:8089
+  #   username: admin
+  #   password: password
+
+ArchivePasswords:
+  - avproof
+  - virus
+  - password

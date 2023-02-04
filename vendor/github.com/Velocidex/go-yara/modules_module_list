@@ -1,0 +1,9 @@
+/*
+   Only the following modules are supported to minimize external
+   dependencies
+*/
+
+MODULE(pe)
+MODULE(elf)
+MODULE(math)
+MODULE(time)

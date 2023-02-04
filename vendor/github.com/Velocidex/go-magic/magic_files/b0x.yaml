@@ -1,0 +1,16 @@
+pkg: magic_files
+
+# We assume we are run from the toplevel directory:
+# fileb0x gui/b0x.yaml
+dest: "magic_files/"
+
+fmt: false
+compression:
+  compress: true
+
+output: "ab0x.go"
+custom:
+  - files:
+      - "magic_files/*.mgc"
+
+init: Init

@@ -1,0 +1,14 @@
+name = "Forensibus"
+license = "GNU GPL"
+licenselink = "https://github.com/jurelou/forensibus/blob/master/LICENSE"
+description = "..."
+
+homepage = "https://github.com/jurelou/forensibus"
+demosite = "https://forensibus.netlify.app"
+
+tags = ["landing page", "documentation", "blog", "minimal", "modern", "customizable", "search", "dark mode", "bootstrap"]
+features = ["security aware", "fast by default", "seo-ready", "development tools", "bootstrap framework", "netlify-ready", "full text search", "page layouts", "dark mode"]
+
+[author]
+  name = "jurelou"
+  homepage = "https://github.com/jurelou"

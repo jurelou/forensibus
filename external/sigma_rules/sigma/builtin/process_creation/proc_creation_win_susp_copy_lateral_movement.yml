@@ -1,0 +1,75 @@
+title: Copy from Admin Share
+ruletype: Sigma
+author: Florian Roth, oscd.community, Teymur Kheirkhabarov @HeirhabarovT, Zach Stanford
+    @svch0st, Nasreddine Bencherchali
+date: 2019/12/30
+description: Detects a suspicious copy command to or from an Admin share or remote
+detection:
+    SELECTION_1:
+        EventID: 4688
+    SELECTION_10:
+        NewProcessName:
+        - '*\powershell.exe*'
+        - '*\pwsh.exe*'
+    SELECTION_11:
+        OriginalFileName:
+        - PowerShell.EXE
+        - pwsh.dll
+    SELECTION_12:
+        CommandLine:
+        - '*copy-item*'
+        - '*copy*'
+        - '*cpi *'
+        - '* cp *'
+        - '*move*'
+        - '*move-item*'
+        - '* mi *'
+        - '* mv *'
+    SELECTION_2:
+        Channel: Security
+    SELECTION_3:
+        CommandLine: '*\\\\\*'
+    SELECTION_4:
+        CommandLine: '*$*'
+    SELECTION_5:
+        NewProcessName:
+        - '*\robocopy.exe'
+        - '*\xcopy.exe'
+    SELECTION_6:
+        OriginalFileName:
+        - robocopy.exe
+        - XCOPY.EXE
+    SELECTION_7:
+        NewProcessName: '*\cmd.exe'
+    SELECTION_8:
+        OriginalFileName: Cmd.Exe
+    SELECTION_9:
+        CommandLine: '*copy*'
+    condition: ((SELECTION_1 and SELECTION_2) and (SELECTION_3 and SELECTION_4) and
+        (((SELECTION_5 or SELECTION_6) or ((SELECTION_7 or SELECTION_8) and SELECTION_9))
+        or ((SELECTION_10 or SELECTION_11) and SELECTION_12)))
+falsepositives:
+- Administrative scripts
+fields:
+- CommandLine
+- ParentCommandLine
+id: 855bc8b5-2ae8-402e-a9ed-b889e6df1900
+level: high
+logsource:
+    category: process_creation
+    product: windows
+modified: 2022/12/23
+references:
+- https://twitter.com/SBousseaden/status/1211636381086339073
+- https://drive.google.com/file/d/1lKya3_mLnR3UQuCoiYruO3qgu052_iS_/view
+- https://www.elastic.co/guide/en/security/current/remote-file-copy-to-a-hidden-share.html
+- https://www.microsoft.com/en-us/security/blog/2022/10/18/defenders-beware-a-case-for-post-ransomware-investigations/
+status: test
+tags:
+- attack.lateral_movement
+- attack.collection
+- attack.exfiltration
+- attack.t1039
+- attack.t1048
+- attack.t1021.002
+

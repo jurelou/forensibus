@@ -1,0 +1,14 @@
+{
+  "Win10CreatorsHeader": [53, {
+    "HeaderSize": [0, ["unsigned long"]],
+    "NumberOfEntries": [40, ["unsigned long"]]
+  }],
+
+  "Win10CreatorsEntry": [0, {
+    "Signature": [0, ["unsigned long"]],
+    "DataSize": [8, ["unsigned long"]],
+    "PathSize": [12,["unsigned short"]],
+    "Path__": [14, ["UnicodeString"]],
+    "_XXXX" : [0, ["unsigned long long"]]
+  }]
+}

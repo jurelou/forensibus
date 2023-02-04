@@ -1,0 +1,76 @@
+run:
+  tests: false
+  skip-dirs:
+    - vendor
+    - external
+    - bin
+    - datasets
+    - docker
+
+linters:
+  enable:
+    - asasalint
+    - asciicheck
+    - contextcheck
+    - cyclop
+    - decorder
+    - dogsled
+    - dupl
+    - dupword
+    - durationcheck
+    - errchkjson
+    - errname
+    - errorlint
+    - exhaustive
+    - exhaustruct
+    - forcetypeassert
+    - gci
+    # - gochecknoglobals
+    - gofmt
+    - wrapcheck
+    - whitespace
+    - wastedassign
+    - varnamelen
+    - usestdlibvars
+    - unparam
+    - unconvert
+    - tparallel
+    - thelper
+    - testpackage
+    - tenv
+    # - tagliatelle
+    - predeclared
+    - prealloc
+    - nosprintfhostport
+    - nonamedreturns
+    - nolintlint
+    #- nlreturn
+    - nilnil
+    - nilerr
+    - nestif
+    - nakedret
+    - loggercheck
+    - lll
+    - ireturn
+    - interfacebloat
+    - importas
+    - gosec
+    - grouper
+    - goimports
+    - gofumpt
+    - goerr113
+
+linters-settings:
+  errcheck:
+    exclude-functions:
+      - (*go.uber.org/zap.Logger).Sync
+
+  gci:
+    custom-order: true
+    sections:
+      - standard # Standard section: captures all standard packages.
+      - default # Default section: contains all imports that could not be matched to another section type.
+      - prefix(github.com/jurelou/forensibus)
+      - blank # Blank section: contains all blank imports. This section is not present unless explicitly enabled.
+      - dot # Dot section: contains all dot imports. This section is not present unless explicitly enabled.
+    

@@ -1,0 +1,42 @@
+splunk:
+  admin_user: admin
+  password: password
+  allow_upgrade: true
+  conf:
+    - key: user-prefs
+      directory: /opt/splunk/etc/system/default
+      content:
+        general:
+          default_namespace: forensibus
+          search_syntax_highlighting: dark
+          search_use_advanced_editor: true
+          search_assistant: full
+          search_auto_format: true
+    - key: server
+      value:
+        directory: /opt/splunk/etc/system/local
+        content:
+          kvstore:
+            storageEngine: wiredTiger
+
+    - key: web
+      value:
+        directory: /opt/splunk/etc/system/default
+        content:
+          settings:
+            updateCheckerBaseURL: 0
+            login_content: >-
+              Custom splunk instance for forensibus. Default creds are <tt>admin:password</tt>.
+            loginFooterOption: custom
+            loginFooterText: 'https://github.com/jurelou/forensibus'
+            loginPasswordHint: admin:password
+
+            loginCustomLogo: forensibus:forensibus.png
+
+            loginBackgroundImageOption: custom
+            loginCustomBackgroundImage: forensibus:background.png
+
+            loginDocumentTitleOption: custom
+            loginDocumentTitleText: FORENSIBUS - splunk
+
+            firstTimeLoginMessageOption: none

@@ -1,0 +1,9 @@
+Module: appcompatcache
+Profile: AppCompatibilityProfile
+Filename: profile_vtypes.json
+GenerateDebugString: true
+Structs:
+   - Win10Header
+   - Win10CreatorsHeader
+   - Win10CreatorsEntry
+   - __a
