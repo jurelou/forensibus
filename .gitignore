@@ -5,6 +5,7 @@ coverage.out
 
 # Binaries for programs and plugins
 # *.exe
+bin/
 *.exe~
 *.dll
 *.so
