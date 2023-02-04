@@ -1,0 +1,2 @@
+id,new_level
+570ae5ec-33dc-427c-b815-db86228ad43e,info # 'Application Uninstalled'. Originally low.
