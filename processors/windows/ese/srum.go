@@ -9,8 +9,9 @@ import (
 
 	"github.com/Velocidex/ordereddict"
 
-	"github.com/jurelou/forensibus/utils/processors"
+	"github.com/jurelou/forensibus/utils"
 	"github.com/jurelou/forensibus/utils/writer"
+	"github.com/jurelou/forensibus/utils/processors"
 )
 
 var tablesGUIDs = map[string]string{
@@ -26,13 +27,18 @@ type SrumProcessor struct {
 
 func (SrumProcessor) Run(in string, _ *processors.Config, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
+	utils.Log.Infof("Running SRUM processor against %s", in)
 
 	fd, err := os.Open(in)
 	if err != nil {
 		errors.Add(fmt.Errorf("could not open ese file %s: %w", in, err))
 		return errors
 	}
-	defer fd.Close()
+	defer func() {
+		if err := fd.Close(); err != nil {
+			utils.Log.Warnf("Error while closing file %s: %w", fd.Name(), err)
+		}
+	}()
 
 	catalog, err := GetCatalog(fd)
 	if err != nil {

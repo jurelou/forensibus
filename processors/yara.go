@@ -9,8 +9,8 @@ import (
 	yara "github.com/Velocidex/go-yara"
 
 	"github.com/jurelou/forensibus/utils"
-	"github.com/jurelou/forensibus/utils/processors"
 	"github.com/jurelou/forensibus/utils/writer"
+	"github.com/jurelou/forensibus/utils/processors"
 )
 
 type YaraProcessor struct {
@@ -51,6 +51,8 @@ func (proc *YaraProcessor) Configure() error {
 
 func (proc *YaraProcessor) Run(in string, _ *processors.Config, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
+	utils.Log.Infof("Running YARA processor against %s", in)
+
 	scanner, err := yara.NewScanner(proc.Rules)
 	if err != nil {
 		errors.Add(err)

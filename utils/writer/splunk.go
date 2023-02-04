@@ -43,9 +43,11 @@ type HEC struct {
 }
 
 func NewHEC(address string, token string) *HEC {
-	tlsConfig := &tls.Config{}
-	tlsConfig.MinVersion = tls.VersionTLS12
-	tlsConfig.MaxVersion = tls.VersionTLS13
+	tlsConfig := &tls.Config{
+		MinVersion: tls.VersionTLS12,
+		MaxVersion: tls.VersionTLS13,
+	}
+
 	transport := &http.Transport{
 		TLSClientConfig:     tlsConfig, // allow insecure TLS
 		MaxIdleConns:        10,        // global number of idle conns

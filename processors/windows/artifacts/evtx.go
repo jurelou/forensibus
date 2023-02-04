@@ -8,9 +8,9 @@ import (
 	"github.com/Velocidex/ordereddict"
 	"www.velocidex.com/golang/evtx"
 
-	// "github.com/jurelou/forensibus/utils"
-	"github.com/jurelou/forensibus/utils/processors"
+	"github.com/jurelou/forensibus/utils"
 	"github.com/jurelou/forensibus/utils/writer"
+	"github.com/jurelou/forensibus/utils/processors"
 )
 
 type EvtxProcessor struct {
@@ -19,12 +19,18 @@ type EvtxProcessor struct {
 
 func (EvtxProcessor) Run(in string, _ *processors.Config, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
+	utils.Log.Infof("Running EVTX processor against %s", in)
+
 	fd, err := os.Open(in)
 	if err != nil {
 		errors.Add(err)
 		return errors
 	}
-	defer fd.Close()
+	defer func() {
+		if err := fd.Close(); err != nil {
+			utils.Log.Warnf("Error while closing file %s: %w", fd.Name(), err)
+		}
+	}()
 
 	out.SetDefaultSourceType("evtxdump")
 

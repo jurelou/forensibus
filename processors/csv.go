@@ -8,8 +8,8 @@ import (
 	"os"
 
 	"github.com/jurelou/forensibus/utils"
-	"github.com/jurelou/forensibus/utils/processors"
 	"github.com/jurelou/forensibus/utils/writer"
+	"github.com/jurelou/forensibus/utils/processors"
 )
 
 type CSVProcessor struct {
@@ -19,12 +19,17 @@ type CSVProcessor struct {
 
 func (CSVProcessor) Run(in string, _ *processors.Config, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
+	utils.Log.Infof("Running CSV processor against %s", in)
 	fd, err := os.Open(in)
 	if err != nil {
 		errors.Add(err)
 		return errors
 	}
-	defer fd.Close()
+	defer func() {
+		if err := fd.Close(); err != nil {
+			utils.Log.Warnf("Error while closing file %s: %w", fd.Name(), err)
+		}
+	}()
 
 	csvReader := csv.NewReader(fd)
 	csvReader.FieldsPerRecord = -1
