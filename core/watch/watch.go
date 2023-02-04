@@ -1,9 +1,11 @@
 package watch
 
 import (
+	"os"
 	"math"
 	"sync"
 	"time"
+	"path/filepath"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/pterm/pterm"
@@ -30,8 +32,21 @@ func watchEvents(watcher *fsnotify.Watcher) {
 			if !ok {
 				return
 			}
-			// log.Println("event:", event.Name, event)
 			if event.Has(fsnotify.Create) {
+				fileInfo, err := os.Stat(event.Name)
+				if err != nil {
+					pterm.Warning.Println("Error while retrieving new file %s stats: %s", event.Name, err.Error())
+					continue
+				}				
+				if fileInfo.IsDir() {
+					err = watcher.Add(event.Name)
+					if err != nil {
+						utils.Log.Errorf("Could not watch path %s: %s", event.Name, err.Error())
+					}
+					pterm.Info.Printfln("Watching new directory %s", event.Name)
+					continue
+				}
+
 				t := time.AfterFunc(math.MaxInt64, func() {
 					parseFile(event)
 					if _, ok := timers[event.Name]; ok {
@@ -41,7 +56,6 @@ func watchEvents(watcher *fsnotify.Watcher) {
 					}
 				})
 				t.Stop()
-
 				mu.Lock()
 				timers[event.Name] = t
 				mu.Unlock()
@@ -51,7 +65,6 @@ func watchEvents(watcher *fsnotify.Watcher) {
 				mu.Lock()
 				t, ok := timers[event.Name]
 				mu.Unlock()
-
 				if ok {
 					t.Reset(waitFor)
 				} else {
@@ -97,9 +110,23 @@ func Watch(pipelineconfigFile string, paths []string, tag string, disableLocalWo
 	go watchEvents(watcher)
 
 	for _, path := range paths {
-		err = watcher.Add(path)
+		err := filepath.Walk(path, func(lpath string, info os.FileInfo, err error) error {
+			if err != nil {
+				pterm.Warning.Println("Error while reading directory %s: %s", lpath, err.Error())
+				return err
+			}
+			if info.IsDir() {
+				err = watcher.Add(lpath)
+				if err != nil {
+					pterm.Error.Printfln("Could not watch path %s: %s", lpath, err.Error())
+				} else {
+					pterm.Success.Printfln("Watching folder %s", lpath)
+				}
+			}
+			return nil
+		})
 		if err != nil {
-			utils.Log.Errorf("Could not watch path %s: %s", path, err.Error())
+			pterm.Error.Println("Could not walk directory %s: %s", path, err.Error())
 		}
 	}
 	// Block main goroutine forever.
