@@ -9,7 +9,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/pterm/pterm"
-	"google.golang.org/grpc"
 
 	dsl "github.com/jurelou/forensibus/core"
 	"github.com/jurelou/forensibus/utils"
@@ -175,7 +174,6 @@ func MakeInputs(sources []string) ([]dsl.Step, error) {
 
 func MakeWorkers(disableLocalWorker bool, tStart <-chan TaskStarted, tEnd chan<- TaskEnded) (*WorkerPool, error) {
 	workers := new(WorkerPool)
-	var localWorkerServer *grpc.Server
 
 	if !disableLocalWorker {
 		port := utils.FindOpenTcpPort()
@@ -184,7 +182,7 @@ func MakeWorkers(disableLocalWorker bool, tStart <-chan TaskStarted, tEnd chan<-
 		}
 
 		go func() {
-			err := worker.RunWorkerServer(localWorkerServer, port)
+			err := worker.RunWorkerServer(port)
 			if err != nil {
 				pterm.Error.Printfln("Could not run worker: %s", err.Error())
 			}
@@ -195,9 +193,6 @@ func MakeWorkers(disableLocalWorker bool, tStart <-chan TaskStarted, tEnd chan<-
 			return nil, fmt.Errorf("could not start local worker: %s", err.Error())
 		}
 		pterm.Info.Printfln("Local worker is up (capacity of %d)", lWorker.Capacity)
-		// if localWorkerServer != nil {
-		// 	localWorkerServer.Stop()
-		// }
 
 	} else {
 		pterm.Warning.Printfln("Disabled local worker")

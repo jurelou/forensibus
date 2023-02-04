@@ -21,7 +21,7 @@ func (w MonkeyWriter) WriteEvent(event *writer.Event) {
 	w.cb(event)
 }
 
-func TestSRUM(t *testing.T) {
+func TestSRUM(_ *testing.T) {
 	cb := func(e *writer.Event) {
 		// appId, exists := e.Event.GetString("AppId")
 		// if !exists {

@@ -10,7 +10,7 @@ import (
 	"github.com/jurelou/forensibus/utils/writer"
 )
 
-func (s *Server) Work(_ context.Context, in *worker.WorkRequest) (*worker.WorkResponse, error) {
+func (*Server) Work(_ context.Context, in *worker.WorkRequest) (*worker.WorkResponse, error) {
 	procName := in.GetProcessor()
 	source := in.GetSource()
 	config := in.GetConfig()
@@ -27,7 +27,6 @@ func (s *Server) Work(_ context.Context, in *worker.WorkRequest) (*worker.WorkRe
 	// Configure output writer
 	// TODO: make writer global
 	out := writer.New()
-	// defer out.Close()
 	out.SetTag(tag)
 	out.SetDefaultSourceType("forensibus:" + procName)
 	out.SetDefaultSource(source)

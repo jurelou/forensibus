@@ -29,7 +29,7 @@ func loadProcessors() error {
 	return nil
 }
 
-func RunWorkerServer(srv *grpc.Server, port int) error {
+func RunWorkerServer(port int) error {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		return fmt.Errorf("failed to listen on port %d: %w", port, err)
@@ -60,9 +60,7 @@ func Run(workersCount uint32) {
 	utils.Log.Infof("Launched with %d workers", utils.Config.WorkersCount)
 
 	port := 50051
-	var server *grpc.Server
-
-	err = RunWorkerServer(server, port)
+	err = RunWorkerServer(port)
 	if err != nil {
 		utils.Log.Errorf("Could not start worker server: %s", err.Error())
 	}

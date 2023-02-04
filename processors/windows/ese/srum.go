@@ -10,8 +10,8 @@ import (
 	"github.com/Velocidex/ordereddict"
 
 	"github.com/jurelou/forensibus/utils"
-	"github.com/jurelou/forensibus/utils/writer"
 	"github.com/jurelou/forensibus/utils/processors"
+	"github.com/jurelou/forensibus/utils/writer"
 )
 
 var tablesGUIDs = map[string]string{
