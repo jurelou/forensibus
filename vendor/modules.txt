@@ -1,7 +1,7 @@
 # atomicgo.dev/cursor v0.1.1
 ## explicit; go 1.15
 atomicgo.dev/cursor
-# atomicgo.dev/keyboard v0.2.8
+# atomicgo.dev/keyboard v0.2.9
 ## explicit; go 1.15
 atomicgo.dev/keyboard
 atomicgo.dev/keyboard/internal
@@ -108,7 +108,7 @@ github.com/pelletier/go-toml/v2/unstable
 # github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
-# github.com/pterm/pterm v0.12.53
+# github.com/pterm/pterm v0.12.54
 ## explicit; go 1.18
 github.com/pterm/pterm
 github.com/pterm/pterm/internal
