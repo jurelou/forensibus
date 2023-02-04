@@ -1,0 +1,149 @@
+title: LSASS Access from Program in Suspicious Folder
+ruletype: Sigma
+author: Florian Roth
+date: 2021/11/27
+description: Detects process access to LSASS memory with suspicious access flags and
+    from a suspicious folder
+detection:
+    SELECTION_1:
+        EventID: 10
+    SELECTION_10:
+        SourceImage: C:\Windows\Temp\\*
+    SELECTION_11:
+        SourceImage: '*.tmp\DropboxUpdate.exe'
+    SELECTION_12:
+        GrantedAccess:
+        - '0x410'
+        - '0x1410'
+    SELECTION_13:
+        SourceImage: C:\Users\\*
+    SELECTION_14:
+        SourceImage: '*\AppData\Local\Temp\\*'
+    SELECTION_15:
+        SourceImage: '*.tmp\DropboxUpdate.exe'
+    SELECTION_16:
+        GrantedAccess: '0x1410'
+    SELECTION_17:
+        SourceImage:
+        - C:\Windows\Temp\asgard2-agent\\*
+        - C:\Windows\Temp\asgard2-agent-sc\\*
+    SELECTION_18:
+        SourceImage:
+        - '*\thor64.exe'
+        - '*\thor.exe'
+        - '*\aurora-agent-64.exe'
+        - '*\aurora-agent.exe'
+    SELECTION_19:
+        GrantedAccess:
+        - '0x1fffff'
+        - '0x1010'
+        - '0x101010'
+    SELECTION_2:
+        Channel: Microsoft-Windows-Sysmon/Operational
+    SELECTION_20:
+        SourceImage: C:\Users\\*
+    SELECTION_21:
+        SourceImage: '*\AppData\Local\Temp\\*'
+    SELECTION_22:
+        SourceImage: '*\vs_bootstrapper_*'
+    SELECTION_23:
+        GrantedAccess: '0x1410'
+    SELECTION_24:
+        SourceImage: C:\Program Files (x86)\Google\Temp\\*
+    SELECTION_25:
+        SourceImage: '*.tmp\GoogleUpdate.exe'
+    SELECTION_26:
+        GrantedAccess: '0x410'
+    SELECTION_27:
+        SourceImage:
+        - C:\Program Files (x86)\\*
+        - C:\Program Files\\*
+    SELECTION_28:
+        SourceImage: C:\Users\\*
+    SELECTION_29:
+        SourceImage: '*\AppData\Local\Keybase\keybase.exe'
+    SELECTION_3:
+        TargetImage: '*\lsass.exe'
+    SELECTION_30:
+        GrantedAccess: '0x1fffff'
+    SELECTION_4:
+        GrantedAccess:
+        - '*10'
+        - '*30'
+        - '*50'
+        - '*70'
+        - '*90'
+        - '*B0'
+        - '*D0'
+        - '*F0'
+        - '*18'
+        - '*38'
+        - '*58'
+        - '*78'
+        - '*98'
+        - '*B8'
+        - '*D8'
+        - '*F8'
+        - '*1A'
+        - '*3A'
+        - '*5A'
+        - '*7A'
+        - '*9A'
+        - '*BA'
+        - '*DA'
+        - '*FA'
+        - '*0x14C2'
+        - '*FF'
+    SELECTION_5:
+        SourceImage:
+        - '*\Temp\\*'
+        - '*\Users\Public\\*'
+        - '*\PerfLogs\\*'
+        - '*\AppData\\*'
+        - '*\Temporary*'
+    SELECTION_6:
+        SourceImage: C:\Users\\*
+    SELECTION_7:
+        SourceImage: '*\AppData\Local\\*'
+    SELECTION_8:
+        SourceImage:
+        - '*\Microsoft VS Code\Code.exe'
+        - '*\software_reporter_tool.exe'
+        - '*\DropboxUpdate.exe'
+        - '*\MBAMInstallerService.exe'
+        - '*\WebexMTA.exe'
+        - '*\WebEx\WebexHost.exe'
+        - '*\JetBrains\Toolbox\bin\jetbrains-toolbox.exe'
+    SELECTION_9:
+        GrantedAccess: '0x410'
+    condition: ((SELECTION_1 and SELECTION_2) and (SELECTION_3 and SELECTION_4 and
+        SELECTION_5) and  not ((SELECTION_6 and SELECTION_7 and SELECTION_8 and SELECTION_9)
+        or (SELECTION_10 and SELECTION_11 and SELECTION_12) or (SELECTION_13 and SELECTION_14
+        and SELECTION_15 and SELECTION_16) or (SELECTION_17 and SELECTION_18 and SELECTION_19)
+        or (SELECTION_20 and SELECTION_21 and SELECTION_22 and SELECTION_23) or (SELECTION_24
+        and SELECTION_25 and SELECTION_26) or (SELECTION_27) or (SELECTION_28 and
+        SELECTION_29 and SELECTION_30)))
+falsepositives:
+- Legitimate software accessing LSASS process for legitimate reason
+fields:
+- User
+- SourceImage
+- GrantedAccess
+id: fa34b441-961a-42fa-a100-ecc28c886725
+level: high
+logsource:
+    category: process_access
+    product: windows
+modified: 2022/11/01
+references:
+- https://docs.microsoft.com/en-us/windows/win32/procthread/process-security-and-access-rights
+- https://onedrive.live.com/view.aspx?resid=D026B4699190F1E6!2843&ithint=file%2cpptx&app=PowerPoint&authkey=!AMvCRTKB_V1J5ow
+- https://cyberwardog.blogspot.com/2017/03/chronicles-of-threat-hunter-hunting-for_22.html
+- https://www.slideshare.net/heirhabarov/hunting-for-credentials-dumping-in-windows-environment
+- http://security-research.dyndns.org/pub/slides/FIRST2017/FIRST-2017_Tom-Ueltschi_Sysmon_FINAL_notes.pdf
+status: experimental
+tags:
+- attack.credential_access
+- attack.t1003.001
+- attack.s0002
+

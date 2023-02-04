@@ -16,7 +16,7 @@ type ESEProcessor struct {
 	processors.Default
 }
 
-func (ESEProcessor) Run(in string, out writer.OutputWriter) processors.PError {
+func (ESEProcessor) Run(in string, _ *processors.Config, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
 
 	fd, err := os.Open(in)
@@ -52,5 +52,5 @@ func (ESEProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 }
 
 func init() {
-	processors.Register("ese", ESEProcessor{})
+	processors.Register("ese", &ESEProcessor{})
 }

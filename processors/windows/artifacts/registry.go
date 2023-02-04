@@ -93,7 +93,7 @@ func rec(nk *regparser.CM_KEY_NODE, path string, out writer.OutputWriter) {
 	}
 }
 
-func (RegistryProcessor) Run(in string, out writer.OutputWriter) processors.PError {
+func (RegistryProcessor) Run(in string, _ *processors.Config, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
 	fd, err := os.Open(in)
 	if err != nil {
@@ -125,5 +125,5 @@ func (RegistryProcessor) Run(in string, out writer.OutputWriter) processors.PErr
 }
 
 func init() {
-	processors.Register("registry", RegistryProcessor{})
+	processors.Register("registry", &RegistryProcessor{})
 }

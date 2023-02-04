@@ -15,22 +15,43 @@ type OutputWriter interface {
 	SetDefaultSourceType(string)
 	SetDefaultHost(string)
 
+	GetTag() string
 	WriteEvent(*Event)
 }
 
-type DefaultOutputWriter struct{}
+type DefaultOutputWriter struct {
+	Tag               string
+	DefaultHost       string
+	DefaultIndex      string
+	DefaultSource     string
+	DefaultSourceType string
+}
 
-func (DefaultOutputWriter) Close() {}
+func (*DefaultOutputWriter) Close() {}
 
-func (DefaultOutputWriter) SetTag(_ string) {}
+func (out *DefaultOutputWriter) SetTag(tag string) {
+	out.Tag = tag
+}
 
-func (DefaultOutputWriter) SetDefaultIndex(_ string) {}
+func (out *DefaultOutputWriter) SetDefaultIndex(index string) {
+	out.DefaultIndex = index
+}
 
-func (DefaultOutputWriter) SetDefaultSource(_ string) {}
+func (out *DefaultOutputWriter) SetDefaultSource(source string) {
+	out.DefaultSource = source
+}
 
-func (DefaultOutputWriter) SetDefaultSourceType(_ string) {}
+func (out *DefaultOutputWriter) SetDefaultSourceType(sourceType string) {
+	out.DefaultSourceType = sourceType
+}
 
-func (DefaultOutputWriter) SetDefaultHost(_ string) {}
+func (out *DefaultOutputWriter) SetDefaultHost(host string) {
+	out.DefaultHost = host
+}
+
+func (out *DefaultOutputWriter) GetTag() string {
+	return out.Tag
+}
 
 func New() OutputWriter {
 	return NewHEC(utils.Config.Splunk.Hec.Address, utils.Config.Splunk.Hec.Token)

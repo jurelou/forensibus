@@ -17,7 +17,7 @@ type CSVProcessor struct {
 	// Input string
 }
 
-func (CSVProcessor) Run(in string, out writer.OutputWriter) processors.PError {
+func (CSVProcessor) Run(in string, _ *processors.Config, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
 	fd, err := os.Open(in)
 	if err != nil {
@@ -76,5 +76,5 @@ func (CSVProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 }
 
 func init() {
-	processors.Register("csv", CSVProcessor{})
+	processors.Register("csv", &CSVProcessor{})
 }

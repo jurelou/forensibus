@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/jurelou/forensibus/processors/windows/ese"
+	"github.com/jurelou/forensibus/utils/processors"
 	"github.com/jurelou/forensibus/utils/writer"
 )
 
@@ -29,5 +30,5 @@ func TestSRUM(t *testing.T) {
 	}
 	writer := NewMonkeyWriter(cb)
 	proc := ese.SrumProcessor{}
-	proc.Run("../../../datasets/artifacts/ese/srum.data", writer)
+	proc.Run("../../../datasets/artifacts/ese/srum.data", &processors.Config{RawConfig: map[string]string{}}, writer)
 }

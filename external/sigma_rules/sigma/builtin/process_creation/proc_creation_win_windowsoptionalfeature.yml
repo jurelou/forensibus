@@ -1,0 +1,50 @@
+title: Potential Suspicious Windows Feature Enabled - ProcCreation
+ruletype: Sigma
+author: Nasreddine Bencherchali
+date: 2022/12/29
+description: 'Detects usage of the built-in PowerShell cmdlet "Enable-WindowsOptionalFeature"
+    used as a Deployment Image Servicing and Management tool.
+
+    Similar to DISM.exe, this cmdlet is used to enumerate, install, uninstall, configure,
+    and update features and packages in Windows images
+
+    '
+detection:
+    SELECTION_1:
+        EventID: 4688
+    SELECTION_2:
+        Channel: Security
+    SELECTION_3:
+        CommandLine: '*Enable-WindowsOptionalFeature*'
+    SELECTION_4:
+        CommandLine: '*-Online*'
+    SELECTION_5:
+        CommandLine: '*-FeatureName*'
+    SELECTION_6:
+        CommandLine:
+        - '*TelnetServer*'
+        - '*Internet-Explorer-Optional-amd64*'
+        - '*TFTP*'
+        - '*SMB1Protocol*'
+        - '*Client-ProjFS*'
+        - '*Microsoft-Windows-Subsystem-Linux*'
+    condition: (SELECTION_1 and SELECTION_2 and SELECTION_3 and SELECTION_4 and SELECTION_5
+        and SELECTION_6)
+falsepositives:
+- Unknown
+id: c740d4cf-a1e9-41de-bb16-8a46a4f57918
+level: medium
+logsource:
+    category: process_creation
+    product: windows
+references:
+- https://docs.microsoft.com/en-us/powershell/module/dism/enable-windowsoptionalfeature?view=windowsserver2022-ps
+- https://learn.microsoft.com/en-us/windows/win32/projfs/enabling-windows-projected-file-system
+- https://learn.microsoft.com/en-us/windows/wsl/install-on-server
+related:
+-   id: 55c925c1-7195-426b-a136-a9396800e29b
+    type: similar
+status: experimental
+tags:
+- attack.defense_evasion
+

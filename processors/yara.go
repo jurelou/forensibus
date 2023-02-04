@@ -49,7 +49,7 @@ func (proc *YaraProcessor) Configure() error {
 	return nil
 }
 
-func (proc *YaraProcessor) Run(in string, out writer.OutputWriter) processors.PError {
+func (proc *YaraProcessor) Run(in string, _ *processors.Config, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
 	scanner, err := yara.NewScanner(proc.Rules)
 	if err != nil {

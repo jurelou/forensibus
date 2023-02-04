@@ -203,11 +203,11 @@ func MakeWorkers(disableLocalWorker bool, tStart <-chan TaskStarted, tEnd chan<-
 		pterm.Warning.Printfln("Disabled local worker")
 	}
 
-	// worker, err := workers.Connect(serverAddress)
-	// if err != nil {
-	// 	utils.Log.Warnf(err.Error())
-	// 	return
-	// }
+	_, err := workers.Connect("localhost:50051")
+	if err != nil {
+		utils.Log.Warnf(err.Error())
+		// return
+	}
 
 	workers.Work(tStart, tEnd)
 	return workers, nil

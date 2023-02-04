@@ -1,7 +1,8 @@
 processorTimeout: 120 # seconds
-yaraRulesFolder: ./external/yara
-sigmaRulesFolder: ./external/sigma
 outputFolder: /tmp/forensibus
+tempFolder: /tmp/forensibus_tmp
+yaraRulesFolder: ./external/yara_rules
+sigmaRulesFolder: ./external/sigma_rules
 outputType: splunk
 
 splunk:

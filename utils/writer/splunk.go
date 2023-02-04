@@ -32,6 +32,7 @@ type Response struct {
 }
 
 type HEC struct {
+	DefaultOutputWriter
 	client *http.Client
 
 	endpoint string
@@ -39,12 +40,6 @@ type HEC struct {
 
 	buffer bytes.Buffer
 	errors []string
-
-	tag               string
-	defaultHost       string
-	defaultIndex      string
-	defaultSource     string
-	defaultSourceType string
 }
 
 func NewHEC(address string, token string) *HEC {
@@ -68,26 +63,6 @@ func NewHEC(address string, token string) *HEC {
 
 func (hec *HEC) Close() {
 	hec.flushBuffer()
-}
-
-func (hec *HEC) SetTag(tag string) {
-	hec.tag = tag
-}
-
-func (hec *HEC) SetDefaultIndex(index string) {
-	hec.defaultIndex = index
-}
-
-func (hec *HEC) SetDefaultSource(source string) {
-	hec.defaultSource = source
-}
-
-func (hec *HEC) SetDefaultSourceType(sourceType string) {
-	hec.defaultSourceType = sourceType
-}
-
-func (hec *HEC) SetDefaultHost(host string) {
-	hec.defaultHost = host
 }
 
 func (hec *HEC) makeRequest(data bytes.Buffer) error {
@@ -162,23 +137,23 @@ func (hec *HEC) WriteEvent(event *Event) {
 	}
 
 	if event.Index == "" {
-		event.Index = hec.defaultIndex
+		event.Index = hec.DefaultIndex
 	}
 	if event.Source == "" {
-		event.Source = hec.defaultSource
+		event.Source = hec.DefaultSource
 	}
 	if event.SourceType == "" {
-		event.SourceType = hec.defaultSourceType
+		event.SourceType = hec.DefaultSourceType
 	}
 	if event.Host == "" {
-		event.Host = hec.defaultHost
+		event.Host = hec.DefaultHost
 	}
 	if event.Event[0] != '{' {
 		utils.Log.Warnf("Event is invalid json (does not start with `{`): %s", event.Event)
 		event.Event = fmt.Sprintf("{\"raw\":%q}", event.Event)
 	}
-	if hec.tag != "" {
-		event.Event = fmt.Sprintf("{\"forensibus_tag\":%q,%s", hec.tag, event.Event[1:])
+	if hec.Tag != "" {
+		event.Event = fmt.Sprintf("{\"forensibus_tag\":%q,%s", hec.Tag, event.Event[1:])
 	}
 
 	json, _ := json.Marshal(event)

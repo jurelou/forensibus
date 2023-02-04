@@ -24,7 +24,7 @@ type SrumProcessor struct {
 	processors.Default
 }
 
-func (SrumProcessor) Run(in string, out writer.OutputWriter) processors.PError {
+func (SrumProcessor) Run(in string, _ *processors.Config, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
 
 	fd, err := os.Open(in)
@@ -82,5 +82,5 @@ func (SrumProcessor) Run(in string, out writer.OutputWriter) processors.PError {
 }
 
 func init() {
-	processors.Register("srum", SrumProcessor{})
+	processors.Register("srum", &SrumProcessor{})
 }

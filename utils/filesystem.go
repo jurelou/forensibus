@@ -181,3 +181,15 @@ func CopyFile(in, out string) error {
 	}
 	return nil
 }
+
+// Create a directory from a given path recursively
+// Skip if directory already exists
+// func CreateDirectory(path string) error {
+// 	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
+// 		err := os.Mkdir(path, os.ModePerm)
+// 		if err != nil {
+// 			return err
+// 		}
+// 	}
+// 	return nil
+// }

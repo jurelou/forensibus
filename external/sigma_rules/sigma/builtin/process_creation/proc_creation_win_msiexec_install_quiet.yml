@@ -1,0 +1,58 @@
+title: Suspicious Msiexec Quiet Install
+ruletype: Sigma
+author: frack113
+date: 2022/01/16
+description: 'Adversaries may abuse msiexec.exe to proxy execution of malicious payloads.
+
+    Msiexec.exe is the command-line utility for the Windows Installer and is thus
+    commonly associated with executing installation packages (.msi)
+
+    '
+detection:
+    SELECTION_1:
+        EventID: 4688
+    SELECTION_2:
+        Channel: Security
+    SELECTION_3:
+        NewProcessName: '*\msiexec.exe'
+    SELECTION_4:
+        OriginalFileName: msiexec.exe
+    SELECTION_5:
+        CommandLine:
+        - '*/i*'
+        - '*-i*'
+        - '*/package*'
+        - '*-package*'
+        - '*/a*'
+        - '*-a*'
+        - '*/j*'
+        - '*-j*'
+    SELECTION_6:
+        CommandLine:
+        - '*/q*'
+        - '*-q*'
+    SELECTION_7:
+        ParentProcessName: C:\Users\\*
+    SELECTION_8:
+        ParentProcessName: '*\AppData\Local\Temp\\*'
+    SELECTION_9:
+        ParentProcessName: C:\Windows\Temp\\*
+    condition: ((SELECTION_1 and SELECTION_2) and ((SELECTION_3 or SELECTION_4) and
+        SELECTION_5 and SELECTION_6) and  not ((SELECTION_7 and SELECTION_8) or (SELECTION_9)))
+falsepositives:
+- Legitimate script
+id: 79a87aa6-e4bd-42fc-a5bb-5e6fbdcd62f5
+level: medium
+logsource:
+    category: process_creation
+    product: windows
+modified: 2022/10/28
+references:
+- https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec
+- https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1218.007/T1218.007.md
+- https://twitter.com/_st0pp3r_/status/1583914244344799235
+status: experimental
+tags:
+- attack.defense_evasion
+- attack.t1218.007
+

@@ -40,7 +40,7 @@ func (PrefetchProcessor) parsePrefetch(in string) (PrefetchEntry, error) {
 	return PrefetchEntry(*pf), nil
 }
 
-func (proc PrefetchProcessor) Run(in string, out writer.OutputWriter) processors.PError {
+func (proc PrefetchProcessor) Run(in string, _ *processors.Config, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
 
 	entry, err := proc.parsePrefetch(in)
@@ -61,5 +61,5 @@ func (proc PrefetchProcessor) Run(in string, out writer.OutputWriter) processors
 }
 
 func init() {
-	processors.Register("prefetch", PrefetchProcessor{})
+	processors.Register("prefetch", &PrefetchProcessor{})
 }

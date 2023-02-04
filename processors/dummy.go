@@ -13,11 +13,11 @@ func (DummyProcessor) Configure() error {
 	return nil
 }
 
-func (DummyProcessor) Run(in string, out writer.OutputWriter) processors.PError {
+func (DummyProcessor) Run(in string, _ *processors.Config, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
 	return errors
 }
 
 func init() {
-	processors.Register("dummy", DummyProcessor{})
+	processors.Register("dummy", &DummyProcessor{})
 }

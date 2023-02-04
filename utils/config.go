@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"log"
+	"os"
 	"runtime"
 
 	"github.com/fsnotify/fsnotify"
@@ -12,6 +13,7 @@ import (
 var Config Configuration
 
 type Configuration struct {
+	TempFolder       string
 	YaraRulesFolder  string
 	SigmaRulesFolder string
 	ProcessorTimeout int
@@ -36,6 +38,10 @@ func setDefaults() {
 	viper.SetDefault("WorkersCount", uint32(runtime.NumCPU()))
 }
 
+func bootstrap() error {
+	return os.MkdirAll(Config.TempFolder, os.ModePerm)
+}
+
 func ReloadConfig() error {
 	// viper.SetDefault("ContentDir", "content")
 	if err := viper.ReadInConfig(); err != nil {
@@ -45,7 +51,8 @@ func ReloadConfig() error {
 	if err != nil {
 		return fmt.Errorf("could not load config: %w", err)
 	}
-	return nil
+
+	return bootstrap()
 }
 
 func Configure() error {

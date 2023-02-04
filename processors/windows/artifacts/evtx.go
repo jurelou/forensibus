@@ -17,7 +17,7 @@ type EvtxProcessor struct {
 	processors.Default
 }
 
-func (EvtxProcessor) Run(in string, out writer.OutputWriter) processors.PError {
+func (EvtxProcessor) Run(in string, _ *processors.Config, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
 	fd, err := os.Open(in)
 	if err != nil {
@@ -105,5 +105,5 @@ func parseEvtx(fd *os.File, out writer.OutputWriter) processors.PError {
 }
 
 func init() {
-	processors.Register("evtxdump", EvtxProcessor{})
+	processors.Register("evtxdump", &EvtxProcessor{})
 }

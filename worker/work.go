@@ -34,7 +34,7 @@ func (s *Server) Work(_ context.Context, in *worker.WorkRequest) (*worker.WorkRe
 	out.SetDefaultIndex(utils.Config.Splunk.Index)
 
 	// Run the processor
-	pErrors := processor.Run(source, out)
+	pErrors := processor.Run(source, &processors.Config{RawConfig: config}, out)
 	if !pErrors.Empty() {
 		errStrings := pErrors.AsStrings()
 		utils.Log.Warnf("Got %d errors while running %s against %s: %v", pErrors.Len(), procName, source, errStrings)
