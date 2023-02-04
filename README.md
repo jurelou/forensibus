@@ -1,5 +1,5 @@
 <div align="center">
-<p><img width="210" src="assets/logo.png"/></p>
+<p><img width="210" src="docs/static/logo.png"/></p>
 <!-- <h2><strong>Forensibus</strong></h2> -->
 <p>Forensibus is a forensics <a href="https://en.wikipedia.org/wiki/Extract,_transform,_load">ETL</a> that focuses on processing digital forensics artefacts</p>
 <p>
