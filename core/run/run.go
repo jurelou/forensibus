@@ -143,9 +143,6 @@ func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, tag string, sPro
 // 	}
 // }
 
-// func makeWorkers(disableLocalWorker bool) *WorkerPool {
-
-// }
 
 func MakeInputs(sources []string) ([]dsl.Step, error) {
 	ins := make([]dsl.Step, 0, len(sources))
@@ -200,7 +197,7 @@ func MakeWorkers(disableLocalWorker bool, tStart <-chan TaskStarted, tEnd chan<-
 
 	_, err := workers.Connect(serverAddress)
 	if err != nil {
-		utils.Log.Warnf(err.Error())
+		pterm.Warning.Println(err.Error())
 		// return
 	}
 
@@ -233,10 +230,6 @@ func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWork
 		return
 	}
 
-	pterm.Info.Printfln("Running pipeline `%s` (%d processors)", config.Pipeline.Name, stepsCount)
-	pterm.Info.Printfln("Using tag `%s`", tag)
-	pterm.Info.Printfln("Using splunk index `%s`", utils.Config.Splunk.Index)
-
 	startedProcesses := make(chan ProcessStarted, stepsCount)
 	startedTasks := make(chan TaskStarted, 512)
 	endedTasks := make(chan TaskEnded, 512)
@@ -246,8 +239,15 @@ func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWork
 		pterm.Error.Printfln(err.Error())
 		return
 	}
-
-	pterm.Success.Printfln("Launched a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
+	if workers.Capacity() == 0 {
+		pterm.Error.Println("No workers available, you can either remove -d flag or start a new worker")
+		return
+	} else {
+		pterm.Success.Printfln("Launched a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
+	}
+	pterm.Info.Printfln("Running pipeline `%s` (%d processors)", config.Pipeline.Name, stepsCount)
+	pterm.Info.Printfln("Using tag `%s`", tag)
+	pterm.Info.Printfln("Using splunk index `%s`", utils.Config.Splunk.Index)
 
 	finishMonitoring := make(chan bool)
 	go MonitorResults(finishMonitoring, startedProcesses, endedTasks)
