@@ -143,7 +143,6 @@ func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, tag string, sPro
 // 	}
 // }
 
-
 func MakeInputs(sources []string) ([]dsl.Step, error) {
 	ins := make([]dsl.Step, 0, len(sources))
 	for _, source := range sources {

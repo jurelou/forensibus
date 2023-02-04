@@ -1,18 +1,18 @@
 package watch
 
 import (
-	"os"
 	"math"
+	"os"
+	"path/filepath"
 	"sync"
 	"time"
-	"path/filepath"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/pterm/pterm"
 
-	"github.com/jurelou/forensibus/utils"
 	dsl "github.com/jurelou/forensibus/core"
 	"github.com/jurelou/forensibus/core/run"
+	"github.com/jurelou/forensibus/utils"
 	"github.com/jurelou/forensibus/utils/names_generator"
 )
 
@@ -20,9 +20,9 @@ type onWriteCallback func(fsnotify.Event)
 
 var (
 	serverAddress = "localhost:50051"
-	mu      sync.Mutex
-	waitFor = 5 * time.Second
-	timers  = make(map[string]*time.Timer)
+	mu            sync.Mutex
+	waitFor       = 5 * time.Second
+	timers        = make(map[string]*time.Timer)
 )
 
 func monitorResults(startedProcesses <-chan run.ProcessStarted, endedTasks <-chan run.TaskEnded) {
@@ -42,7 +42,6 @@ func monitorResults(startedProcesses <-chan run.ProcessStarted, endedTasks <-cha
 			} else {
 				pterm.Success.Printfln("Successfully ran %s against %s", task.Name, task.Source)
 			}
-
 		}
 	}
 }
@@ -59,34 +58,34 @@ func onFileModify(event fsnotify.Event) {
 }
 
 func onFileCreate(watcher *fsnotify.Watcher, event fsnotify.Event, cb onWriteCallback) {
-		fileInfo, err := os.Stat(event.Name)
+	fileInfo, err := os.Stat(event.Name)
+	if err != nil {
+		pterm.Warning.Printfln("Error while retrieving new file %s stats: %s", event.Name, err.Error())
+		return
+	}
+	if fileInfo.IsDir() {
+		err = watcher.Add(event.Name)
 		if err != nil {
-			pterm.Warning.Println("Error while retrieving new file %s stats: %s", event.Name, err.Error())
-			return
-		}				
-		if fileInfo.IsDir() {
-			err = watcher.Add(event.Name)
-			if err != nil {
-				utils.Log.Errorf("Could not watch path %s: %s", event.Name, err.Error())
-			}
-			pterm.Info.Printfln("Watching new directory %s", event.Name)
-			return
+			utils.Log.Errorf("Could not watch path %s: %s", event.Name, err.Error())
 		}
+		pterm.Info.Printfln("Watching new directory %s", event.Name)
+		return
+	}
 
-		t := time.AfterFunc(math.MaxInt64, func() {
-			cb(event)
-			if _, ok := timers[event.Name]; ok {
-				mu.Lock()
-				delete(timers, event.Name)
-				mu.Unlock()
-			}
-		})
-		t.Stop()
-		mu.Lock()
-		timers[event.Name] = t
-		mu.Unlock()
-		timers[event.Name].Reset(waitFor)
-		pterm.Info.Printfln("New file detected: `%s`", event.Name)
+	t := time.AfterFunc(math.MaxInt64, func() {
+		cb(event)
+		if _, ok := timers[event.Name]; ok {
+			mu.Lock()
+			delete(timers, event.Name)
+			mu.Unlock()
+		}
+	})
+	t.Stop()
+	mu.Lock()
+	timers[event.Name] = t
+	mu.Unlock()
+	timers[event.Name].Reset(waitFor)
+	pterm.Info.Printfln("New file detected: `%s`", event.Name)
 }
 
 func watchEvents(watcher *fsnotify.Watcher, cb onWriteCallback) {
@@ -147,7 +146,6 @@ func Watch(pipelineconfigFile string, paths []string, tag string, disableLocalWo
 	pterm.Info.Printfln("Using tag `%s`", tag)
 	pterm.Info.Printfln("Using splunk index `%s`", utils.Config.Splunk.Index)
 
-
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		utils.Log.Errorf("Could not start watcher: %s", err.Error())
@@ -171,13 +169,12 @@ func Watch(pipelineconfigFile string, paths []string, tag string, disableLocalWo
 			return
 		}
 		run.RunPipeline(config.Pipeline, inputs, tag, startedProcesses, startedTasks)
-		
 	})
 
 	for _, path := range paths {
 		err := filepath.Walk(path, func(lpath string, info os.FileInfo, err error) error {
 			if err != nil {
-				pterm.Warning.Println("Error while reading directory %s: %s", lpath, err.Error())
+				pterm.Warning.Printfln("Error while reading directory %s: %s", lpath, err.Error())
 				return err
 			}
 			if info.IsDir() {
@@ -191,7 +188,7 @@ func Watch(pipelineconfigFile string, paths []string, tag string, disableLocalWo
 			return nil
 		})
 		if err != nil {
-			pterm.Error.Println("Could not walk directory %s: %s", path, err.Error())
+			pterm.Error.Printfln("Could not walk directory %s: %s", path, err.Error())
 		}
 	}
 	// Block main goroutine forever.
