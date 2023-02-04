@@ -115,7 +115,7 @@ func (RegistryProcessor) Run(in string, out writer.OutputWriter) processors.PErr
 	rootCell := registry.Profile.HCELL(registry.Reader, 0x1000+int64(registry.BaseBlock.RootCell()))
 	nk := rootCell.KeyNode()
 	if nk == nil {
-		errors.Add(fmt.Errorf("Could not find root cell from %s", in))
+		errors.Add(fmt.Errorf("could not find root cell from %s", in))
 		return errors
 	}
 	out.SetDefaultSourceType("forensibus_registry")
