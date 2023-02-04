@@ -122,6 +122,7 @@ func (proc *HayabusaProcessor) RunHayabusa(in, evtxExtension, tag string) (strin
 	}
 	utils.Log.Debugf("Running hayabusa command: %v", args)
 	out, err := execve(proc.BinaryPath, args)
+	fmt.Println(">>>>>>>>", out.String())
 	if err != nil {
 		return "", fmt.Errorf("Error while running hayabusa: %s", out.String())
 	}
