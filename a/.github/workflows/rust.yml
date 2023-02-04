@@ -1,0 +1,76 @@
+name: Rust
+
+on:
+  pull_request:
+    branches:
+        - '*'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        info:
+          - {
+              os: "ubuntu-latest",
+              target: "x86_64-unknown-linux-gnu",
+              cross: false,
+            }
+          - {
+              os: "ubuntu-latest",
+              target: "x86_64-unknown-linux-musl",
+              cross: true,
+            }
+          - { os: "macOS-latest", target: "x86_64-apple-darwin", cross: false }
+          - { os: "macOS-latest", target: "aarch64-apple-darwin", cross: false }
+          - {
+              os: "windows-latest",
+              target: "x86_64-pc-windows-msvc",
+              cross: false,
+            }
+          - {
+              os: "windows-latest",
+              target: "i686-pc-windows-msvc",
+              cross: true,
+            }
+    runs-on: ${{ matrix.info.os }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Set up Rust toolchain
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        uses: dtolnay/rust-toolchain@88e7c2e1da2693cf72d58fce9416206818e61dea # https://github.com/dtolnay/rust-toolchain/commit/88e7c2e1da2693cf72d58fce9416206818e61dea
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+          target: ${{ matrix.info.target }}
+      - name: Enable Rust cache
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        uses: Swatinem/rust-cache@cb2cf0cc7c5198d3364b9630e2c3d457f160790c # 1.4.0
+      - name: Fmt Check
+        run: cargo fmt -- --check
+      - name: Prepare Clippy
+        run: rustup component add clippy
+      - name: Run clippy action to produce annotations
+        uses: actions-rs/clippy-check@v1
+        with:
+          args: --all-targets -- -D warnings
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build tests
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        uses: ClementTsang/cargo-action@v0.0.2
+        with:
+          command: test
+          args: --no-run --locked ${{ matrix.features }} --target=${{ matrix.info.target }}
+          use-cross: ${{ matrix.info.cross }}
+          cross-version: 0.2.4
+        env:
+          RUST_BACKTRACE: full
+      - name: Run tests
+        env:
+          RUST_TEST_THREADS: 1
+        run: cargo test --verbose
