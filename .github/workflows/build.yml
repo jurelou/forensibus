@@ -19,6 +19,11 @@ jobs:
         run: |
           go get -v .
           sudo apt-get install mingw-w64-x86-64-dev gcc-mingw-w64-x86-64 gcc-mingw-w64 make
+	        go install github.com/git-chglog/git-chglog/cmd/git-chglog@latest
+
+      - name: Make release note
+        run: |
+          git-chglog -o ${{ github.workspace }}-CHANGELOG.md ${{ github.ref }}
 
       - name: Build release
         run: make
@@ -27,7 +32,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.FORENSIBUS_TOKEN }}
-          generate_release_notes: true
+          # generate_release_notes: true
+          body_path: ${{ github.workspace }}-CHANGELOG.md
           files: |
             bin/forensibus_windows_amd64.exe
             bin/forensibus_windows_x86.exe
