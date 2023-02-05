@@ -19,7 +19,7 @@ jobs:
         run: |
           go get -v .
           sudo apt-get install mingw-w64-x86-64-dev gcc-mingw-w64-x86-64 gcc-mingw-w64 make
-	        go install github.com/git-chglog/git-chglog/cmd/git-chglog@latest
+          go install github.com/git-chglog/git-chglog/cmd/git-chglog@latest
 
       - name: Make release note
         run: |
