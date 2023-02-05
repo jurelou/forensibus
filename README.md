@@ -49,7 +49,7 @@
 - https://parsiya.net/blog/2018-11-01-windows-filetime-timestamps-and-byte-wrangling-with-go/
 - extract: add parralelism
 - check goroutines /file descriptors leaks
-
+- Bufferize progress bar (it becomes slow when there is tons of fast tasks like yara)
 # License
 
 Source code in `forensibus` is available under the [GNU General Public License v3.0](/LICENSE).

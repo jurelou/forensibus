@@ -73,9 +73,10 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 	files := find(steps, dsl.FindConfig{Name: config.Name, Patterns: config.Patterns, MimeTypes: config.MimeTypes})
 
 	for _, in := range files {
-		inputFilenameWoExt := strings.TrimSuffix(in.NextArtifact, filepath.Ext(in.NextArtifact))
+		// inputFilenameWoExt := strings.TrimSuffix(in.NextArtifact, filepath.Ext(in.NextArtifact))
+		// fmt.Println(in.NextArtifact," ========= ", in)
 
-		out, err := decompress.Decompress(in.NextArtifact, filepath.Join(in.CurrentFolder, filepath.Base(inputFilenameWoExt)))
+		out, err := decompress.Decompress(in.NextArtifact, in.CurrentFolder)
 		if err != nil {
 			pterm.Error.Printfln("Error while decompressing %s: %s", in.NextArtifact, err.Error())
 			continue
@@ -162,6 +163,7 @@ func MakeInputs(sources []string) ([]dsl.Step, error) {
 		outputFolder := filepath.Join(utils.Config.OutputFolder, filepath.Dir(absPath), filenameWhithoutSuffix)
 
 		// utils.Log.Infof("Writing output file `%s` FROM `%s`", outputFolder, absPath)
+		fmt.Println("@@@@@@@@@@", outputFolder, absPath, filename)
 		ins = append(ins, dsl.Step{Name: "init", CurrentFolder: outputFolder, NextArtifact: absPath})
 
 	}

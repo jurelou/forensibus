@@ -31,7 +31,12 @@ func genOutputFolder(in string, out string) (string, error) {
 		// Folder already exists, creates another folder with a suffix
 		inputFilename := filepath.Base(in)
 		inputFilenameWhithoutSuffix := strings.TrimSuffix(inputFilename, filepath.Ext(inputFilename))
+
 		if fileInfo.IsDir() {
+			// filename == output folder name, we simply create a folder with a random suffix
+			if inputFilenameWhithoutSuffix == filepath.Base(out) {
+				return createNamedFolder(out)
+			}
 			return createNamedFolder(filepath.Join(out, filepath.Base(inputFilenameWhithoutSuffix)))
 		}
 		return "", fmt.Errorf("cannot extract %s to file %s", out, in)
@@ -49,8 +54,8 @@ func Decompress(in string, out string) (string, error) {
 	if exists := utils.FileExists(in); !exists {
 		return "", fmt.Errorf("file %s does not exists", in)
 	}
-
 	outputFolder, err := genOutputFolder(in, out)
+
 	if err != nil {
 		return "", err
 	}

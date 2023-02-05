@@ -56,6 +56,26 @@ pipeline "DFIR-ORC" {
       }
     }
 
+    extract "Alternate data streams archives" {
+      patterns = ["/[Aa][Dd][Ss].7z$"]
+      mime_types = ["7-zip archive data"]
+
+      find "Alternate data streams" {
+        patterns = ["/ads/"]
+
+        process "ini" {
+          sourcetype = "forensibus:ads"
+        }
+      }
+
+      find "SRUM database" {
+        patterns = ["/[Ss][Rr][Uu][Mm]/"]
+        mime_types = ["Extensible storage engine"]
+
+        process "srum" {}
+      }
+    }
+
     extract "Artifacts archives" {
       patterns = ["/[Aa]rtefacts?.7z$"]
       mime_types = ["7-zip archive data"]
