@@ -23,7 +23,7 @@ jobs:
 
       - name: Make release note
         run: |
-          git-chglog -o ${{ github.workspace }}-CHANGELOG.md ${{ github.ref }}
+          git-chglog -o ${{ github.workspace }}-CHANGELOG.md ${{ github.ref_name }}
 
       - name: Build release
         run: make
