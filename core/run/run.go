@@ -84,9 +84,9 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 
 		outLen := len(out)
 		if outLen == 0 {
-			pterm.Warning.Printfln("Extracted 0 `%s` files from %s", config.Name, in.NextArtifact)
+			pterm.Warning.Printfln("Extracted 0 files from `%s`", config.Name)
 		} else {
-			pterm.Success.Printfln("Extracted %d `%s` files from %s", outLen, config.Name, in.NextArtifact)
+			pterm.Success.Printfln("Extracted %d files from `%s`", outLen, config.Name)
 		}
 
 	}
@@ -204,9 +204,9 @@ func MakeWorkers(disableLocalWorker bool, tStart <-chan TaskStarted, tEnd chan<-
 	return workers, nil
 }
 
-func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWorker bool) {
+func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWorker bool, verbose bool) {
 	// Configure logger, if local worker is disabled, do not print to stdout
-	err := utils.ConfigureLogger(disableLocalWorker)
+	err := utils.ConfigureLogger(verbose || disableLocalWorker)
 	if err != nil {
 		pterm.Error.Printfln(err.Error())
 		return

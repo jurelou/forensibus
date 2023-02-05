@@ -3,6 +3,9 @@
 <!-- <h2><strong>Forensibus</strong></h2> -->
 <p>Forensibus is a forensics <a href="https://en.wikipedia.org/wiki/Extract,_transform,_load">ETL</a> that focuses on processing digital forensics artefacts</p>
 <p>
+    <a href="https://github.com/jurelou/forensibus/actions/workflows/test.yml">
+    <img src="https://github.com/jurelou/forensibus/actions/workflows/test.yml/badge.svg"/>
+    </a>
     <a href="https://goreportcard.com/report/github.com/jurelou/forensibus">
     <img src="https://goreportcard.com/badge/github.com/jurelou/forensibus"/>
     </a>
@@ -35,8 +38,10 @@
 - processors as grpc plugins
 - utils/filesystem: add some file types to the filetype lib. (evtx, registry, text ...)
 - Add a --force flag to the run command, force exec even if some errors appear (some workers are unavailable, ....)
+- Find/extract (hcl) patterns is optional and defaults to ".*"
 - Find (hcl) Add a `recurse` boolean
 - Find (hcl) Add a `type` option file/dir (file by default)
+- find / extract (hcl): Add exclusion patterns / exclusion mime types (eg: yara pipeline should not scan archives)
 - set windows releases PE ressources : https://github.com/tc-hib/go-winres- cli: Add worker ping, plugin list, plugin info, ....
 - Add more archives extraction types
 - splunk: configure event_renderers.conf to set event colors

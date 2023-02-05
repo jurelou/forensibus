@@ -109,8 +109,8 @@ func watchEvents(watcher *fsnotify.Watcher, cb onWriteCallback) {
 	}
 }
 
-func Watch(pipelineconfigFile string, paths []string, tag string, disableLocalWorker bool) {
-	err := utils.ConfigureLogger(disableLocalWorker)
+func Watch(pipelineconfigFile string, paths []string, tag string, disableLocalWorker bool, verbose bool) {
+	err := utils.ConfigureLogger(verbose || disableLocalWorker)
 	if err != nil {
 		pterm.Error.Printfln(err.Error())
 		return

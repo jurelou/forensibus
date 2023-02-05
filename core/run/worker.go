@@ -51,7 +51,7 @@ func (w *Worker) Connect(address string) error {
 	}
 
 	w.Client = worker.NewWorkerClient(conn)
-	pong, err := w.Ping(1)
+	pong, err := w.Ping(4)
 	if err != nil {
 		return err
 	}
@@ -64,7 +64,7 @@ func (w *Worker) Ping(timeout int) (*worker.Pong, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	defer cancel()
 
-	for attempts := 0; attempts < 2; attempts++ {
+	for attempts := 0; attempts <= timeout; attempts++ {
 		pong, err := w.Client.Ping(ctx, &worker.PingRequest{Identifier: "forensibusCore"}) // TODO: get hostname here
 		if err == nil && pong != nil {
 			return pong, nil
@@ -85,6 +85,7 @@ func (w *Worker) Work(wg *sync.WaitGroup, tStart <-chan TaskStarted, tEnd chan<-
 			Processor:    task.ProcessConfig.Name,
 			Config:       task.ProcessConfig.Config,
 			Tag:          task.Tag,
+			Sourcetype:	  task.ProcessConfig.Sourcetype,
 		})
 		jobErrors := res.GetErrors()
 		jobStatus := res.GetStatus()

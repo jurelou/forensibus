@@ -49,6 +49,7 @@ type FindConfig struct {
 
 type ProcessConfig struct {
 	Name   string            `hcl:"name,label"`
+	Sourcetype string		 `hcl:"sourcetype,optional"`
 	Config map[string]string `hcl:"config,optional"`
 }
 
@@ -67,6 +68,12 @@ type Step struct {
 
 type WalkCallback func(interface{}, []Step) []Step
 
+// func SetDefaults(config *Config) {
+// 	for _, extract := range config.Pipeline.Extracts {
+// 		fmt.Println(">>>", extract)
+// 	}
+// 	return
+// }
 func LoadDSLFile(filePath string) (Config, error) {
 	var config Config
 
@@ -75,6 +82,8 @@ func LoadDSLFile(filePath string) (Config, error) {
 		// log.Fatalf("Failed to load configuration: %s", err)
 		return config, fmt.Errorf("could not decode file %s: %w", filePath, err)
 	}
+
+	// SetDefaults(&config)
 	return config, nil
 }
 

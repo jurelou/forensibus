@@ -32,7 +32,7 @@ func (EvtxProcessor) Run(in string, _ *processors.Config, out writer.OutputWrite
 		}
 	}()
 
-	out.SetDefaultSourceType("evtxdump")
+	out.SetDefaultSourceType("forensibus:evtx")
 
 	return parseEvtx(fd, out)
 }

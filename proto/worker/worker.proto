@@ -24,9 +24,10 @@ message Pong {
 message WorkRequest {
     string tag = 1;
     string source = 2;
-    string outputFolder = 3;
-    string processor = 4;
-    map<string,string> config = 5;
+    string processor = 3;
+    string sourcetype = 4;
+    string outputFolder = 5;
+    map<string,string> config = 6;
 }
 
 message WorkResponse {

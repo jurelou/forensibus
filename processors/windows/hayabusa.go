@@ -58,9 +58,9 @@ func (proc *HayabusaProcessor) Configure() error {
 func (proc *HayabusaProcessor) Run(in string, config *processors.Config, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
 
-	evtxExt, err := config.GetString("evtx_extension")
-	if err != nil {
-		errors.Add(err)
+	evtxExt, exists := config.GetString("evtx_extension")
+	if !exists {
+		errors.Add(fmt.Errorf("Missing hayabusa config: evtx_extension"))
 		return errors
 	}
 	outFile, err := proc.RunHayabusa(in, evtxExt, out.GetTag())

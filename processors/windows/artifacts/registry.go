@@ -40,7 +40,7 @@ type AppCompatCacheEntry struct {
 }
 
 func dumpAppCompatCache(nk *regparser.CM_KEY_NODE, out writer.OutputWriter) {
-	out.SetDefaultSourceType("forensibus_appcompatcache")
+	out.SetDefaultSourceType("forensibus:appcompatcache")
 
 	for _, value := range nk.Values() {
 		if value.ValueName() != "AppCompatCache" {
@@ -118,7 +118,7 @@ func (RegistryProcessor) Run(in string, _ *processors.Config, out writer.OutputW
 		errors.Add(fmt.Errorf("could not find root cell from %s", in))
 		return errors
 	}
-	out.SetDefaultSourceType("forensibus_registry")
+	out.SetDefaultSourceType("forensibus:registry")
 	rec(nk, "", out)
 
 	return errors

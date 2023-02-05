@@ -14,13 +14,6 @@ pipeline "DFIR-ORC" {
   //       process "ese" {}
   // }
 
-    //   find "System registry hives" {
-    //     patterns = [".*"]
-    //     mime_types = ["MS Windows registry file"]
-
-    //     process "registry" {}
-    //   }
-    // }
 
   process "sigma" {
     config = {

@@ -1,4 +1,4 @@
-processorTimeout: 120 # seconds
+processorTimeout: 1800 # 30 minutes
 outputFolder: /tmp/forensibus
 tempFolder: /tmp/forensibus_tmp
 yaraRulesFolder: ./external/yara_rules

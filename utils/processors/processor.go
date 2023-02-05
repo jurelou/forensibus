@@ -1,8 +1,6 @@
 package processors
 
 import (
-	"fmt"
-
 	"github.com/jurelou/forensibus/utils/writer"
 )
 
@@ -21,10 +19,10 @@ type Config struct {
 	RawConfig map[string]string
 }
 
-func (conf Config) GetString(key string) (string, error) {
+func (conf Config) GetString(key string) (string, bool) {
 	val, exists := conf.RawConfig[key]
 	if exists {
-		return val, nil
+		return val, true
 	}
-	return "", fmt.Errorf("config key %s does not exists", key)
+	return "", false
 }

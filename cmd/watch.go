@@ -14,6 +14,7 @@ var (
 	watchPipelineConfig string
 	watchTag            string
 	watchDisableWorker  bool
+	watchVerbose		bool
 
 	watchCmd = &cobra.Command{
 		Use:     "watch [path]",
@@ -37,7 +38,7 @@ var (
 			if !utils.FileExists(watchPipelineConfig) {
 				return fmt.Errorf("%s file does not exists", watchPipelineConfig)
 			}
-			watch.Watch(watchPipelineConfig, utils.UniqueListOfStrings(filepaths), watchTag, watchDisableWorker)
+			watch.Watch(watchPipelineConfig, utils.UniqueListOfStrings(filepaths), watchTag, watchDisableWorker, verbose)
 			return nil
 		},
 	}
@@ -49,6 +50,7 @@ func init() {
 	watchCmd.PersistentFlags().StringVarP(&watchPipelineConfig, "pipeline", "p", "", "A pipeline configuration file.")
 	watchCmd.PersistentFlags().StringVarP(&watchTag, "tag", "t", "", "Tag the process to identify it more easily")
 	watchCmd.PersistentFlags().BoolVarP(&watchDisableWorker, "disable_worker", "d", false, "Disable local worker")
+	watchCmd.PersistentFlags().BoolVarP(&watchVerbose, "verbose", "v", false, "Increase logs verbosity")
 
 	err := watchCmd.MarkPersistentFlagRequired("pipeline")
 	if err != nil {

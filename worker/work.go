@@ -13,9 +13,10 @@ import (
 func (*Server) Work(_ context.Context, in *worker.WorkRequest) (*worker.WorkResponse, error) {
 	procName := in.GetProcessor()
 	source := in.GetSource()
-	config := in.GetConfig()
+	sourcetype := in.GetSourcetype()
+	rawConfig := in.GetConfig()
 	tag := in.GetTag()
-	utils.Log.Infof("Got a task (%s): %s with config %v", procName, source, config)
+	utils.Log.Infof("Got a task (%s): %s with config %v", procName, source, rawConfig)
 
 	// Try to load the processor
 	processor, err := processors.Get(procName)
@@ -28,19 +29,24 @@ func (*Server) Work(_ context.Context, in *worker.WorkRequest) (*worker.WorkResp
 	// TODO: make writer global
 	out := writer.New()
 	out.SetTag(tag)
-	out.SetDefaultSourceType("forensibus:" + procName)
 	out.SetDefaultSource(source)
 	out.SetDefaultIndex(utils.Config.Splunk.Index)
 
+	if sourcetype != "" {
+		out.SetDefaultSourceType(sourcetype)
+	} else {
+		out.SetDefaultSourceType("forensibus:" + procName)
+	}
+
 	// Run the processor
-	pErrors := processor.Run(source, &processors.Config{RawConfig: config}, out)
+	pErrors := processor.Run(source, &processors.Config{RawConfig: rawConfig}, out)
 	if !pErrors.Empty() {
 		errStrings := pErrors.AsStrings()
 		utils.Log.Warnf("Got %d errors while running %s against %s: %v", pErrors.Len(), procName, source, errStrings)
 
 		formattedErr := fmt.Sprintf("{\"processor\": \"%s\", \"errors\": %s}", procName, pErrors.AsJson())
 		ev := writer.NewEvent(formattedErr)
-		ev.SourceType = "forensibus_errors"
+		ev.SourceType = "forensibus:processor_errors"
 		out.WriteEvent(ev)
 
 		out.Close()
