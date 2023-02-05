@@ -45,13 +45,6 @@
   url = "/docs/features/introduction/"
 
 [[main]]
-  name = "Supported artifacts"
-  weight = 40
-  identifier = "supported-artifacts"
-  url = "/docs/features/artifacts/"
-  parent = "get-started"
-
-[[main]]
   name = "Quick Start"
   weight = 50
   identifier = "quick-start"
