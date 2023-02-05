@@ -15,6 +15,7 @@ require (
 	go.uber.org/zap v1.24.0
 	google.golang.org/grpc v1.52.3
 	google.golang.org/protobuf v1.28.1
+	gopkg.in/ini.v1 v1.67.0
 	www.velocidex.com/golang/evtx v0.2.0
 	www.velocidex.com/golang/go-ese v0.1.0
 	www.velocidex.com/golang/go-ntfs v0.1.1
@@ -58,7 +59,6 @@ require (
 	golang.org/x/term v0.4.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
 	google.golang.org/genproto v0.0.0-20230104163317-caabf589fcbf // indirect
-	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	www.velocidex.com/golang/binparsergen v0.1.1-0.20201101234514-bbdb29f9ee31 // indirect
 	www.velocidex.com/golang/go-pe v0.1.1-0.20211006062218-8f6d1ad6b2d5 // indirect

@@ -18,7 +18,7 @@ pipeline "DFIR-ORC" {
   find "all" {
         patterns = [".*"]
 
-        process "mft" {}
+        process "ini" {}
   }
 
 }

@@ -1,0 +1,4 @@
+some = test
+[ZoneTransfer]
+ZoneId=3
+HostUrl=https://example.com
