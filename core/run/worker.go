@@ -20,6 +20,7 @@ import (
 	_ "github.com/jurelou/forensibus/processors/windows/artifacts"
 	_ "github.com/jurelou/forensibus/processors/windows/commands"
 	_ "github.com/jurelou/forensibus/processors/windows/ese"
+	_ "github.com/jurelou/forensibus/processors/windows/ntfs"
 )
 
 type Job struct {
@@ -85,7 +86,7 @@ func (w *Worker) Work(wg *sync.WaitGroup, tStart <-chan TaskStarted, tEnd chan<-
 			Processor:    task.ProcessConfig.Name,
 			Config:       task.ProcessConfig.Config,
 			Tag:          task.Tag,
-			Sourcetype:	  task.ProcessConfig.Sourcetype,
+			Sourcetype:   task.ProcessConfig.Sourcetype,
 		})
 		jobErrors := res.GetErrors()
 		jobStatus := res.GetStatus()

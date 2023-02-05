@@ -14,7 +14,7 @@ var (
 	pipelineconfig string
 	tag            string
 	disableWorker  bool
-	verbose bool
+	verbose        bool
 
 	runCmd = &cobra.Command{
 		Use:     "run [path]",

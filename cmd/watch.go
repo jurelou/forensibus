@@ -14,7 +14,7 @@ var (
 	watchPipelineConfig string
 	watchTag            string
 	watchDisableWorker  bool
-	watchVerbose		bool
+	watchVerbose        bool
 
 	watchCmd = &cobra.Command{
 		Use:     "watch [path]",

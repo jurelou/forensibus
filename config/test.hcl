@@ -15,10 +15,10 @@ pipeline "DFIR-ORC" {
   // }
 
 
-  process "sigma" {
-    config = {
-      evtx_extension = ".evtx_data"
-    }
+  find "all" {
+        patterns = [".*"]
+
+        process "mft" {}
   }
 
 }

@@ -8,8 +8,8 @@ pipeline "yara" {
 
     find "all files" {
         patterns = [".*"]
-        process "yara" {}
 
+        process "yara" {}
     }
   }
 }
