@@ -19,29 +19,21 @@ import (
 type onWriteCallback func(fsnotify.Event)
 
 var (
-	serverAddress = "localhost:50051"
-	mu            sync.Mutex
-	waitFor       = 5 * time.Second
-	timers        = make(map[string]*time.Timer)
+	mu      sync.Mutex
+	waitFor = 5 * time.Second
+	timers  = make(map[string]*time.Timer)
 )
 
-func monitorResults(startedProcesses <-chan run.ProcessStarted, endedTasks <-chan run.TaskEnded) {
+func monitorResults(endedTasks <-chan run.TaskEnded) {
 	for {
-		select {
-		// case proc, ok := <-startedProcesses:
-		// 	if !ok {
-		// 		break
-		// 	}
-		// 	pterm.Success.Println("START", proc)
-		case task, ok := <-endedTasks:
-			if !ok {
-				break
-			}
-			if utils.IsErrored(task.Status) {
-				pterm.Error.Printfln("Processor %s failed (%d errors) against %s: %v", task.Name, len(task.Errors), task.Source, task.Errors)
-			} else {
-				pterm.Success.Printfln("Successfully ran %s against %s", task.Name, task.Source)
-			}
+		task, ok := <-endedTasks
+		if !ok {
+			break
+		}
+		if utils.IsErrored(task.Status) {
+			pterm.Error.Printfln("Processor %s failed (%d errors) against %s: %v", task.Name, len(task.Errors), task.Source, task.Errors)
+		} else {
+			pterm.Success.Printfln("Successfully ran %s against %s", task.Name, task.Source)
 		}
 	}
 }
@@ -152,7 +144,7 @@ func Watch(pipelineconfigFile string, paths []string, tag string, disableLocalWo
 	}
 	defer watcher.Close()
 
-	go monitorResults(startedProcesses, endedTasks)
+	go monitorResults(endedTasks)
 	go watchEvents(watcher, func(event fsnotify.Event) {
 		fileInfo, err := os.Stat(event.Name)
 		if err != nil {

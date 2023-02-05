@@ -60,7 +60,7 @@ func (proc *HayabusaProcessor) Run(in string, config *processors.Config, out wri
 
 	evtxExt, exists := config.GetString("evtx_extension")
 	if !exists {
-		errors.Add(fmt.Errorf("Missing hayabusa config: evtx_extension"))
+		errors.Add(fmt.Errorf("missing hayabusa config: evtx_extension"))
 		return errors
 	}
 	outFile, err := proc.RunHayabusa(in, evtxExt, out.GetTag())

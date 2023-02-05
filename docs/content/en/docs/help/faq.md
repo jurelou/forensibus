@@ -13,7 +13,7 @@ weight: 630
 toc: true
 ---
 
-## Hyas?
+<!-- ## Hyas?
 
 Doks is a [Hyas theme](https://gethyas.com/themes/) build by the creator of Hyas.
 
@@ -47,4 +47,4 @@ Send `h-enk` a message:
 
 - [Netlify Community](https://community.netlify.com/)
 - [Hugo Forums](https://discourse.gohugo.io/)
-- [Doks Discussions](https://github.com/h-enk/doks/discussions)
+- [Doks Discussions](https://github.com/h-enk/doks/discussions) -->

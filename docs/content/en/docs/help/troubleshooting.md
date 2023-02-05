@@ -13,7 +13,7 @@ weight: 620
 toc: true
 ---
 
-## Problems updating npm packages
+<!-- ## Problems updating npm packages
 
 Delete the `./node_modules` folder, and run again:
 
@@ -27,4 +27,4 @@ Delete the temporary directories:
 
 ```bash
 npm run clean
-```
+``` -->

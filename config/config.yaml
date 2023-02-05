@@ -10,10 +10,6 @@ splunk:
   hec:
     address: http://localhost:8088
     token: 42424242-4242-4242-4242-424242424242
-  # management:
-  #   address: https://localhost:8089
-  #   username: admin
-  #   password: password
 
 ArchivePasswords:
   - avproof

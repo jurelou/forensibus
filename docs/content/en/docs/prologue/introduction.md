@@ -15,7 +15,7 @@ toc: true
 
 Forensibus is a modern data processing tool dedicated to forensic analysts and incident responders. It was built to solve the following problems:
 
-- Forensic data comes in a wide variety of formats. In case of incident response, the format may not be known in advance (DFIR collection tools, raw disks, event logs, EDR telemetry, ...).
+- In most companies data tends to be in silos, stored in various formats and is often inaccurate or inconsistent (DFIR collection tools, raw disks, event logs, EDR telemetry, ...).
 
 - These challenges are exacerbated by the increase in the size of the networks and the volume of data collected. Improved efficiency of the digital investigation process is needed, in terms of increasing the speed and reducing the human effort.
 
@@ -25,9 +25,9 @@ Forensibus aims to improve efficiency by emphasizing automation within the digit
 
 ## Architecture Overview
 
-The objective is to carry out the ETL (extract - transform - load) process by reading the raw artifacts and then formatting them so that they can be loaded into a database for further analysis.
+Forensibus is an ETL focused on digital forensics artifacts. ETL stands for _Extract-Transform-Load_, is usually involves moving data from one or many sources, making changes, and then loading it into a new single destination.
 
-![Green Sea Turtle Hatchling by Hannah Le Leu](/flow.png)
+![flow](/flow.png)
 
 {{< alert icon="👉" text="Currently, forensibus does not supports writing to elasticsearch." />}}
 

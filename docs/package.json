@@ -69,6 +69,7 @@
     "hugo": "0.107.0"
   },
   "dependencies": {
+    "mermaid": "^9.3.0",
     "netlify-lambda": "^2.0.15"
   }
 }

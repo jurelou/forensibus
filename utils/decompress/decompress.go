@@ -55,7 +55,6 @@ func Decompress(in string, out string) (string, error) {
 		return "", fmt.Errorf("file %s does not exists", in)
 	}
 	outputFolder, err := genOutputFolder(in, out)
-
 	if err != nil {
 		return "", err
 	}
