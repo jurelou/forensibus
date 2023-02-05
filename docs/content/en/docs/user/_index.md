@@ -1,10 +1,10 @@
 ---
-title : "User guide"
-description: "Prologue Doks."
+title : "User manual"
+description: "User manual"
 lead: ""
 date: 2020-10-06T08:48:45+00:00
 lastmod: 2020-10-06T08:48:45+00:00
 draft: false
 images: []
-weight: 150
+weight: 200
 ---

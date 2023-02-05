@@ -9,9 +9,74 @@ images: []
 menu:
   docs:
     parent: "prologue"
-weight: 110
+weight: 210
 toc: true
 ---
+
+While Internet access is required to build forensibus, it is not required at runtime.
+
+dfTimewolf is typically run by specifying a recipe name and any arguments the recipe defines. For example:
+
+>> dftimewolf plaso_ts /tmp/path1,/tmp/path2 --incident_id 12345
+
+This will launch the plaso_ts recipe against path1 and path2 in /tmp. In this recipe --incident_id is used by Timesketch as a sketch description.
+
+Details on a recipe can be obtained using the standard python help flags:
+
+$ dftimewolf -h
+[2020-10-06 14:29:42,111] [dftimewolf          ] INFO     Logging to stdout and /tmp/dftimewolf.log
+[2020-10-06 14:29:42,111] [dftimewolf          ] DEBUG    Recipe data path: /Users/tomchop/code/dftimewolf/data
+[2020-10-06 14:29:42,112] [dftimewolf          ] DEBUG    Configuration loaded from: /Users/tomchop/code/dftimewolf/data/config.json
+usage: dftimewolf [-h]
+                             {aws_forensics,gce_disk_export,gcp_forensics,gcp_logging_cloudaudit_ts,gcp_logging_cloudsql_ts,...}
+
+Available recipes:
+
+ aws_forensics                      Copies a volume from an AWS account to an analysis VM.
+ gce_disk_export                    Export disk image from a GCP project to Google Cloud Storage.
+ gcp_forensics                      Copies disk from a GCP project to an analysis VM.
+ gcp_logging_cloudaudit_ts          Collects GCP logs from a project and exports them to Timesketch.
+ [...]
+
+positional arguments:
+  {aws_forensics,gce_disk_export,gcp_forensics,gcp_logging_cloudaudit_ts,...}
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+
+
+
+To get details on an individual recipe, call the recipe with the -h flag.
+
+
+
+
+
+
+
+
+
+Running a recipe¶
+One typically invokes dftimewolf with a recipe name and a few arguments. For example:
+
+$ dftimewolf <RECIPE_NAME> arg1 arg2 --optarg1 optvalue1
+Given the help output above, you can then use the recipe like this:
+
+$ dftimewolf grr_artifacts_ts tomchop.greendale.xyz collection_reason
+If you only want to collect browser activity:
+
+$ dftimewolf grr_artifacts_ts tomchop.greendale.xyz collection_reason --artifact_list=BrowserHistory
+In the same way, if you want to specify one (or more) approver(s):
+
+$ dftimewolf grr_artifacts_ts tomchop.greendale.xyz collection_reason --artifact_list=BrowserHistory --approvers=admin
+$ dftimewolf grr_artifacts_ts tomchop.greendale.xyz collection_reason --artifact_list=BrowserHistory --approve
+
+
+
+
+
+
 
 ## Requirements
 
