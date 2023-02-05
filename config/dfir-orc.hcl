@@ -5,6 +5,54 @@ pipeline "DFIR-ORC" {
     patterns = ["/Collect_[^/]*.7z$", "/DFIR-[^/]*.7z$", "/ORC_[^/]*.7z$"]
     mime_types = ["7-zip archive data"]
 
+    find "Autoruns file" {
+        patterns = ["[Aa]utoruns.csv$"]
+
+        process "csv" {
+          sourcetype = "forensibus:autoruns"
+        }
+    }
+
+    find "Processes files" {
+        patterns = ["[Pp]rocesses\\d.csv$"]
+
+        process "csv" {
+          sourcetype = "forensibus:processes"
+        }
+    }
+
+    find "System info file" {
+        patterns = ["[Ss]ystem[Ii]nfo.csv$"]
+
+        process "csv" {
+          sourcetype = "forensibus:system_info"
+        }
+    }
+
+    find "Samples info file" {
+        patterns = ["GetSamples_sampleinfo.csv$"]
+
+        process "csv" {
+          sourcetype = "forensibus:samples_info"
+        }
+    }
+
+    find "Samples timeline file" {
+        patterns = ["GetSamples_timeline.csv$"]
+
+        process "csv" {
+          sourcetype = "forensibus:samples_timeline"
+        }
+    }
+
+    find "Objinfo file" {
+        patterns = ["GetObjInfo.csv$"]
+
+        process "csv" {
+          sourcetype = "forensibus:objinfo"
+        }
+    }
+
     extract "GetSamples archives" {
       patterns = ["/GetSamples.7z$"]
       mime_types = ["7-zip archive data"]
@@ -102,7 +150,7 @@ pipeline "DFIR-ORC" {
         patterns = ["NTFSInfo_[^/]*.csv$"]
 
         process "csv" {
-          sourcetype = "forensibus:ntfs:ntfsinfo"
+          sourcetype = "forensibus:ntfs_info"
         }
       }
     }
@@ -115,7 +163,7 @@ pipeline "DFIR-ORC" {
         patterns = ["I30Info_[^/]*.csv$"]
 
         process "csv" {
-          sourcetype = "forensibus:ntfs:i30info"
+          sourcetype = "forensibus:ntfs_i30info"
         }
       }
     }
@@ -128,7 +176,7 @@ pipeline "DFIR-ORC" {
         patterns = ["SecDescr?_[^/]*.csv$"]
 
         process "csv" {
-          sourcetype = "forensibus:ntfs:security_descriptors"
+          sourcetype = "forensibus:ntfs_security_descriptors"
         }
       }
     }
@@ -141,7 +189,7 @@ pipeline "DFIR-ORC" {
         patterns = ["/USNInfo_[^/]*.csv$"]
 
         process "csv" {
-          sourcetype = "forensibus:ntfs:usninfo"
+          sourcetype = "forensibus:ntfs_usninfo"
         }
       }
     }

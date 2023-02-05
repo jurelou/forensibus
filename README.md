@@ -31,7 +31,8 @@
 
 # Getting started
 
-# TODO
+# Roadmap
+
 - A single processor processes multiple files at once
 - Add support for yara arguments (filepath, filename, extension, ...)
 - wrap errors properly
@@ -42,7 +43,8 @@
 - Find (hcl) Add a `recurse` boolean
 - Find (hcl) Add a `type` option file/dir (file by default)
 - find / extract (hcl): Add exclusion patterns / exclusion mime types (eg: yara pipeline should not scan archives)
-- set windows releases PE ressources : https://github.com/tc-hib/go-winres- cli: Add worker ping, plugin list, plugin info, ....
+- set windows releases PE ressources : https://github.com/tc-hib/go-winres
+- cli: Add worker ping, plugin list, plugin info, ....
 - Add more archives extraction types
 - splunk: configure event_renderers.conf to set event colors
 - splunk HEC configure indexer acknowledgement
@@ -50,6 +52,7 @@
 - extract: add parralelism
 - check goroutines /file descriptors leaks
 - Bufferize progress bar (it becomes slow when there is tons of fast tasks like yara)
+
 # License
 
 Source code in `forensibus` is available under the [GNU General Public License v3.0](/LICENSE).
