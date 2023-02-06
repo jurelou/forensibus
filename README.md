@@ -22,6 +22,8 @@
 </div>
 
 --
+> **Warning**
+> Forensibus is currently in Alpha release.
 
 # Features
 
