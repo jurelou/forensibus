@@ -1874,8 +1874,6 @@ rule HackTool_PY_ImpacketObfuscation_1
         $s2 = "class RemoteShell" nocase
         $s3 = "self.services_names"
         $s4 = "import random"
-        $s6 = /self\.__shell[\x09\x20]{0,32}=[\x09\x20]{0,32}[\x22\x27]%CoMSpEC%[\x09\x20]{1,32}\/q[\x09\x20]{1,32}\/K [\x22\x27]/ nocase
-        $s7 = /self\.__serviceName[\x09\x20]{0,32}=[\x09\x20]{0,32}self\.services_names\[random\.randint\([\x09\x20]{0,32}0[\x09\x20]{0,32},[\x09\x20]{0,32}len\(self\.services_names\)[\x09\x20]{0,32}-[\x09\x20]{0,32}1\)\]/
     condition:
         all of them
 }
@@ -2001,6 +1999,7 @@ rule HackTool_MSIL_PXELOOT_2
     condition:
         (uint16(0) == 0x5A4D and uint32(uint32(0x3C)) == 0x00004550) and $msil and all of ($str*)
 }
+
 rule APT_HackTool_MSIL_PRAT_1
 {
     meta:
@@ -2461,8 +2460,6 @@ rule HackTool_PY_ImpacketObfuscation_2
         $s1 = "import random"
         $s2 = "class WMIEXEC" nocase
         $s3 = "class RemoteShell" nocase
-        $s4 = /=[\x09\x20]{0,32}str\(int\(time\.time\(\)\)[\x09\x20]{0,32}-[\x09\x20]{0,32}random\.randint\(\d{1,10}[\x09\x20]{0,32},[\x09\x20]{0,32}\d{1,10}\)\)[\x09\x20]{0,32}\+[\x09\x20]{0,32}str\(uuid\.uuid4\(\)\)\.split\([\x22\x27]\-[\x22\x27]\)\[0\]/
-        $s5 = /self\.__shell[\x09\x20]{0,32}=[\x09\x20]{0,32}[\x22\x27]cmd.exe[\x09\x20]{1,32}\/q[\x09\x20]{1,32}\/K [\x22\x27]/ nocase
     condition:
         all of them
 }
@@ -2642,7 +2639,7 @@ rule HackTool_MSIL_PuppyHound_1
         $2 = "UserDomainKey"
         $3 = "LdapBuilder"
         $init = { 28 [2] 00 0A 0A 72 [2] 00 70 1? ?? 28 [2] 00 0A 72 [2] 00 70 1? ?? 28 [2] 00 0A 28 [2] 00 0A 0B 1F 2D }
-        $msil = /\x00_Cor(Exe|Dll)Main\x00/
+        $msil = "/\x00_Cor(Exe|Dll)Main\x00/"
     condition:
         (uint16(0) == 0x5A4D and uint32(uint32(0x3C)) == 0x00004550) and all of them
 }
@@ -2662,7 +2659,6 @@ rule APT_Builder_PY_MATRYOSHKA_1
         $s4 = "os.system(\"cargo build {0} --bin {1}\".format("
         $s5 = "shutil.which('rustc')"
         $s6 = "~/.cargo/bin"
-        $s7 = /[\x22\x27]\\\\x[\x22\x27]\.join\(\[\w{1,64}\[\w{1,64}:\w{1,64}[\x09\x20]{0,32}\+[\x09\x20]{0,32}2\]/
     condition:
         all of them
 }

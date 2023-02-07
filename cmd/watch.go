@@ -38,7 +38,7 @@ var (
 			if !utils.FileExists(watchPipelineConfig) {
 				return fmt.Errorf("%s file does not exists", watchPipelineConfig)
 			}
-			watch.Watch(watchPipelineConfig, utils.UniqueListOfStrings(filepaths), watchTag, watchDisableWorker, verbose)
+			watch.Watch(watchPipelineConfig, utils.UniqueListOfStrings(filepaths), watchTag, watchDisableWorker, watchVerbose)
 			return nil
 		},
 	}

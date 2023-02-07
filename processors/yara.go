@@ -23,11 +23,11 @@ func (proc *YaraProcessor) Configure() error {
 		return fmt.Errorf("could not initialize yara compiler: %w", err)
 	}
 	yaraFiles, err := utils.FindFiles(utils.FindFilesParams{
-		Path:         utils.Config.YaraRulesFolder,
+		Path:         "./external/yara_rules",
 		PathPatterns: []string{".*.yara?$", ".*.yas$"},
 	})
 	if err != nil {
-		return fmt.Errorf("could not list files in %s: %w", utils.Config.YaraRulesFolder, err)
+		return fmt.Errorf("could not list files in ./external/yara_rules: %w", err)
 	}
 	for _, file := range yaraFiles {
 		f, err := os.Open(file)
@@ -81,5 +81,5 @@ func (proc *YaraProcessor) Run(in string, _ *processors.Config, out writer.Outpu
 }
 
 func init() {
-	processors.Register("yara", &YaraProcessor{})
+	// processors.Register("yara", &YaraProcessor{})
 }

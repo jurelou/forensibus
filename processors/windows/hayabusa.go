@@ -97,7 +97,8 @@ func (proc *HayabusaProcessor) RunHayabusa(in, evtxExtension, tag string) (strin
 	if err != nil {
 		return "", fmt.Errorf("invalid input %s: %w", in, err)
 	}
-	outputFile := filepath.Join(utils.Config.TempFolder, fmt.Sprintf("hayabusa_%s_%s.json", tag, uuid.NewString()))
+	// TODO: replace /tmp/forensibus_tmp by a config param
+	outputFile := filepath.Join("/tmp/forensibus_tmp", fmt.Sprintf("hayabusa_%s_%s.json", tag, uuid.NewString()))
 	args := []string{
 		"json-timeline",
 		"--quiet-errors",
@@ -111,7 +112,7 @@ func (proc *HayabusaProcessor) RunHayabusa(in, evtxExtension, tag string) (strin
 		"--target-file-ext",
 		evtxExtension,
 		"--rules",
-		utils.Config.SigmaRulesFolder,
+		"./external/sigma_rules", // TODO: replace by a config key
 		"--output",
 		outputFile,
 	}

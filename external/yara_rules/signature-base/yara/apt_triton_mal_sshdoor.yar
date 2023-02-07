@@ -105,15 +105,15 @@ rule MAL_LNX_SSHDOOR_Triton {
 
       /* atollon */
       // single byte offset from base pointer
-      $atollon_bp = /(\xC6\x45.{2}){25}/
+      $atollon_bp = "/(\xC6\x45.{2}){25}/"
       // dword ss with single byte offset from base pointer
-      $atollon_bp_dw = /(\xC7\x45.{5}){20}/
+      $atollon_bp_dw = "/(\xC7\x45.{5}){20}/"
       // 4-bytes offset from base pointer
-      $atollon_bp_off = /(\xC6\x85.{5}){25}/
+      $atollon_bp_off = "/(\xC6\x85.{5}){25}/"
       // single byte offset from stack pointer
-      $atollon_sp = /(\xC6\x44\x24.{2}){25}/
+      $atollon_sp = "/(\xC6\x44\x24.{2}){25}/"
       // 4-bytes offset from stack pointer
-      $atollon_sp_off = /(\xC6\x84\x24.{5}){25}/
+      $atollon_sp_off = "/(\xC6\x84\x24.{5}){25}/"
       /* other strings */
       $atollon_f1 = "PEM_read_RSA_PUBKEY"
       $atollon_f2 = "RAND_add"

@@ -11,10 +11,11 @@ import (
 )
 
 var (
-	pipelineconfig string
-	tag            string
-	disableWorker  bool
-	verbose        bool
+	// pipelineconfig string
+	// tag            string
+	// disableWorker  bool
+	// verbose        bool
+	args = run.NewRunargs()
 
 	runCmd = &cobra.Command{
 		Use:     "run [path]",
@@ -39,10 +40,11 @@ var (
 		},
 
 		RunE: func(cmd *cobra.Command, filepaths []string) error {
-			if !utils.FileExists(pipelineconfig) {
-				return fmt.Errorf("%s file does not exists", pipelineconfig)
+			args.Targets = utils.UniqueListOfStrings(filepaths)
+			if err := args.Validate(); err != nil {
+				return err
 			}
-			run.Run(pipelineconfig, utils.UniqueListOfStrings(filepaths), tag, disableWorker, verbose)
+			run.Run(args)
 			return nil
 		},
 	}
@@ -51,10 +53,10 @@ var (
 func init() {
 	rootCmd.AddCommand(runCmd)
 
-	runCmd.PersistentFlags().StringVarP(&pipelineconfig, "pipeline", "p", "", "A pipeline configuration file.")
-	runCmd.PersistentFlags().StringVarP(&tag, "tag", "t", "", "Tag the process to identify it more easily")
-	runCmd.PersistentFlags().BoolVarP(&disableWorker, "disable_worker", "d", false, "Disable local worker")
-	runCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Increase logs verbosity")
+	runCmd.PersistentFlags().StringVarP(&args.PipelineFile, "pipeline", "p", "", "A pipeline configuration file.")
+	runCmd.PersistentFlags().StringVarP(&args.Tag, "tag", "t", "", "Tag the process to identify it more easily")
+	runCmd.PersistentFlags().BoolVarP(&args.DisableLocalWorker, "disable_worker", "d", false, "Disable local worker")
+	runCmd.PersistentFlags().BoolVarP(&args.Verbose, "verbose", "v", false, "Increase logs verbosity")
 
 	// runCmd.PersistentFlags().StringVarP(&splunkIndex, "splunk-index", "s", "", "Change default splunk index (WON'T BE CREATED).")
 

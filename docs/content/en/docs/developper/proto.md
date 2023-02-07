@@ -18,16 +18,25 @@ toc: true
 
 To use protobuf, you need to install the following dependencies:
 
+# protoc >= 3.15
+
 ```bash
-sudo apt install -y protobuf-compiler
-go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
-go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+PB_REL="https://github.com/protocolbuffers/protobuf/releases"
+curl -LO $PB_REL/download/v21.12/protoc-21.12-linux-x86_64.zip
+unzip protoc-21.12-linux-x86_64.zip -d $HOME/.local
+export PATH="$PATH:$HOME/.local/bin"
+```
+
+# Go grpc code generator
+
+```bash
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 ```
 
 See also the protobuf docs: [protobuf](https://grpc.io/docs/protoc-installation/).
 
 ## Update the protocol buffers
-
 
 ```bash
 protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/worker/worker.proto

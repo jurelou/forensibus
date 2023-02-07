@@ -50,7 +50,7 @@ func genOutputFolder(in string, out string) (string, error) {
 	return out, nil
 }
 
-func Decompress(in string, out string) (string, error) {
+func Decompress(in string, out string, passwords []string) (string, error) {
 	if exists := utils.FileExists(in); !exists {
 		return "", fmt.Errorf("file %s does not exists", in)
 	}
@@ -62,7 +62,7 @@ func Decompress(in string, out string) (string, error) {
 	magic := utils.GetMagic(in)
 
 	if strings.Contains(magic, "7-zip archive") || strings.Contains(magic, "Zip archive") {
-		return outputFolder, DecompressSevenZip(in, outputFolder)
+		return outputFolder, DecompressSevenZip(in, outputFolder, passwords)
 	}
 	// else if strings.Contains(magic, "Zip archive") {
 	// 	return outputFolder, DecompressSevenZip(in, outputFolder)

@@ -28,6 +28,10 @@ message WorkRequest {
     string sourcetype = 4;
     string outputFolder = 5;
     map<string,string> config = 6;
+
+    string splunkToken = 7;
+    string splunkIndex = 8;
+    string splunkAddress = 9;
 }
 
 message WorkResponse {

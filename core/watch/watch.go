@@ -136,7 +136,7 @@ func Watch(pipelineconfigFile string, paths []string, tag string, disableLocalWo
 	}
 	pterm.Info.Printfln("Running pipeline `%s`", config.Pipeline.Name)
 	pterm.Info.Printfln("Using tag `%s`", tag)
-	pterm.Info.Printfln("Using splunk index `%s`", utils.Config.Splunk.Index)
+	pterm.Info.Printfln("Using splunk index `%s`", "main") // TODO: make it a CLI arg
 
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {

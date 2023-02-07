@@ -11,7 +11,7 @@ import (
 )
 
 func Test7zInvalidFile(t *testing.T) {
-	err := decompress.DecompressSevenZip("./this_does_not_exists.xz", "/tmp/out")
+	err := decompress.DecompressSevenZip("./this_does_not_exists.xz", "/tmp/out", []string{})
 	if err == nil {
 		t.Fatalf("Decompress should fail on invalid file: `./this_does_not_exists.xz`")
 	}
@@ -27,7 +27,7 @@ func Test7zSimple7z(t *testing.T) {
 		t.Fatalf("Could not remove %s", outputFolder)
 	}
 
-	err = decompress.DecompressSevenZip(file, outputFolder)
+	err = decompress.DecompressSevenZip(file, outputFolder, []string{})
 	if err != nil {
 		t.Fatalf("Decompressing an archive should not generate an error: %s", err.Error())
 	}
@@ -53,9 +53,7 @@ func TestEncrypted7z(t *testing.T) {
 		t.Fatalf("Could not remove %s", outputFolder)
 	}
 
-	utils.Config.ArchivePasswords = []string{"good", "passwd"}
-
-	err = decompress.DecompressSevenZip(file, outputFolder)
+	err = decompress.DecompressSevenZip(file, outputFolder, []string{"good", "passwd"})
 	if err != nil {
 		t.Fatalf("Decompressing an encrypted archive should not generate an error")
 	}
@@ -81,9 +79,7 @@ func TestEncrypted7zInvalidPasswd(t *testing.T) {
 		t.Fatalf("Could not remove %s", outputFolder)
 	}
 
-	utils.Config.ArchivePasswords = []string{"invalid", "passw00rd"}
-
-	err = decompress.DecompressSevenZip(file, outputFolder)
+	err = decompress.DecompressSevenZip(file, outputFolder, []string{"invalid", "passw00rd"})
 	if err == nil {
 		t.Fatalf("Decompressing an encrypted archive with invalid passwords should fail")
 	}
@@ -93,10 +89,8 @@ func TestEncrypted7zInvalidPasswd(t *testing.T) {
 }
 
 func TestEncrypted7zWhithoutPasswords(t *testing.T) {
-	utils.Config.ArchivePasswords = []string{}
-
 	file := "../../datasets/archives/EmptyEncryptedPasswdIsPasswd.7z"
-	err := decompress.DecompressSevenZip(file, "/tmp/nope")
+	err := decompress.DecompressSevenZip(file, "/tmp/nope", []string{})
 	if err == nil {
 		t.Fatalf("Decompressing an encrypted archive whithout passwords should generate an error")
 	}

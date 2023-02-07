@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 
 	"github.com/jurelou/forensibus/proto/worker"
@@ -14,6 +13,8 @@ import (
 	_ "context"
 	_ "time"
 )
+
+var WorkersCount uint32 = 2
 
 // server is used to implement proto.WorkerServer.
 type Server struct {
@@ -55,9 +56,10 @@ func Run(workersCount uint32) {
 		return
 	}
 
-	viper.Set("WorkersCount", workersCount)
-	utils.Config.WorkersCount = workersCount
-	utils.Log.Infof("Launched with %d workers", utils.Config.WorkersCount)
+	// viper.Set("WorkersCount", workersCount)
+	// utils.Config.WorkersCount = workersCount
+	WorkersCount = workersCount
+	utils.Log.Infof("Launched with %d workers", WorkersCount)
 
 	port := 50051
 	err = RunWorkerServer(port)

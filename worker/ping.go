@@ -17,6 +17,5 @@ func (*Server) Ping(_ context.Context, in *worker.PingRequest) (*worker.Pong, er
 		return nil, err
 	}
 	// time.Sleep(10 * time.Second)
-	utils.Log.Infof("qsss %d", utils.Config.WorkersCount)
-	return &worker.Pong{Name: hostname, Capacity: utils.Config.WorkersCount}, nil
+	return &worker.Pong{Name: hostname, Capacity: WorkersCount}, nil
 }

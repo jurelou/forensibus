@@ -30,7 +30,7 @@ func (*Server) Work(_ context.Context, in *worker.WorkRequest) (*worker.WorkResp
 	out := writer.New()
 	out.SetTag(tag)
 	out.SetDefaultSource(source)
-	out.SetDefaultIndex(utils.Config.Splunk.Index)
+	out.SetDefaultIndex(in.GetSplunkIndex())
 
 	if sourcetype != "" {
 		out.SetDefaultSourceType(sourcetype)

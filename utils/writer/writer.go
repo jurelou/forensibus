@@ -1,9 +1,5 @@
 package writer
 
-import (
-	"github.com/jurelou/forensibus/utils"
-)
-
 var Registry = make(map[string]OutputWriter)
 
 type OutputWriter interface {
@@ -54,5 +50,5 @@ func (out *DefaultOutputWriter) GetTag() string {
 }
 
 func New() OutputWriter {
-	return NewHEC(utils.Config.Splunk.Hec.Address, utils.Config.Splunk.Hec.Token)
+	return NewHEC("http://localhost:8088", "42424242-4242-4242-4242-424242424242")
 }

@@ -12,21 +12,21 @@ import (
 )
 
 func TestDecompressToFile(t *testing.T) {
-	_, err := decompress.Decompress("../../dataset/archives/Simple.zip", "../../dataset/files/empty.txt")
+	_, err := decompress.Decompress("../../dataset/archives/Simple.zip", "../../dataset/files/empty.txt", []string{})
 	if err == nil {
 		t.Errorf("Decompress to a file should fail")
 	}
 }
 
 func TestDecompressUnknownFile(t *testing.T) {
-	_, err := decompress.Decompress("/tmp/.this_does_does_exists", "/tmp/out")
+	_, err := decompress.Decompress("/tmp/.this_does_does_exists", "/tmp/out", []string{})
 	if err == nil {
 		t.Errorf("Decompress should fail on invalid file")
 	}
 }
 
 func TestDecompressInvalidFile(t *testing.T) {
-	_, err := decompress.Decompress("../../datasets/pipelines/nested.hcl", "/tmp/out")
+	_, err := decompress.Decompress("../../datasets/pipelines/nested.hcl", "/tmp/out", []string{})
 	if err == nil {
 		t.Errorf("Decompress text file should fail")
 	}
@@ -41,7 +41,7 @@ func TestDecompressSameName(t *testing.T) {
 		t.Fatalf("Could not remove %s", outputFolder)
 	}
 	// 1st round
-	out, err = decompress.Decompress("../../datasets/archives/Simple.zip", outputFolder)
+	out, err = decompress.Decompress("../../datasets/archives/Simple.zip", outputFolder, []string{})
 	if err != nil {
 		t.Errorf("Error while decompressing Simple.zip: %s", err.Error())
 	}
@@ -55,7 +55,7 @@ func TestDecompressSameName(t *testing.T) {
 	}
 
 	// 2nd round
-	out, err = decompress.Decompress("../../datasets/archives/Simple.zip", outputFolder)
+	out, err = decompress.Decompress("../../datasets/archives/Simple.zip", outputFolder, []string{})
 	if err != nil {
 		t.Errorf("Error while decompressing Simple.zip a second time: %s", err.Error())
 	}
@@ -69,7 +69,7 @@ func TestDecompressSameName(t *testing.T) {
 	}
 
 	// 3rd round
-	out, err = decompress.Decompress("../../datasets/archives/Simple.zip", outputFolder)
+	out, err = decompress.Decompress("../../datasets/archives/Simple.zip", outputFolder, []string{})
 	if err != nil {
 		t.Errorf("Error while decompressing Simple.zip a third time: %s", err.Error())
 	}
@@ -93,7 +93,7 @@ func TestDecompress7z(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not remove %s", outputFolder)
 	}
-	_, err = decompress.Decompress("../../datasets/archives/Simple.7z", outputFolder)
+	_, err = decompress.Decompress("../../datasets/archives/Simple.7z", outputFolder, []string{})
 	if err != nil {
 		t.Errorf("Error while decompressing Simple.7z: %s", err.Error())
 	}
@@ -117,7 +117,7 @@ func TestDecompressZip(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not remove %s", outputFolder)
 	}
-	_, err = decompress.Decompress("../../datasets/archives/Simple.zip", outputFolder)
+	_, err = decompress.Decompress("../../datasets/archives/Simple.zip", outputFolder, []string{})
 	if err != nil {
 		t.Errorf("Error while decompressing Simple.7z: %s", err.Error())
 	}
@@ -142,9 +142,8 @@ func TestDecompressZipPasswd(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not remove %s", outputFolder)
 	}
-	utils.Config.ArchivePasswords = []string{"aa", "passwd", "bb"}
 
-	_, err = decompress.Decompress("../../datasets/archives/SimplePasswd.zip", outputFolder)
+	_, err = decompress.Decompress("../../datasets/archives/SimplePasswd.zip", outputFolder, []string{"aa", "passwd", "bb"})
 	if err != nil {
 		t.Errorf("Error while decompressing SimplePasswd.zip: %s", err.Error())
 	}
@@ -158,5 +157,23 @@ func TestDecompressZipPasswd(t *testing.T) {
 	}
 	if string(content) != "anotherfile content\n" {
 		t.Fatalf("output file `testfile` content differs")
+	}
+}
+
+func TestDecompressInvalidZipPasswd(t *testing.T) {
+	outputFolder := "/tmp/.forensibus_decompress_zip_passwd"
+
+	err := os.RemoveAll(outputFolder)
+	if err != nil {
+		t.Fatalf("Could not remove %s", outputFolder)
+	}
+
+	_, err = decompress.Decompress("../../datasets/archives/SimplePasswd.zip", outputFolder, []string{"invalid", "passwordgiven"})
+	if err == nil {
+		t.Errorf("Should fail to decompress with invalid passwd")
+	}
+
+	if string(err.Error()) != "could not decrypt archive ../../datasets/archives/SimplePasswd.zip with passwords [invalid passwordgiven]" {
+		t.Fatalf("Invalid error message: %s", err.Error())
 	}
 }

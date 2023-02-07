@@ -183,7 +183,7 @@ func decompress(in string, out string, password string) error {
 	return nil
 }
 
-func DecompressSevenZip(in string, out string) error {
+func DecompressSevenZip(in string, out string, passwords []string) error {
 	fileFinfo, errStat := os.Stat(in)
 	if errStat != nil {
 		return fmt.Errorf("could not stat %s: %w", in, errStat)
@@ -207,15 +207,15 @@ func DecompressSevenZip(in string, out string) error {
 	}
 
 	// Archive is encrypted
-	if len(utils.Config.ArchivePasswords) == 0 {
+	if len(passwords) == 0 {
 		return fmt.Errorf("archive %s is encrypted, but no passwords were provided", in)
 	}
-	for _, passwd := range utils.Config.ArchivePasswords {
+	for _, passwd := range passwords {
 		if err := decompress(in, out, passwd); err == nil {
 			return nil
 		}
 	}
-	return fmt.Errorf("could not decrypt archive %s with passwords %s", in, utils.Config.ArchivePasswords)
+	return fmt.Errorf("could not decrypt archive %s with passwords %v", in, passwords)
 }
 
 func init() {

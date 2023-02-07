@@ -72,8 +72,7 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 	files := find(steps, dsl.FindConfig{Name: config.Name, Patterns: config.Patterns, MimeTypes: config.MimeTypes})
 
 	for _, in := range files {
-		// inputFilenameWoExt := strings.TrimSuffix(in.NextArtifact, filepath.Ext(in.NextArtifact))
-		out, err := decompress.Decompress(in.NextArtifact, in.CurrentFolder)
+		out, err := decompress.Decompress(in.NextArtifact, in.CurrentFolder, []string{}) // TODO: replace by a pipeline config
 		if err != nil {
 			pterm.Error.Printfln("Error while decompressing %s: %s", in.NextArtifact, err.Error())
 			continue
@@ -157,8 +156,8 @@ func MakeInputs(sources []string) ([]dsl.Step, error) {
 		absPath = strings.TrimPrefix(absPath, filepath.VolumeName(absPath))
 
 		// Output folder is a concatenation of the configured temp folder + the given path
-		outputFolder := filepath.Join(utils.Config.OutputFolder, filepath.Dir(absPath), filenameWhithoutSuffix)
-
+		outputFolder := filepath.Join("/tmp/forensibus", filepath.Dir(absPath), filenameWhithoutSuffix)
+		// TODO/ make /tmpforensibus a cli argument
 		ins = append(ins, dsl.Step{Name: "init", CurrentFolder: outputFolder, NextArtifact: absPath})
 
 	}
@@ -201,26 +200,26 @@ func MakeWorkers(disableLocalWorker bool, tStart <-chan TaskStarted, tEnd chan<-
 	return workers, nil
 }
 
-func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWorker bool, verbose bool) {
+func Run(args *Runargs) {
 	// Configure logger, if local worker is disabled, do not print to stdout
-	err := utils.ConfigureLogger(verbose || disableLocalWorker)
+	err := utils.ConfigureLogger(args.Verbose || args.DisableLocalWorker)
 	if err != nil {
 		pterm.Error.Printfln(err.Error())
 		return
 	}
 
-	if tag == "" {
-		tag = names_generator.GetRandomName()
+	if args.Tag == "" {
+		args.Tag = names_generator.GetRandomName()
 	}
 
-	config, err := dsl.LoadAndLint(pipelineconfigFile)
+	config, err := dsl.LoadAndLint(args.PipelineFile)
 	if err != nil {
 		pterm.Error.Printfln(err.Error())
 		return
 	}
 
 	stepsCount := dsl.CountPipelineSteps(config.Pipeline)
-	inputs, err := MakeInputs(paths)
+	inputs, err := MakeInputs(args.Targets)
 	if err != nil {
 		utils.Log.Warnf(err.Error())
 		return
@@ -230,7 +229,7 @@ func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWork
 	startedTasks := make(chan TaskStarted, 512)
 	endedTasks := make(chan TaskEnded, 512)
 
-	workers, err := MakeWorkers(disableLocalWorker, startedTasks, endedTasks)
+	workers, err := MakeWorkers(args.DisableLocalWorker, startedTasks, endedTasks)
 	if err != nil {
 		pterm.Error.Printfln(err.Error())
 		return
@@ -242,8 +241,8 @@ func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWork
 		pterm.Success.Printfln("Launched a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
 	}
 	pterm.Info.Printfln("Running pipeline `%s` (%d processors)", config.Pipeline.Name, stepsCount)
-	pterm.Info.Printfln("Using tag `%s`", tag)
-	pterm.Info.Printfln("Using splunk index `%s`", utils.Config.Splunk.Index)
+	pterm.Info.Printfln("Using tag `%s`", args.Tag)
+	pterm.Info.Printfln("Using splunk index `%s`", "main") // TODO: CLI args
 
 	finishMonitoring := make(chan bool)
 	go MonitorResults(finishMonitoring, startedProcesses, endedTasks)
@@ -253,7 +252,7 @@ func Run(pipelineconfigFile string, paths []string, tag string, disableLocalWork
 	// signal.Notify(c, os.Interrupt)
 	// go onSigint(c)
 
-	RunPipeline(config.Pipeline, inputs, tag, startedProcesses, startedTasks)
+	RunPipeline(config.Pipeline, inputs, args.Tag, startedProcesses, startedTasks)
 
 	// Pipeline is done, close tasks channel
 	close(startedProcesses)

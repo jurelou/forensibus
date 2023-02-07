@@ -52,7 +52,7 @@ func (w *Worker) Connect(address string) error {
 	}
 
 	w.Client = worker.NewWorkerClient(conn)
-	pong, err := w.Ping(4)
+	pong, err := w.Ping(3)
 	if err != nil {
 		return err
 	}
@@ -77,7 +77,7 @@ func (w *Worker) Ping(timeout int) (*worker.Pong, error) {
 
 func (w *Worker) Work(wg *sync.WaitGroup, tStart <-chan TaskStarted, tEnd chan<- TaskEnded) {
 	defer wg.Done()
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(utils.Config.ProcessorTimeout)*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(1800)*time.Second) // TODO: 1800 is a CLI arg
 	defer cancel()
 	for task := range tStart {
 		res, err := w.Client.Work(ctx, &worker.WorkRequest{

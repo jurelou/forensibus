@@ -17,6 +17,10 @@ Actually, forensibus has not been tested on OSX.
 
 ## Install dependencies
 
+- golang
+
+See the docs for installing the go programming language here: [](https://go.dev/doc/install)
+
 - build tools
 
 ```bash
@@ -26,7 +30,7 @@ sudo apt-get install automake libtool make gcc pkg-config libssl-dev
 - mingw
 
 ```bash
-apt-get install mingw-w64-x86-64-dev gcc-mingw-w64-x86-64 gcc-mingw-w64 gcc-multilib
+apt-get install mingw-w64-x86-64-dev gcc-mingw-w64-x86-64 gcc-mingw-w64 gcc-multilib -y
 ```
 
 - yara
