@@ -13,9 +13,7 @@ import (
 func (*Server) Work(_ context.Context, in *worker.WorkRequest) (*worker.WorkResponse, error) {
 	procName := in.GetProcessor()
 	source := in.GetSource()
-	sourcetype := in.GetSourcetype()
 	rawConfig := in.GetConfig()
-	tag := in.GetTag()
 	utils.Log.Infof("Got a task (%s): %s with config %v", procName, source, rawConfig)
 
 	// Try to load the processor
@@ -28,10 +26,11 @@ func (*Server) Work(_ context.Context, in *worker.WorkRequest) (*worker.WorkResp
 	// Configure output writer
 	// TODO: make writer global
 	out := writer.NewHEC(in.GetSplunkAddress(), in.GetSplunkToken())
-	out.SetTag(tag)
+	out.SetTag(in.GetTag())
 	out.SetDefaultSource(source)
 	out.SetDefaultIndex(in.GetSplunkIndex())
 
+	sourcetype := in.GetSourcetype()
 	if sourcetype != "" {
 		out.SetDefaultSourceType(sourcetype)
 	} else {

@@ -21,6 +21,36 @@ type HayabusaProcessor struct {
 	BinaryPath string
 }
 
+type HayabusaConfig struct {
+	FilesExt string
+	RulesPath string
+	TempFolder string
+}
+
+func GetConfig(config *processors.Config) (*HayabusaConfig, error) {
+	evtxExt, exists := config.GetString("evtx_extension")
+	if !exists {
+		return nil, fmt.Errorf("missing hayabusa config: evtx_extension")
+	}
+
+	rulesPath, exists := config.GetString("rules_path")
+	if !exists {
+		return nil, fmt.Errorf("missing hayabusa config: rules_path")
+	}
+
+	tempFolder, exists := config.GetString("temp_folder")
+	if !exists {
+		tempFolder = "/tmp/.forensibus_hayabusa"
+	}
+	return &HayabusaConfig{
+		FilesExt: evtxExt,
+		RulesPath: rulesPath,
+		TempFolder: tempFolder,
+	}, nil
+
+}
+
+
 func (proc *HayabusaProcessor) Configure() error {
 	hayabusaPath := "./external/hayabusa/"
 	arch := runtime.GOARCH
@@ -58,12 +88,13 @@ func (proc *HayabusaProcessor) Configure() error {
 func (proc *HayabusaProcessor) Run(in string, config *processors.Config, out writer.OutputWriter) processors.PError {
 	errors := processors.PError{}
 
-	evtxExt, exists := config.GetString("evtx_extension")
-	if !exists {
-		errors.Add(fmt.Errorf("missing hayabusa config: evtx_extension"))
+	hayaConfig, err := GetConfig(config)
+	if err != nil {
+		errors.Add(err)
 		return errors
 	}
-	outFile, err := proc.RunHayabusa(in, evtxExt, out.GetTag())
+
+	outFile, err := proc.RunHayabusa(in, hayaConfig, out.GetTag())
 	if err != nil {
 		errors.Add(err)
 		return errors
@@ -92,13 +123,13 @@ func (proc *HayabusaProcessor) Run(in string, config *processors.Config, out wri
 	return errors
 }
 
-func (proc *HayabusaProcessor) RunHayabusa(in, evtxExtension, tag string) (string, error) {
+func (proc *HayabusaProcessor) RunHayabusa(in string, config *HayabusaConfig, tag string) (string, error) {
 	isDir, err := IsDirectory(in)
 	if err != nil {
 		return "", fmt.Errorf("invalid input %s: %w", in, err)
 	}
 	// TODO: replace /tmp/forensibus_tmp by a config param
-	outputFile := filepath.Join("/tmp/forensibus_tmp", fmt.Sprintf("hayabusa_%s_%s.json", tag, uuid.NewString()))
+	outputFile := filepath.Join(config.TempFolder, fmt.Sprintf("hayabusa_%s_%s.json", tag, uuid.NewString()))
 	args := []string{
 		"json-timeline",
 		"--quiet-errors",
@@ -110,9 +141,9 @@ func (proc *HayabusaProcessor) RunHayabusa(in, evtxExtension, tag string) (strin
 		"--rules-config",
 		"./external/hayabusa/rules/config/",
 		"--target-file-ext",
-		evtxExtension,
+		config.FilesExt,
 		"--rules",
-		"./external/sigma_rules", // TODO: replace by a config key
+		config.RulesPath,
 		"--output",
 		outputFile,
 	}
