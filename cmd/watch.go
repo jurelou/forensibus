@@ -4,17 +4,16 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 
+	"github.com/jurelou/forensibus/core/run"
 	"github.com/jurelou/forensibus/core/watch"
 	"github.com/jurelou/forensibus/utils"
 )
 
 var (
-	watchPipelineConfig string
-	watchTag            string
-	watchDisableWorker  bool
-	watchVerbose        bool
+	watchArgs = run.NewRunargs()
 
 	watchCmd = &cobra.Command{
 		Use:     "watch [path]",
@@ -35,10 +34,12 @@ var (
 		},
 
 		RunE: func(cmd *cobra.Command, filepaths []string) error {
-			if !utils.FileExists(watchPipelineConfig) {
-				return fmt.Errorf("%s file does not exists", watchPipelineConfig)
+			watchArgs.Targets = utils.UniqueListOfStrings(filepaths)
+			if err := watchArgs.Validate(); err != nil {
+				pterm.Error.Println(err.Error())
+				return nil
 			}
-			watch.Watch(watchPipelineConfig, utils.UniqueListOfStrings(filepaths), watchTag, watchDisableWorker, watchVerbose)
+			watch.Watch(watchArgs)
 			return nil
 		},
 	}
@@ -47,10 +48,14 @@ var (
 func init() {
 	rootCmd.AddCommand(watchCmd)
 
-	watchCmd.PersistentFlags().StringVarP(&watchPipelineConfig, "pipeline", "p", "", "A pipeline configuration file.")
-	watchCmd.PersistentFlags().StringVarP(&watchTag, "tag", "t", "", "Tag the process to identify it more easily")
-	watchCmd.PersistentFlags().BoolVarP(&watchDisableWorker, "disable_worker", "d", false, "Disable local worker")
-	watchCmd.PersistentFlags().BoolVarP(&watchVerbose, "verbose", "v", false, "Increase logs verbosity")
+	watchCmd.PersistentFlags().StringVarP(&watchArgs.PipelineFile, "pipeline", "p", "", "A pipeline configuration file.")
+	watchCmd.PersistentFlags().StringVarP(&watchArgs.Tag, "tag", "t", "", "Tag the process to identify it more easily (defaults to a randomly generated string)")
+	watchCmd.PersistentFlags().BoolVarP(&watchArgs.DisableLocalWorker, "disable_worker", "d", false, "Disable local worker (defaults to: false)")
+	watchCmd.PersistentFlags().BoolVarP(&watchArgs.Verbose, "verbose", "v", false, "Increase logs verbosity (defaults to: false)")
+
+	watchCmd.PersistentFlags().StringVarP(&watchArgs.Splunk.Index, "splunk_index", "i", "main", "Splunk index to use (defaults to: main)")
+	watchCmd.PersistentFlags().StringVarP(&watchArgs.Splunk.Token, "splunk_token", "s", "42424242-4242-4242-4242-424242424242", "Splunk HEC token to use (defaults to: 42424242-4242-4242-4242-424242424242)")
+	watchCmd.PersistentFlags().StringVarP(&watchArgs.Splunk.Address, "splunk_address", "a", "http://localhost:8088", "Splunk index to use (defaults to: http://localhost:8088)")
 
 	err := watchCmd.MarkPersistentFlagRequired("pipeline")
 	if err != nil {

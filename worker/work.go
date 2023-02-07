@@ -27,7 +27,7 @@ func (*Server) Work(_ context.Context, in *worker.WorkRequest) (*worker.WorkResp
 
 	// Configure output writer
 	// TODO: make writer global
-	out := writer.New()
+	out := writer.NewHEC(in.GetSplunkAddress(), in.GetSplunkToken())
 	out.SetTag(tag)
 	out.SetDefaultSource(source)
 	out.SetDefaultIndex(in.GetSplunkIndex())

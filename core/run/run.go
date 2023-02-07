@@ -31,10 +31,7 @@ type TaskStarted struct {
 	Tag           string
 	Step          dsl.Step
 	ProcessConfig dsl.ProcessConfig
-
-	SplunkIndex string
-	SplunkToken string
-	SplunkAddress string
+	SplunkConfig  Splunkargs
 }
 
 type TaskEnded struct {
@@ -94,7 +91,7 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig, passwords []string) []d
 	return outs
 }
 
-func RunPipeline(config dsl.Config, steps []dsl.Step, tag string, sProcesses chan<- ProcessStarted, sTasks chan<- TaskStarted) {
+func RunPipeline(config dsl.Config, steps []dsl.Step, args *Runargs, sProcesses chan<- ProcessStarted, sTasks chan<- TaskStarted) {
 	dsl.WalkPipeline(config.Pipeline, steps, func(item interface{}, in []dsl.Step) []dsl.Step {
 		switch step := item.(type) {
 		case dsl.FindConfig:
@@ -119,9 +116,10 @@ func RunPipeline(config dsl.Config, steps []dsl.Step, tag string, sProcesses cha
 			for _, i := range in {
 				sTasks <- TaskStarted{
 					ProcessId:     id,
-					Tag:           tag,
+					Tag:           args.Tag,
 					Step:          i,
 					ProcessConfig: step,
+					SplunkConfig:  args.Splunk,
 				}
 			}
 			return []dsl.Step{}
@@ -244,9 +242,9 @@ func Run(args *Runargs) {
 	} else {
 		pterm.Success.Printfln("Launched a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
 	}
-	pterm.Info.Printfln("Running pipeline `%s` (%d processors)", config.Pipeline.Name, stepsCount)
+	pterm.Info.Printfln("Running pipeline `%s` (%d steps)", config.Pipeline.Name, stepsCount)
 	pterm.Info.Printfln("Using tag `%s`", args.Tag)
-	pterm.Info.Printfln("Using splunk index `%s`", args.SplunkIndex) // TODO: CLI args
+	pterm.Info.Printfln("Using splunk index `%s`", args.Splunk.Index) // TODO: CLI args
 
 	finishMonitoring := make(chan bool)
 	go MonitorResults(finishMonitoring, startedProcesses, endedTasks)
@@ -256,7 +254,7 @@ func Run(args *Runargs) {
 	// signal.Notify(c, os.Interrupt)
 	// go onSigint(c)
 
-	RunPipeline(config, inputs, args.Tag, startedProcesses, startedTasks)
+	RunPipeline(config, inputs, args, startedProcesses, startedTasks)
 
 	// Pipeline is done, close tasks channel
 	close(startedProcesses)

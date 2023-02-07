@@ -49,6 +49,6 @@ func (out *DefaultOutputWriter) GetTag() string {
 	return out.Tag
 }
 
-func New() OutputWriter {
-	return NewHEC("http://localhost:8088", "42424242-4242-4242-4242-424242424242")
-}
+// func New() OutputWriter {
+// 	return NewHEC("http://localhost:8088", "42424242-4242-4242-4242-424242424242")
+// }

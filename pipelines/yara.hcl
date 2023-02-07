@@ -1,3 +1,9 @@
+archives_passwords = [
+  "infected",
+  "virus",
+  "avproof"
+]
+
 pipeline "yara" {
 
   process "yara" {}

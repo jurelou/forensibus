@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 
+	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 
 	run "github.com/jurelou/forensibus/core/run"
@@ -15,7 +15,7 @@ var (
 	// tag            string
 	// disableWorker  bool
 	// verbose        bool
-	args = run.NewRunargs()
+	runArgs = run.NewRunargs()
 
 	runCmd = &cobra.Command{
 		Use:     "run [path]",
@@ -32,24 +32,25 @@ $ forensibus run -p pipelines/dfir-orc.hcl /data/MY_ORCS --splunk_index myCustom
 - Upload results to a custom splunk instance
 $ forensibus run -p pipelines/dfir-orc.hcl /data/MY_ORCS --splunk_address http://splunk:8088 --splunk_token <HEC_TOKEN>
 		`,
-		Args: func(cmd *cobra.Command, args []string) error {
-			if len(args) < 1 {
-				return errors.New("requires a filepath  argument")
-			}
-			for _, filepath := range args {
-				if !utils.FileExists(filepath) {
-					return fmt.Errorf("%s is not a valid file or folder", filepath)
-				}
-			}
-			return nil
-		},
+		// Args: func(cmd *cobra.Command, args []string) error {
+		// 	if len(args) < 1 {
+		// 		return errors.New("requires a filepath  argument")
+		// 	}
+		// 	for _, filepath := range args {
+		// 		if !utils.FileExists(filepath) {
+		// 			return fmt.Errorf("%s is not a valid file or folder", filepath)
+		// 		}
+		// 	}
+		// 	return nil
+		// },
 
 		RunE: func(cmd *cobra.Command, filepaths []string) error {
-			args.Targets = utils.UniqueListOfStrings(filepaths)
-			if err := args.Validate(); err != nil {
-				return err
+			runArgs.Targets = utils.UniqueListOfStrings(filepaths)
+			if err := runArgs.Validate(); err != nil {
+				pterm.Error.Println(err.Error())
+				return nil
 			}
-			run.Run(args)
+			run.Run(runArgs)
 			return nil
 		},
 	}
@@ -58,14 +59,14 @@ $ forensibus run -p pipelines/dfir-orc.hcl /data/MY_ORCS --splunk_address http:/
 func init() {
 	rootCmd.AddCommand(runCmd)
 
-	runCmd.PersistentFlags().StringVarP(&args.PipelineFile, "pipeline", "p", "", "A pipeline configuration file.")
-	runCmd.PersistentFlags().StringVarP(&args.Tag, "tag", "t", "", "Tag the process to identify it more easily (defaults to a randomly generated string)")
-	runCmd.PersistentFlags().BoolVarP(&args.DisableLocalWorker, "disable_worker", "d", false, "Disable local worker (defaults to: false)")
-	runCmd.PersistentFlags().BoolVarP(&args.Verbose, "verbose", "v", false, "Increase logs verbosity (defaults to: false)")
+	runCmd.PersistentFlags().StringVarP(&runArgs.PipelineFile, "pipeline", "p", "", "A pipeline configuration file.")
+	runCmd.PersistentFlags().StringVarP(&runArgs.Tag, "tag", "t", "", "Tag the process to identify it more easily (defaults to a randomly generated string)")
+	runCmd.PersistentFlags().BoolVarP(&runArgs.DisableLocalWorker, "disable_worker", "d", false, "Disable local worker (defaults to: false)")
+	runCmd.PersistentFlags().BoolVarP(&runArgs.Verbose, "verbose", "v", false, "Increase logs verbosity (defaults to: false)")
 
-	runCmd.PersistentFlags().StringVarP(&args.SplunkIndex, "splunk_index", "i", "main", "Splunk index to use (defaults to: main)")
-	runCmd.PersistentFlags().StringVarP(&args.SplunkToken, "splunk_token", "s", "42424242-4242-4242-4242-424242424242", "Splunk HEC token to use (defaults to: 42424242-4242-4242-4242-424242424242)")
-	runCmd.PersistentFlags().StringVarP(&args.SplunkAddress, "splunk_address", "a", "http://localhost:8088", "Splunk index to use (defaults to: http://localhost:8088)")
+	runCmd.PersistentFlags().StringVarP(&runArgs.Splunk.Index, "splunk_index", "i", "main", "Splunk index to use (defaults to: main)")
+	runCmd.PersistentFlags().StringVarP(&runArgs.Splunk.Token, "splunk_token", "s", "42424242-4242-4242-4242-424242424242", "Splunk HEC token to use (defaults to: 42424242-4242-4242-4242-424242424242)")
+	runCmd.PersistentFlags().StringVarP(&runArgs.Splunk.Address, "splunk_address", "a", "http://localhost:8088", "Splunk index to use (defaults to: http://localhost:8088)")
 
 	// runCmd.PersistentFlags().StringVarP(&splunkIndex, "splunk-index", "s", "", "Change default splunk index (WON'T BE CREATED).")
 

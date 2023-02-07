@@ -81,12 +81,15 @@ func (w *Worker) Work(wg *sync.WaitGroup, tStart <-chan TaskStarted, tEnd chan<-
 	defer cancel()
 	for task := range tStart {
 		res, err := w.Client.Work(ctx, &worker.WorkRequest{
-			Source:       task.Step.NextArtifact,
-			OutputFolder: task.Step.CurrentFolder,
-			Processor:    task.ProcessConfig.Name,
-			Config:       task.ProcessConfig.Config,
-			Tag:          task.Tag,
-			Sourcetype:   task.ProcessConfig.Sourcetype,
+			Source:        task.Step.NextArtifact,
+			OutputFolder:  task.Step.CurrentFolder,
+			Processor:     task.ProcessConfig.Name,
+			Config:        task.ProcessConfig.Config,
+			Tag:           task.Tag,
+			Sourcetype:    task.ProcessConfig.Sourcetype,
+			SplunkToken:   task.SplunkConfig.Token,
+			SplunkIndex:   task.SplunkConfig.Index,
+			SplunkAddress: task.SplunkConfig.Address,
 		})
 		jobErrors := res.GetErrors()
 		jobStatus := res.GetStatus()

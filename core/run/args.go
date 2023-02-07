@@ -6,6 +6,12 @@ import (
 	"github.com/jurelou/forensibus/utils"
 )
 
+type Splunkargs struct {
+	Index   string
+	Address string
+	Token   string
+}
+
 type Runargs struct {
 	Targets            []string
 	PipelineFile       string
@@ -13,9 +19,7 @@ type Runargs struct {
 	DisableLocalWorker bool
 	Verbose            bool
 
-	SplunkIndex			string
-	SplunkAddress		string
-	SplunkToken			string
+	Splunk Splunkargs
 }
 
 func (r Runargs) Validate() error {

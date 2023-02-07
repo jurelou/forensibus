@@ -101,18 +101,18 @@ func watchEvents(watcher *fsnotify.Watcher, cb onWriteCallback) {
 	}
 }
 
-func Watch(pipelineconfigFile string, paths []string, tag string, disableLocalWorker bool, verbose bool) {
-	err := utils.ConfigureLogger(verbose || disableLocalWorker)
+func Watch(args *run.Runargs) {
+	err := utils.ConfigureLogger(args.Verbose || args.DisableLocalWorker)
 	if err != nil {
 		pterm.Error.Printfln(err.Error())
 		return
 	}
 
-	if tag == "" {
-		tag = names_generator.GetRandomName()
+	if args.Tag == "" {
+		args.Tag = names_generator.GetRandomName()
 	}
 
-	config, err := dsl.LoadAndLint(pipelineconfigFile)
+	config, err := dsl.LoadAndLint(args.PipelineFile)
 	if err != nil {
 		pterm.Error.Printfln(err.Error())
 		return
@@ -122,7 +122,7 @@ func Watch(pipelineconfigFile string, paths []string, tag string, disableLocalWo
 	startedTasks := make(chan run.TaskStarted, 512)
 	endedTasks := make(chan run.TaskEnded, 512)
 
-	workers, err := run.MakeWorkers(disableLocalWorker, startedTasks, endedTasks)
+	workers, err := run.MakeWorkers(args.DisableLocalWorker, startedTasks, endedTasks)
 	if err != nil {
 		pterm.Error.Printfln(err.Error())
 		return
@@ -135,8 +135,8 @@ func Watch(pipelineconfigFile string, paths []string, tag string, disableLocalWo
 		pterm.Success.Printfln("Launched a pool of %d workers, total capacity is %d", workers.Size(), workers.Capacity())
 	}
 	pterm.Info.Printfln("Running pipeline `%s`", config.Pipeline.Name)
-	pterm.Info.Printfln("Using tag `%s`", tag)
-	pterm.Info.Printfln("Using splunk index `%s`", "main") // TODO: make it a CLI arg
+	pterm.Info.Printfln("Using tag `%s`", args.Tag)
+	pterm.Info.Printfln("Using splunk index `%s`", args.Splunk.Index) // TODO: make it a CLI arg
 
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
@@ -160,10 +160,10 @@ func Watch(pipelineconfigFile string, paths []string, tag string, disableLocalWo
 			pterm.Error.Printfln("Could not create steps from %s: %s", event.Name, err.Error())
 			return
 		}
-		run.RunPipeline(config, inputs, tag, startedProcesses, startedTasks)
+		run.RunPipeline(config, inputs, args, startedProcesses, startedTasks)
 	})
 
-	for _, path := range paths {
+	for _, path := range args.Targets {
 		err := filepath.Walk(path, func(lpath string, info os.FileInfo, err error) error {
 			if err != nil {
 				pterm.Warning.Printfln("Error while reading directory %s: %s", lpath, err.Error())

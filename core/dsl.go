@@ -10,7 +10,7 @@ import (
 )
 
 type Config struct {
-	ArchivesPasswords []string `hcl:"archives_passwords"`
+	ArchivesPasswords []string `hcl:"archives_passwords,optional"`
 	// TemporaryFolder   string         `hcl:"temporary_folder"`
 	Pipeline PipelineConfig `hcl:"pipeline,block"`
 	Output   OutputConfig   `hcl:"output,block"`
