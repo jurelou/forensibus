@@ -12,6 +12,10 @@ type Runargs struct {
 	Tag                string
 	DisableLocalWorker bool
 	Verbose            bool
+
+	SplunkIndex			string
+	SplunkAddress		string
+	SplunkToken			string
 }
 
 func (r Runargs) Validate() error {

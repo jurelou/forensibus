@@ -21,12 +21,17 @@ var (
 		Use:     "run [path]",
 		Aliases: []string{"r"},
 		Short:   "Run a pipeline against a given file or folder",
-		Long: `A longer description that spans multiple lines and likely contains examples
-	and usage of using your command. For example:
+		Long: `
+Examples:
+- Parse a whole folder containing DFIR-ORC archives:
+$ forensibus run -p pipelines/dfir-orc.hcl /data/MY_ORCS
 
-	Cobra is a CLI library for Go that empowers applications.
-	This application is a tool to generate the needed files
-	to quickly create a Cobra application.`,
+- Upload results to a custom splunk index (index should already exists)
+$ forensibus run -p pipelines/dfir-orc.hcl /data/MY_ORCS --splunk_index myCustomIndex
+
+- Upload results to a custom splunk instance
+$ forensibus run -p pipelines/dfir-orc.hcl /data/MY_ORCS --splunk_address http://splunk:8088 --splunk_token <HEC_TOKEN>
+		`,
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("requires a filepath  argument")
@@ -55,8 +60,12 @@ func init() {
 
 	runCmd.PersistentFlags().StringVarP(&args.PipelineFile, "pipeline", "p", "", "A pipeline configuration file.")
 	runCmd.PersistentFlags().StringVarP(&args.Tag, "tag", "t", "", "Tag the process to identify it more easily (defaults to a randomly generated string)")
-	runCmd.PersistentFlags().BoolVarP(&args.DisableLocalWorker, "disable_worker", "d", false, "Disable local worker (defaults to false)")
-	runCmd.PersistentFlags().BoolVarP(&args.Verbose, "verbose", "v", false, "Increase logs verbosity (defaults to false)")
+	runCmd.PersistentFlags().BoolVarP(&args.DisableLocalWorker, "disable_worker", "d", false, "Disable local worker (defaults to: false)")
+	runCmd.PersistentFlags().BoolVarP(&args.Verbose, "verbose", "v", false, "Increase logs verbosity (defaults to: false)")
+
+	runCmd.PersistentFlags().StringVarP(&args.SplunkIndex, "splunk_index", "i", "main", "Splunk index to use (defaults to: main)")
+	runCmd.PersistentFlags().StringVarP(&args.SplunkToken, "splunk_token", "s", "42424242-4242-4242-4242-424242424242", "Splunk HEC token to use (defaults to: 42424242-4242-4242-4242-424242424242)")
+	runCmd.PersistentFlags().StringVarP(&args.SplunkAddress, "splunk_address", "a", "http://localhost:8088", "Splunk index to use (defaults to: http://localhost:8088)")
 
 	// runCmd.PersistentFlags().StringVarP(&splunkIndex, "splunk-index", "s", "", "Change default splunk index (WON'T BE CREATED).")
 
