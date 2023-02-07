@@ -1,3 +1,7 @@
+archives_passwords = [
+  "avproof",
+  "virus"
+]
 
 pipeline "DFIR-ORC" {
 

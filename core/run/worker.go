@@ -91,7 +91,7 @@ func (w *Worker) Work(wg *sync.WaitGroup, tStart <-chan TaskStarted, tEnd chan<-
 		jobErrors := res.GetErrors()
 		jobStatus := res.GetStatus()
 		if err != nil {
-			jobErrors = []string{fmt.Sprintf("Processor %s timed out (%s): %s", task.ProcessConfig.Name, task.Step.NextArtifact, err.Error())}
+			jobErrors = []string{err.Error()}
 			jobStatus = utils.Timeout
 		}
 		tEnd <- TaskEnded{

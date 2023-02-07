@@ -54,9 +54,9 @@ func init() {
 	rootCmd.AddCommand(runCmd)
 
 	runCmd.PersistentFlags().StringVarP(&args.PipelineFile, "pipeline", "p", "", "A pipeline configuration file.")
-	runCmd.PersistentFlags().StringVarP(&args.Tag, "tag", "t", "", "Tag the process to identify it more easily")
-	runCmd.PersistentFlags().BoolVarP(&args.DisableLocalWorker, "disable_worker", "d", false, "Disable local worker")
-	runCmd.PersistentFlags().BoolVarP(&args.Verbose, "verbose", "v", false, "Increase logs verbosity")
+	runCmd.PersistentFlags().StringVarP(&args.Tag, "tag", "t", "", "Tag the process to identify it more easily (defaults to a randomly generated string)")
+	runCmd.PersistentFlags().BoolVarP(&args.DisableLocalWorker, "disable_worker", "d", false, "Disable local worker (defaults to false)")
+	runCmd.PersistentFlags().BoolVarP(&args.Verbose, "verbose", "v", false, "Increase logs verbosity (defaults to false)")
 
 	// runCmd.PersistentFlags().StringVarP(&splunkIndex, "splunk-index", "s", "", "Change default splunk index (WON'T BE CREATED).")
 

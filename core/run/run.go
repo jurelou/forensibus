@@ -67,12 +67,12 @@ func find(steps []dsl.Step, config dsl.FindConfig) []dsl.Step {
 }
 
 // Finds and extract files matching patterns
-func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
+func extract(steps []dsl.Step, config dsl.ExtractConfig, passwords []string) []dsl.Step {
 	var outs []dsl.Step
 	files := find(steps, dsl.FindConfig{Name: config.Name, Patterns: config.Patterns, MimeTypes: config.MimeTypes})
 
 	for _, in := range files {
-		out, err := decompress.Decompress(in.NextArtifact, in.CurrentFolder, []string{}) // TODO: replace by a pipeline config
+		out, err := decompress.Decompress(in.NextArtifact, in.CurrentFolder, passwords)
 		if err != nil {
 			pterm.Error.Printfln("Error while decompressing %s: %s", in.NextArtifact, err.Error())
 			continue
@@ -90,34 +90,34 @@ func extract(steps []dsl.Step, config dsl.ExtractConfig) []dsl.Step {
 	return outs
 }
 
-func RunPipeline(pipeline dsl.PipelineConfig, steps []dsl.Step, tag string, sProcesses chan<- ProcessStarted, sTasks chan<- TaskStarted) {
-	dsl.WalkPipeline(pipeline, steps, func(item interface{}, in []dsl.Step) []dsl.Step {
-		switch config := item.(type) {
+func RunPipeline(config dsl.Config, steps []dsl.Step, tag string, sProcesses chan<- ProcessStarted, sTasks chan<- TaskStarted) {
+	dsl.WalkPipeline(config.Pipeline, steps, func(item interface{}, in []dsl.Step) []dsl.Step {
+		switch step := item.(type) {
 		case dsl.FindConfig:
-			out := find(in, config)
+			out := find(in, step)
 			return out
 
 		case dsl.ExtractConfig:
-			out := extract(in, config)
+			out := extract(in, step, config.ArchivesPasswords)
 			return out
 
 		case dsl.ProcessConfig:
 			id := uuid.NewString()
 
 			sProcesses <- ProcessStarted{
-				Name:            config.Name,
+				Name:            step.Name,
 				ProcessId:       id,
 				TasksCount:      len(in),
 				TasksTerminated: 0,
 			}
 
-			pterm.Info.Printfln("Running %s processor against %d files", config.Name, len(in))
+			pterm.Info.Printfln("Running %s processor against %d files", step.Name, len(in))
 			for _, i := range in {
 				sTasks <- TaskStarted{
 					ProcessId:     id,
 					Tag:           tag,
 					Step:          i,
-					ProcessConfig: config,
+					ProcessConfig: step,
 				}
 			}
 			return []dsl.Step{}
@@ -201,7 +201,7 @@ func MakeWorkers(disableLocalWorker bool, tStart <-chan TaskStarted, tEnd chan<-
 }
 
 func Run(args *Runargs) {
-	// Configure logger, if local worker is disabled, do not print to stdout
+	// Configure logger, if local worker is disabled, do not print to stdout (unless verbose mode is enabled)
 	err := utils.ConfigureLogger(args.Verbose || args.DisableLocalWorker)
 	if err != nil {
 		pterm.Error.Printfln(err.Error())
@@ -252,7 +252,7 @@ func Run(args *Runargs) {
 	// signal.Notify(c, os.Interrupt)
 	// go onSigint(c)
 
-	RunPipeline(config.Pipeline, inputs, args.Tag, startedProcesses, startedTasks)
+	RunPipeline(config, inputs, args.Tag, startedProcesses, startedTasks)
 
 	// Pipeline is done, close tasks channel
 	close(startedProcesses)

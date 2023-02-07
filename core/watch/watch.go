@@ -160,7 +160,7 @@ func Watch(pipelineconfigFile string, paths []string, tag string, disableLocalWo
 			pterm.Error.Printfln("Could not create steps from %s: %s", event.Name, err.Error())
 			return
 		}
-		run.RunPipeline(config.Pipeline, inputs, tag, startedProcesses, startedTasks)
+		run.RunPipeline(config, inputs, tag, startedProcesses, startedTasks)
 	})
 
 	for _, path := range paths {

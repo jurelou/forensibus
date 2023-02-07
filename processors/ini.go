@@ -2,6 +2,7 @@ package common_processors
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"gopkg.in/ini.v1"
 
@@ -20,7 +21,8 @@ func (IniProcessor) Run(in string, _ *processors.Config, out writer.OutputWriter
 
 	cfg, err := ini.Load(in)
 	if err != nil {
-		errors.Add(err)
+		utils.Log.Warnf("Error while parsing ini file %s: %s", in, err.Error())
+		errors.Add(fmt.Errorf("invalid ini file"))
 		return errors
 	}
 	content := map[string]interface{}{}

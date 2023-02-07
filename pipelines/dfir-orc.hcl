@@ -1,3 +1,7 @@
+archives_passwords = [
+  "avproof",
+  "virus"
+]
 
 pipeline "DFIR-ORC" {
 
@@ -53,38 +57,38 @@ pipeline "DFIR-ORC" {
         }
     }
 
-    extract "GetSamples archives" {
-      patterns = ["/GetSamples.7z$"]
-      mime_types = ["7-zip archive data"]
+    // extract "GetSamples archives" {
+    //   patterns = ["/GetSamples.7z$"]
+    //   mime_types = ["7-zip archive data"]
 
-      find "All files" {
-        patterns = [".*"]
+    //   find "All files" {
+    //     patterns = [".*"]
 
-        process "yara" {}
-      }
-    }
+    //     process "yara" {}
+    //   }
+    // }
 
-    extract "EXE_TMP archives" {
-      patterns = ["/EXE_TMP.7z$"]
-      mime_types = ["7-zip archive data"]
+    // extract "EXE_TMP archives" {
+    //   patterns = ["/EXE_TMP.7z$"]
+    //   mime_types = ["7-zip archive data"]
 
-      find "All files" {
-        patterns = ["/EXE_TMP/"]
+    //   find "All files" {
+    //     patterns = ["/EXE_TMP/"]
 
-        process "yara" {}
-      }
-    }
+    //     process "yara" {}
+    //   }
+    // }
 
-    extract "Scripts archives" {
-      patterns = ["/[Ss]cripts.7z$"]
-      mime_types = ["7-zip archive data"]
+    // extract "Scripts archives" {
+    //   patterns = ["/[Ss]cripts.7z$"]
+    //   mime_types = ["7-zip archive data"]
 
-      find "All files" {
-        patterns = [".*"]
+    //   find "All files" {
+    //     patterns = [".*"]
 
-        process "yara" {}
-      }
-    }
+    //     process "yara" {}
+    //   }
+    // }
 
     extract "Evtx archives" {
       patterns = ["/[Ee]vents?.7z$"]
