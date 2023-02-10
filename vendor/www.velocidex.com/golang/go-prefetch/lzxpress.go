@@ -80,10 +80,10 @@ func (self PREFIX_CODE_SYMBOL) String() string {
 }
 
 /*
-inout PREFIX_CODE_NODE treeNodes[1024]: A 1024 element
 
-	PREFIX_CODE_NODE array that contains the Huffman prefix code
-	tree's nodes.
+inout PREFIX_CODE_NODE treeNodes[1024]: A 1024 element
+    PREFIX_CODE_NODE array that contains the Huffman prefix code
+    tree's nodes.
 
 in ULONG leafIndex: The index in treeNodes of the node to link into the tree.
 
@@ -91,7 +91,7 @@ in ULONG mask: The symbol's prefix code.
 
 in ULONG bits: The number of bits in the symbol's prefix code.
 
-# Return Value
+Return Value
 
 Returns the index in treeNodes of the next node to be processed.
 */
