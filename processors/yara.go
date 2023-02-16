@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	yara "github.com/Velocidex/go-yara"
+	"github.com/hillu/go-yara/v4"
 
 	"github.com/jurelou/forensibus/utils"
 	"github.com/jurelou/forensibus/utils/processors"
@@ -14,11 +14,18 @@ import (
 )
 
 type YaraProcessor struct {
-	Rules *yara.Rules
+	Compiler *yara.Compiler
 }
 
 func (proc *YaraProcessor) Configure() error {
 	c, err := yara.NewCompiler()
+
+	// c.DefineVariable("filepath", "")
+	// c.DefineVariable("filename", "")
+	// c.DefineVariable("extension", "")
+	// c.DefineVariable("filetype", "")
+	// c.DefineVariable("owner", "")
+
 	if err != nil {
 		return fmt.Errorf("could not initialize yara compiler: %w", err)
 	}
@@ -41,11 +48,11 @@ func (proc *YaraProcessor) Configure() error {
 		}
 		f.Close()
 	}
-	rules, err := c.GetRules()
-	if err != nil {
-		return fmt.Errorf("could not load rules: %w", err)
-	}
-	proc.Rules = rules
+	// rules, err := c.GetRules()
+	// if err != nil {
+	// 	return fmt.Errorf("could not load rules: %w", err)
+	// }
+	proc.Compiler = c
 	return nil
 }
 
@@ -53,7 +60,21 @@ func (proc *YaraProcessor) Run(in string, _ *processors.Config, out writer.Outpu
 	errors := processors.PError{}
 	utils.Log.Infof("Running YARA processor against %s", in)
 
-	scanner, err := yara.NewScanner(proc.Rules)
+	compiler := proc.Compiler
+	compiler.DefineVariable("filepath", in)
+	compiler.DefineVariable("filename", filepath.Base(in))
+	compiler.DefineVariable("extension", filepath.Ext(in))
+	// compiler.DefineVariable("filetype", "")
+	// compiler.DefineVariable("owner", "")
+
+	rules, err := compiler.GetRules()
+	if err != nil {
+		errors.Add(fmt.Errorf("could not load rules: %w", err))
+		return errors
+
+	}
+
+	scanner, err := yara.NewScanner(rules)
 	if err != nil {
 		errors.Add(err)
 		return errors
@@ -81,5 +102,5 @@ func (proc *YaraProcessor) Run(in string, _ *processors.Config, out writer.Outpu
 }
 
 func init() {
-	// processors.Register("yara", &YaraProcessor{})
+	processors.Register("yara", &YaraProcessor{})
 }

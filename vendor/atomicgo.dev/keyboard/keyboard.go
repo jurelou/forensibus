@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/containerd/console"
-
 	"atomicgo.dev/keyboard/keys"
+	"github.com/containerd/console"
 )
 
 var windowsStdin *os.File

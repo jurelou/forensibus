@@ -505,8 +505,8 @@ func (self *ValueData) GoString() string {
 func ParseSafeArray_uint32(reader io.ReaderAt, offset int64, count int) []uint32 {
 	result := []uint32{}
 	data := make([]byte, 4)
-	for i:=0; i<count; i++ {
-		_,  err := reader.ReadAt(data, offset)
+	for i := 0; i < count; i++ {
+		_, err := reader.ReadAt(data, offset)
 		if err == io.EOF {
 			break
 		} else if err != nil {
@@ -521,8 +521,8 @@ func ParseSafeArray_uint32(reader io.ReaderAt, offset int64, count int) []uint32
 func ParseSafeArray_byte(reader io.ReaderAt, offset int64, count int) []byte {
 	result := []byte{}
 	var data [1]byte
-	for i:=0; i<count; i++ {
-		_,  err := reader.ReadAt(data[:], offset)
+	for i := 0; i < count; i++ {
+		_, err := reader.ReadAt(data[:], offset)
 		if err == io.EOF {
 			break
 		} else if err != nil {
@@ -537,9 +537,9 @@ func ParseSafeArray_byte(reader io.ReaderAt, offset int64, count int) []byte {
 func ParseSafeArray_CM_KEY_INDEX_FAST_ELEMENT(profile *RegistryProfile, reader io.ReaderAt, offset int64, count int) []*CM_KEY_INDEX_FAST_ELEMENT {
 	result := []*CM_KEY_INDEX_FAST_ELEMENT{}
 	var probe [1]byte
-	for i:=0; i<count; i++ {
+	for i := 0; i < count; i++ {
 		// Do a single byte read to probe whether we are still at a valid position
-		_,  err := reader.ReadAt(probe[:], offset)
+		_, err := reader.ReadAt(probe[:], offset)
 		if err == io.EOF {
 			break
 		} else if err != nil {

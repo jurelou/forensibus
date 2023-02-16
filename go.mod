@@ -4,11 +4,11 @@ go 1.19
 
 require (
 	github.com/Velocidex/go-magic v0.0.0-20211018155418-c5dc48282f28
-	github.com/Velocidex/go-yara v1.1.10-0.20221202090138-c7dde4c43aa4
 	github.com/Velocidex/ordereddict v0.0.0-20210502082334-cf5d9045c0d1
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/google/uuid v1.3.0
 	github.com/hashicorp/hcl/v2 v2.16.0
+	github.com/hillu/go-yara/v4 v4.2.4
 	github.com/pterm/pterm v0.12.54
 	github.com/spf13/cobra v1.6.1
 	go.uber.org/zap v1.24.0

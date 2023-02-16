@@ -1,3 +1,4 @@
+//go:build freebsd && cgo
 // +build freebsd,cgo
 
 /*
@@ -18,17 +19,17 @@
 
 package console
 
-import (
-	"fmt"
-	"os"
-)
-
 /*
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
 */
 import "C"
+
+import (
+	"fmt"
+	"os"
+)
 
 // openpt allocates a new pseudo-terminal and establishes a connection with its
 // control device.

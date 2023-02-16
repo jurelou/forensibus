@@ -3,7 +3,7 @@ import "pe"
 rule SUSP_ENV_Folder_Root_File_Jan23_1 : SCRIPT {
    meta:
       description = "Detects suspicious file path pointing to the root of a folder easily accessible via environment variables"
-      author = "Florian Roth"
+      author = "Florian Roth (Nextron Systems)"
       reference = "Internal Research"
       date = "2023-01-11"
       score = 70
@@ -17,4 +17,5 @@ rule SUSP_ENV_Folder_Root_File_Jan23_1 : SCRIPT {
    condition:
       filesize < 20MB and 1 of ($x*)
       and not 1 of ($fp*)
+      and not pe.number_of_signatures > 0
 }

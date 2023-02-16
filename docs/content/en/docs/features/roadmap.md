@@ -39,11 +39,12 @@ toc: true
 
 ## Splunk
 
+- try to ping splunk before starting a run
 - splunk: configure event_renderers.conf to set event colors
 - splunk HEC configure indexer acknowledgement
 
 ## Others
-
+- generate a sfx binary https://github.com/hillu/go-zipsfx
 - set windows releases PE ressources : https://github.com/tc-hib/go-winres
 - Add more archives extraction types
 - Bufferize progress bar (it becomes slow when there is tons of fast tasks like yara)

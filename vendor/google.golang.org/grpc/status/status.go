@@ -33,7 +33,6 @@ import (
 	"fmt"
 
 	spb "google.golang.org/genproto/googleapis/rpc/status"
-
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/internal/status"
 )

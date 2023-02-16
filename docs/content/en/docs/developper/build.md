@@ -24,10 +24,22 @@ See the docs for installing the go programming language here: [](https://go.dev/
 - build tools
 
 ```bash
-sudo apt-get install automake libtool make gcc pkg-config libssl-dev
+sudo apt-get install automake libtool make gcc pkg-config libssl-dev libmagic-dev
 ```
 
-- mingw
+- musl (linux compiler)
+
+```bash
+wget http://musl.libc.org/releases/musl-1.2.3.tar.gz
+tar -xvf musl-1.2.3.tar.gz
+cd musl-1.2.3
+./configure
+make
+sudo make install
+```
+This will install musl in `/usr/local/musl` – it will not conflict with your glibc. Alternatively, you can pass --prefix to ./configure to install it elsewhere; for example in your home directory.
+
+- mingw (windows compiler)
 
 ```bash
 apt-get install mingw-w64-x86-64-dev gcc-mingw-w64-x86-64 gcc-mingw-w64 gcc-multilib -y
@@ -38,8 +50,9 @@ apt-get install mingw-w64-x86-64-dev gcc-mingw-w64-x86-64 gcc-mingw-w64 gcc-mult
 ```bash
 wget https://github.com/VirusTotal/yara/archive/refs/tags/v4.2.3.tar.gz
 tar -xzvf v4.2.3.tar.gz
+cd yara-4.2.3/
 ./bootstrap.sh
-./configure
+./configure --enable-magic --enable-dotnet
 make
 sudo make install
 make check

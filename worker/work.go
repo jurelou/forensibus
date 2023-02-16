@@ -41,6 +41,7 @@ func (*Server) Work(_ context.Context, in *worker.WorkRequest) (*worker.WorkResp
 	pErrors := processor.Run(source, &processors.Config{RawConfig: rawConfig}, out)
 	if !pErrors.Empty() {
 		errStrings := pErrors.AsStrings()
+		utils.Log.Infof("!!!!!!!!!!!!!!!!!!!!!!")
 		utils.Log.Warnf("Got %d errors while running %s against %s: %v", pErrors.Len(), procName, source, errStrings)
 
 		formattedErr := fmt.Sprintf("{\"processor\": \"%s\", \"errors\": %s}", procName, pErrors.AsJson())

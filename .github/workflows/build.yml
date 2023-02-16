@@ -21,6 +21,15 @@ jobs:
           sudo apt-get install mingw-w64-x86-64-dev gcc-mingw-w64-x86-64 gcc-mingw-w64 make
           go install github.com/git-chglog/git-chglog/cmd/git-chglog@latest
 
+      - name: Install Musl
+        run: |
+          wget http://musl.libc.org/releases/musl-1.2.3.tar.gz
+          tar -xvzf musl-1.2.3.tar.gz
+          cd musl-1.2.3
+          ./configure
+          sudo make install
+          cd ..
+
       - name: Make release note
         run: |
           git-chglog -o ${{ github.workspace }}-CHANGELOG.md ${{ github.ref_name }}

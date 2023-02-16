@@ -10,9 +10,6 @@ atomicgo.dev/keyboard/keys
 ## explicit; go 1.17
 github.com/Velocidex/go-magic/magic
 github.com/Velocidex/go-magic/magic_files
-# github.com/Velocidex/go-yara v1.1.10-0.20221202090138-c7dde4c43aa4
-## explicit; go 1.15
-github.com/Velocidex/go-yara
 # github.com/Velocidex/ordereddict v0.0.0-20210502082334-cf5d9045c0d1
 ## explicit; go 1.13
 github.com/Velocidex/ordereddict
@@ -68,6 +65,9 @@ github.com/hashicorp/hcl/v2/hclsimple
 github.com/hashicorp/hcl/v2/hclsyntax
 github.com/hashicorp/hcl/v2/hclwrite
 github.com/hashicorp/hcl/v2/json
+# github.com/hillu/go-yara/v4 v4.2.4
+## explicit; go 1.15
+github.com/hillu/go-yara/v4
 # github.com/inconshreveable/mousetrap v1.1.0
 ## explicit; go 1.18
 github.com/inconshreveable/mousetrap

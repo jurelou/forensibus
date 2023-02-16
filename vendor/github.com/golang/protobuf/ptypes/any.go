@@ -9,10 +9,9 @@ import (
 	"strings"
 
 	"github.com/golang/protobuf/proto"
+	anypb "github.com/golang/protobuf/ptypes/any"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
-
-	anypb "github.com/golang/protobuf/ptypes/any"
 )
 
 const urlPrefix = "type.googleapis.com/"
@@ -127,9 +126,10 @@ func Is(any *anypb.Any, m proto.Message) bool {
 // The allocated message is stored in the embedded proto.Message.
 //
 // Example:
-//   var x ptypes.DynamicAny
-//   if err := ptypes.UnmarshalAny(a, &x); err != nil { ... }
-//   fmt.Printf("unmarshaled message: %v", x.Message)
+//
+//	var x ptypes.DynamicAny
+//	if err := ptypes.UnmarshalAny(a, &x); err != nil { ... }
+//	fmt.Printf("unmarshaled message: %v", x.Message)
 //
 // Deprecated: Use the any.UnmarshalNew method instead to unmarshal
 // the any message contents into a new instance of the underlying message.

@@ -1,6 +1,0 @@
-[submodule "yara"]
-	path = yara_src
-	url = https://github.com/VirusTotal/yara/
-[submodule "go-yara"]
-	path = go-yara
-	url = https://github.com/hillu/go-yara.git

@@ -22,8 +22,8 @@ type HayabusaProcessor struct {
 }
 
 type HayabusaConfig struct {
-	FilesExt string
-	RulesPath string
+	FilesExt   string
+	RulesPath  string
 	TempFolder string
 }
 
@@ -43,13 +43,11 @@ func GetConfig(config *processors.Config) (*HayabusaConfig, error) {
 		tempFolder = "/tmp/.forensibus_hayabusa"
 	}
 	return &HayabusaConfig{
-		FilesExt: evtxExt,
-		RulesPath: rulesPath,
+		FilesExt:   evtxExt,
+		RulesPath:  rulesPath,
 		TempFolder: tempFolder,
 	}, nil
-
 }
-
 
 func (proc *HayabusaProcessor) Configure() error {
 	hayabusaPath := "./external/hayabusa/"

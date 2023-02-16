@@ -54,7 +54,7 @@ func FixUpDiskMFTEntry(mft *MFT_ENTRY) (io.ReaderAt, error) {
 	sector_idx := 0
 	for idx := 2; idx < len(fixup_table); idx += 2 {
 		fixup_offset := (sector_idx+1)*512 - 2
-		if fixup_offset + 1 >= len(buffer) ||
+		if fixup_offset+1 >= len(buffer) ||
 			buffer[fixup_offset] != fixup_magic[0] ||
 			buffer[fixup_offset+1] != fixup_magic[1] {
 			return nil, errors.New(fmt.Sprintf("Fixup error with MFT %d",
