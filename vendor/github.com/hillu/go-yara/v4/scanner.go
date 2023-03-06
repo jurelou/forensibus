@@ -13,7 +13,6 @@ package yara
 int scanCallbackFunc(YR_SCAN_CONTEXT*, int, void*, void*);
 */
 import "C"
-
 import (
 	"errors"
 	"runtime"

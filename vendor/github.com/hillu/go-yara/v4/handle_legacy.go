@@ -1,5 +1,4 @@
-//go:build !go1.17
-// +build !go1.17
+//+build !go1.17
 
 // This variant contains a backport of go 1.18's "runtime/cgo".Handle.
 

@@ -85,12 +85,12 @@ github.com/mitchellh/go-wordwrap
 # github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
-# github.com/pterm/pterm v0.12.54
+# github.com/pterm/pterm v0.12.55
 ## explicit; go 1.18
 github.com/pterm/pterm
 github.com/pterm/pterm/internal
-# github.com/rivo/uniseg v0.2.0
-## explicit; go 1.12
+# github.com/rivo/uniseg v0.4.4
+## explicit; go 1.18
 github.com/rivo/uniseg
 # github.com/spf13/cobra v1.6.1
 ## explicit; go 1.15
@@ -100,8 +100,8 @@ github.com/spf13/cobra
 github.com/spf13/pflag
 # github.com/stretchr/testify v1.8.1
 ## explicit; go 1.13
-# github.com/xo/terminfo v0.0.0-20210125001918-ca9a967f8778
-## explicit; go 1.15
+# github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e
+## explicit; go 1.19
 github.com/xo/terminfo
 # github.com/zclconf/go-cty v1.12.1
 ## explicit; go 1.18
@@ -137,17 +137,17 @@ golang.org/x/net/internal/timeseries
 golang.org/x/net/trace
 golang.org/x/net/webdav
 golang.org/x/net/webdav/internal/xml
-# golang.org/x/sys v0.4.0
+# golang.org/x/sys v0.6.0
 ## explicit; go 1.17
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/plan9
 golang.org/x/sys/unix
 golang.org/x/sys/windows
 golang.org/x/sys/windows/registry
-# golang.org/x/term v0.4.0
+# golang.org/x/term v0.5.0
 ## explicit; go 1.17
 golang.org/x/term
-# golang.org/x/text v0.6.0
+# golang.org/x/text v0.8.0
 ## explicit; go 1.17
 golang.org/x/text/cases
 golang.org/x/text/encoding

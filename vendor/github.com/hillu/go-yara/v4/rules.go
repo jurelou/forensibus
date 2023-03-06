@@ -16,7 +16,6 @@ size_t streamWrite(void* ptr, size_t size, size_t nmemb, void* user_data);
 int scanCallbackFunc(YR_SCAN_CONTEXT*, int, void*, void*);
 */
 import "C"
-
 import (
 	"errors"
 	"io"
