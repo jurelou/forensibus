@@ -20,7 +20,6 @@ package grpc
 
 import (
 	"google.golang.org/grpc/encoding"
-
 	_ "google.golang.org/grpc/encoding/proto" // to register the Codec for "proto"
 )
 
