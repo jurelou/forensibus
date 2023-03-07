@@ -5,7 +5,9 @@ import (
 	"strings"
 
 	"github.com/gookit/color"
+
 	"github.com/mattn/go-runewidth"
+
 	"github.com/pterm/pterm/internal"
 )
 

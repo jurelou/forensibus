@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/mattn/go-runewidth"
+
 	"github.com/pterm/pterm/internal"
 )
 
