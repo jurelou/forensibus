@@ -23,8 +23,9 @@ package zap
 import (
 	"fmt"
 
-	"go.uber.org/multierr"
 	"go.uber.org/zap/zapcore"
+
+	"go.uber.org/multierr"
 )
 
 const (

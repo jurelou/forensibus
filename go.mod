@@ -13,7 +13,7 @@ require (
 	github.com/spf13/cobra v1.6.1
 	go.uber.org/zap v1.24.0
 	google.golang.org/grpc v1.53.0
-	google.golang.org/protobuf v1.28.1
+	google.golang.org/protobuf v1.29.0
 	gopkg.in/ini.v1 v1.67.0
 	www.velocidex.com/golang/evtx v0.2.0
 	www.velocidex.com/golang/go-ese v0.1.0
